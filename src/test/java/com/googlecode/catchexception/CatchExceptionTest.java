@@ -20,9 +20,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.googlecode.catchexception.internal.SubclassProxy;
 import com.googlecode.catchexception.internal.ExceptionHolder;
 import com.googlecode.catchexception.internal.InterfaceOnlyProxy;
+import com.googlecode.catchexception.internal.SubclassProxy;
 
 /**
  * Tests {@link CatchException}.
@@ -481,6 +481,41 @@ public class CatchExceptionTest {
             fail("AssertionError is expected");
         } catch (AssertionError e) {
             assertEquals("123", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testInterfaces_MissingArgument() throws Exception {
+
+        try {
+            interfaces(null);
+            fail("IllegalArgumentException is expected");
+        } catch (IllegalArgumentException e) {
+            assertEquals("obj must not be null", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testInterfaces_doesNotSubclass() throws Exception {
+
+        try {
+            @SuppressWarnings("unused")
+            PublicSomethingImpl obj = interfaces(new PublicSomethingImpl());
+            fail("ClassCastException is expected");
+        } catch (ClassCastException e) {
+            // OK
+        }
+    }
+
+    @Test
+    public void testInterfaces_delegates() throws Exception {
+
+        try {
+            Something obj = interfaces(new PublicSomethingImpl());
+            obj.doThrow();
+            fail("UnsupportedOperationException is expected");
+        } catch (UnsupportedOperationException e) {
+            // OK
         }
     }
 
