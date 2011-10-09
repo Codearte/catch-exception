@@ -1,21 +1,51 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.catch-exception</groupId>
-  <artifactId>core</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <artifactId>catch-exception</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
   <name>catch-exception</name>
   <description>Catch and verify exceptions</description>
   <dependencies>
+    <!-- required runtime scope dependencies +++++++++++++++++++++++++++++++ -->
     <dependency>
-        <groupId>cglib</groupId>
-        <artifactId>cglib</artifactId>
-        <version>2.2.2</version>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>1.8.5</version>
     </dependency>
+
+    <!-- required test scope dependencies ++++++++++++++++++++++++++++++++++ -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.8.2</version>
       <scope>test</scope>
     </dependency>
+    
   </dependencies>
+
+
+  <build>
+    <!-- mvn clean install source:jar javadoc:jar -->
+    <plugins>
+
+       <!-- http://maven.apache.org/plugins/maven-source-plugin/index.html 
+            mvn source:jar-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.1.2</version>
+      </plugin>
+
+       <!--  http://maven.apache.org/plugins/maven-javadoc-plugin/usage.html 
+             mvn javadoc:jar-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.8</version>
+      </plugin>
+      
+    </plugins>
+  </build>
+  
 </project>
