@@ -18,4 +18,8 @@ public class PublicSomethingImpl implements Something {
     public void doesNotBelongToAnyInterface() {
         //
     }
+
+    public void doThrowAssertionError() {
+        throw new AssertionError(123);
+    }
 }

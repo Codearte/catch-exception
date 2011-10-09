@@ -49,7 +49,7 @@ public class MockitoCglibJmockObjenesisProxyFactory implements ProxyFactory {
         T proxy;
         try {
             proxy = (T) ClassImposterizer.INSTANCE.imposterise(interceptor,
-                    obj.getClass());
+                    obj.getClass(), CglibProxy.class);
         } catch (MockitoException e) {
             // delegate
             return fallbackProxyFactory.createProxy(obj, exceptionClazz,

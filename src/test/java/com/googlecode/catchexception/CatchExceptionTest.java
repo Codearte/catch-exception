@@ -20,7 +20,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.googlecode.catchexception.internal.CglibProxy;
 import com.googlecode.catchexception.internal.ExceptionHolder;
+import com.googlecode.catchexception.internal.JdkProxy;
 
 /**
  * Tests {@link CatchException}.
@@ -74,6 +76,9 @@ public class CatchExceptionTest {
             //
         }
 
+        public void doThrowAssertionError() {
+            //
+        }
     }
 
     @Test
@@ -191,6 +196,7 @@ public class CatchExceptionTest {
             catchException(interfaces(obj)).doThrow();
             assertTrue(caughtException() instanceof UnsupportedOperationException);
         }
+
         {
             FinalMethodSomethingImpl obj = new FinalMethodSomethingImpl();
             catchException((Something) interfaces(obj)).doThrow();
@@ -443,6 +449,38 @@ public class CatchExceptionTest {
             fail("IllegalArgumentException is expected");
         } catch (IllegalArgumentException e) {
             assertEquals("obj must not be null", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testCatchException_TestedMethodThrowsError_CgLibProxy()
+            throws Exception {
+
+        PublicSomethingImpl obj = new PublicSomethingImpl();
+
+        try {
+            PublicSomethingImpl proxy = catchException(obj);
+            assertTrue(proxy instanceof CglibProxy);
+            proxy.doThrowAssertionError();
+            fail("AssertionError is expected");
+        } catch (AssertionError e) {
+            assertEquals("123", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testCatchException_TestedMethodThrowsError_JdkProxy()
+            throws Exception {
+
+        Something obj = new FinalSomethingImpl();
+
+        try {
+            Something proxy = catchException(obj);
+            assertTrue(proxy instanceof JdkProxy);
+            proxy.doThrowAssertionError();
+            fail("AssertionError is expected");
+        } catch (AssertionError e) {
+            assertEquals("123", e.getMessage());
         }
     }
 

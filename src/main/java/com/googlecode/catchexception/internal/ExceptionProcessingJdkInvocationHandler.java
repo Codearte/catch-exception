@@ -39,15 +39,20 @@ public class ExceptionProcessingJdkInvocationHandler<E extends Exception>
             Object retval = method.invoke(target, args);
             return afterInvocation(retval);
 
-        } catch (Exception e) {
+        } catch (InvocationTargetException e) {
 
-            // exception translation
-            if (e instanceof InvocationTargetException) {
-                e = (Exception) ((InvocationTargetException) e)
-                        .getTargetException();
+            Throwable cause = e.getTargetException();
+
+            if (!(cause instanceof Exception)) {
+
+                // we do not handle throwables that are not exceptions
+                throw cause;
+
+            } else {
+
+                return afterInvocationThrowsException((Exception) cause, method);
             }
 
-            return afterInvocationThrowsException(e, method);
         }
     }
 }

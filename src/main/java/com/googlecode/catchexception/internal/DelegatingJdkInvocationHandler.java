@@ -38,13 +38,10 @@ public class DelegatingJdkInvocationHandler implements InvocationHandler {
             // delegate to the target's method
             return method.invoke(target, args);
 
-        } catch (Exception e) {
-            // exception translation
-            if (e instanceof InvocationTargetException) {
-                e = (Exception) ((InvocationTargetException) e)
-                        .getTargetException();
-            }
-            throw e;
+        } catch (InvocationTargetException e) {
+
+            throw e.getTargetException();
+
         }
 
     }

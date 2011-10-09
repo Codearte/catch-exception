@@ -20,6 +20,10 @@ import com.googlecode.catchexception.internal.MockitoCglibJmockObjenesisProxyFac
  * <a href="#8">8. The caught exception is not available in another thread.
  * Why?</a><br/>
  * <a href="#9">9. How do I catch an exception thrown by a static method?</a> <br/>
+ * <a href="#10">10. Is there a way to get rid of the throws clause in my test
+ * method?</a> <br/>
+ * <a href="#11">11. Can I catch errors instead of exceptions?</a> <br/>
+ * 
  * 
  * 
  * </b>
@@ -156,6 +160,19 @@ catchException(interfaces(api)).do(); // works fine</pre></code> I recommend
  * <p>
  * Unfortunately, catch-exception does not support this. Fall back on try/catch
  * blocks.
+ * <h3 id="10">10. Is there a way to get rid of the throws clause in my test
+ * method?</h3>
+ * <p>
+ * Example: <code><pre>public void testSomething() throws Exception {
+...
+catchException(obj).do(); // do() throws a checked exception</pre></code>
+ * No, although the exception is always caught you cannot omit the throws clause
+ * in your test method.
+ * <h3 id="11">11. Can I catch errors instead of exceptions?</h3>
+ * <p>
+ * At the moment you can't catch {@link Throwable throwables} that are not
+ * {@link Exception exceptions}. But this could be easily changed if someone
+ * wants to get this feature.
  * 
  * @author rwoo
  * @since 16.09.2011
