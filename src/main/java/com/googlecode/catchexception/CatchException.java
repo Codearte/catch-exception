@@ -346,7 +346,7 @@ if (caughtException() != null) {
             throw new IllegalArgumentException("obj must not be null");
         }
 
-        return new SubclassProxyFactory().createProxy(obj.getClass(),
+        return new SubclassProxyFactory().<T> createProxy(obj.getClass(),
                 new ExceptionProcessingInterceptor<E>(obj, exceptionClazz,
                         assertException));
 
@@ -368,7 +368,7 @@ if (caughtException() != null) {
             throw new IllegalArgumentException("obj must not be null");
         }
 
-        return new InterfaceOnlyProxyFactory().createProxy(obj.getClass(),
+        return new InterfaceOnlyProxyFactory().<T> createProxy(obj.getClass(),
                 new DelegatingInterceptor(obj));
     }
 

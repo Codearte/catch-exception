@@ -6,12 +6,24 @@
   <version>1.0.1-SNAPSHOT</version>
   <name>catch-exception</name>
   <description>Catch and verify exceptions</description>
+
+  <properties>
+    <!-- Prevents "[WARNING] Using platform encoding (Cp1252 actually) to copy 
+                  filtered resources, i.e. build is platform dependent!
+         See http://maven.apache.org/general.html#encoding-warning -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
   <dependencies>
     <!-- required runtime scope dependencies +++++++++++++++++++++++++++++++ -->
     <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
         <version>1.8.5</version>
+        <!-- 
+          Successfully tested versions: 1.8.1, 1.8.2, 1.8.3, 1.8.4, 1.8.5, 1.9.0-rc1
+          Not compatible versions: 1.5, 1.6, 1.7
+         -->
     </dependency>
 
     <!-- required test scope dependencies ++++++++++++++++++++++++++++++++++ -->
@@ -29,7 +41,9 @@
     <!--
       1. Set release version.
       2. Execute: mvn clean install source:jar javadoc:jar
-      3. Set snapshot version. 
+      3. Update javadoc: "copy target/apidocs catch-exception.javadoc"
+      4. "Commit catch-exception.javadoc"
+      5. Set snapshot version. Increase version. 
        -->
     <plugins>
 

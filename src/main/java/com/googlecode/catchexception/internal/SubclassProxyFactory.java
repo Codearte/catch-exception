@@ -29,7 +29,8 @@ public class SubclassProxyFactory implements ProxyFactory {
         if (!ClassImposterizer.INSTANCE.canImposterise(targetClass)) {
 
             // delegate
-            return fallbackProxyFactory.createProxy(targetClass, interceptor);
+            return fallbackProxyFactory.<T> createProxy(targetClass,
+                    interceptor);
         }
 
         // create proxy
@@ -42,7 +43,8 @@ public class SubclassProxyFactory implements ProxyFactory {
         } catch (MockitoException e) {
 
             // delegate
-            return fallbackProxyFactory.createProxy(targetClass, interceptor);
+            return fallbackProxyFactory.<T> createProxy(targetClass,
+                    interceptor);
         }
 
         return proxy;
