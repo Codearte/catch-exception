@@ -14,12 +14,12 @@ import org.mockito.cglib.proxy.MethodProxy;
  *            The type of the exception that shall be caught and (optionally)
  *            verified
  */
-public class ExceptionProcessingMockitoCglibMethodInterceptor<E extends Exception>
+public class ExceptionProcessingInterceptor<E extends Exception>
         extends AbstractExceptionProcessingInvocationHandler<E> implements
         MethodInterceptor {
 
     @SuppressWarnings("javadoc")
-    public ExceptionProcessingMockitoCglibMethodInterceptor(Object target,
+    public ExceptionProcessingInterceptor(Object target,
             Class<E> clazz, boolean assertException) {
         super(target, clazz, assertException);
     }

@@ -1,6 +1,5 @@
 package com.googlecode.catchexception.internal;
 
-import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,22 +7,23 @@ import org.mockito.cglib.proxy.Enhancer;
 import org.mockito.cglib.proxy.MethodInterceptor;
 
 /**
- * This {@link ProxyFactory} uses {@link Proxy JDK proxies} to create proxies,
- * i.e. the created proxy implements all interfaces of the underlying objects
- * including the marker interface {@link JdkProxy}.
+ * This {@link ProxyFactory} create proxies that implements all interfaces of
+ * the underlying object including the marker interface
+ * {@link InterfaceOnlyProxy}. But in contrast to the proxies created by
+ * {@link SubclassProxyFactory} such a proxy does not subclass the class of the
+ * underlying object.
  */
-class JdkProxyFactory implements ProxyFactory {
+public class InterfaceOnlyProxyFactory implements ProxyFactory {
 
     /*
      * (non-Javadoc)
      * 
      * @see
      * com.googlecode.catchexception.internal.ProxyFactory#createProxy(java.
-     * lang.Object, java.lang.Class, boolean)
+     * lang.Class, org.mockito.cglib.proxy.MethodInterceptor)
      */
     @SuppressWarnings("unchecked")
-    public <T, E extends Exception> T createProxy(Class<?> targetClass,
-            MethodInterceptor interceptor) {
+    public <T> T createProxy(Class<?> targetClass, MethodInterceptor interceptor) {
 
         // get all the interfaces (is there an easier way?)
         Set<Class<?>> interfaces = new HashSet<Class<?>>();
@@ -37,12 +37,7 @@ class JdkProxyFactory implements ProxyFactory {
             }
             clazz = clazz.getSuperclass();
         }
-        interfaces.add(JdkProxy.class);
-
-        // create interceptor
-        // MethodInterceptor interceptor = new
-        // ExceptionProcessingMockitoCglibMethodInterceptor<E>(
-        // obj, exceptionClazz, assertException);
+        interfaces.add(InterfaceOnlyProxy.class);
 
         return (T) Enhancer.create(Object.class,
                 interfaces.toArray(new Class<?>[interfaces.size()]),

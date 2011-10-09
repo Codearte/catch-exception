@@ -5,14 +5,15 @@ import org.mockito.exceptions.base.MockitoException;
 import org.mockito.internal.creation.jmock.ClassImposterizer;
 
 /**
- * This {@link ProxyFactory} uses Mockito's jmock package to create proxies.
+ * This {@link ProxyFactory} uses Mockito's jmock package to create proxies that
+ * subclass from the target's class.
  */
-public class MockitoCglibJmockObjenesisProxyFactory implements ProxyFactory {
+public class SubclassProxyFactory implements ProxyFactory {
 
     /**
      * That proxy factory is used if this factory cannot be used.
      */
-    private ProxyFactory fallbackProxyFactory = new JdkProxyFactory();
+    private ProxyFactory fallbackProxyFactory = new InterfaceOnlyProxyFactory();
 
     /*
      * (non-Javadoc)
@@ -22,11 +23,11 @@ public class MockitoCglibJmockObjenesisProxyFactory implements ProxyFactory {
      * lang.Object, java.lang.Class, boolean)
      */
     @SuppressWarnings("unchecked")
-    public <T, E extends Exception> T createProxy(Class<?> targetClass,
-            MethodInterceptor interceptor) {
+    public <T> T createProxy(Class<?> targetClass, MethodInterceptor interceptor) {
 
         // can we subclass the class of the target?
         if (!ClassImposterizer.INSTANCE.canImposterise(targetClass)) {
+
             // delegate
             return fallbackProxyFactory.createProxy(targetClass, interceptor);
         }
@@ -34,9 +35,12 @@ public class MockitoCglibJmockObjenesisProxyFactory implements ProxyFactory {
         // create proxy
         T proxy;
         try {
+
             proxy = (T) ClassImposterizer.INSTANCE.imposterise(interceptor,
-                    targetClass, CglibProxy.class);
+                    targetClass, SubclassProxy.class);
+
         } catch (MockitoException e) {
+
             // delegate
             return fallbackProxyFactory.createProxy(targetClass, interceptor);
         }

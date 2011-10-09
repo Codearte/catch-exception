@@ -20,9 +20,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.googlecode.catchexception.internal.CglibProxy;
+import com.googlecode.catchexception.internal.SubclassProxy;
 import com.googlecode.catchexception.internal.ExceptionHolder;
-import com.googlecode.catchexception.internal.JdkProxy;
+import com.googlecode.catchexception.internal.InterfaceOnlyProxy;
 
 /**
  * Tests {@link CatchException}.
@@ -460,7 +460,7 @@ public class CatchExceptionTest {
 
         try {
             PublicSomethingImpl proxy = catchException(obj);
-            assertTrue(proxy instanceof CglibProxy);
+            assertTrue(proxy instanceof SubclassProxy);
             proxy.doThrowAssertionError();
             fail("AssertionError is expected");
         } catch (AssertionError e) {
@@ -476,7 +476,7 @@ public class CatchExceptionTest {
 
         try {
             Something proxy = catchException(obj);
-            assertTrue(proxy instanceof JdkProxy);
+            assertTrue(proxy instanceof InterfaceOnlyProxy);
             proxy.doThrowAssertionError();
             fail("AssertionError is expected");
         } catch (AssertionError e) {

@@ -3,7 +3,7 @@ package com.googlecode.catchexception.internal;
 import org.mockito.cglib.proxy.MethodInterceptor;
 
 /**
- * Creates proxies that catch and verify exceptions.
+ * Creates proxies.
  * 
  * @author rwoo
  * 
@@ -11,16 +11,17 @@ import org.mockito.cglib.proxy.MethodInterceptor;
 interface ProxyFactory {
 
     /**
-     * Creates proxies that catch and verify exceptions.
-     * @param targetClass TODO
-     * @param interceptor TODO
+     * Create a proxy.
      * 
      * @param <T>
-     *            The type of the given <code>obj</code>.
-     * @param <E>
-     *            The type of the given <code>exception</code>.
+     *            The type parameter makes some casts redundant.
+     * @param targetClass
+     *            the class the factory shall create a proxy for
+     * @param interceptor
+     *            the method interceptor that shall be applied to all method
+     *            calls.
      * @return Returns the created proxy.
      */
-    public <T, E extends Exception> T createProxy(Class<?> targetClass, MethodInterceptor interceptor);
+    public <T> T createProxy(Class<?> targetClass, MethodInterceptor interceptor);
 
 }

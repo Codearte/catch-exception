@@ -2,10 +2,11 @@ package com.googlecode.catchexception;
 
 import org.mockito.cglib.proxy.MethodInterceptor;
 
-import com.googlecode.catchexception.internal.DelegatingJdkProxyFactory;
+import com.googlecode.catchexception.internal.DelegatingInterceptor;
 import com.googlecode.catchexception.internal.ExceptionHolder;
-import com.googlecode.catchexception.internal.ExceptionProcessingMockitoCglibMethodInterceptor;
-import com.googlecode.catchexception.internal.MockitoCglibJmockObjenesisProxyFactory;
+import com.googlecode.catchexception.internal.ExceptionProcessingInterceptor;
+import com.googlecode.catchexception.internal.InterfaceOnlyProxyFactory;
+import com.googlecode.catchexception.internal.SubclassProxyFactory;
 
 /**
  * The methods of this class catch and verify exceptions in <em>a single line of
@@ -345,10 +346,9 @@ if (caughtException() != null) {
             throw new IllegalArgumentException("obj must not be null");
         }
 
-        return new MockitoCglibJmockObjenesisProxyFactory().createProxy(obj
-                .getClass(),
-                new ExceptionProcessingMockitoCglibMethodInterceptor<E>(obj,
-                        exceptionClazz, assertException));
+        return new SubclassProxyFactory().createProxy(obj.getClass(),
+                new ExceptionProcessingInterceptor<E>(obj, exceptionClazz,
+                        assertException));
 
     }
 
@@ -363,7 +363,13 @@ if (caughtException() != null) {
      *         object and delegates all calls to that underlying object.
      */
     public static <T> T interfaces(T obj) {
-        return new DelegatingJdkProxyFactory().createProxy(obj);
+
+        if (obj == null) {
+            throw new IllegalArgumentException("obj must not be null");
+        }
+
+        return new InterfaceOnlyProxyFactory().createProxy(obj.getClass(),
+                new DelegatingInterceptor(obj));
     }
 
     /**
