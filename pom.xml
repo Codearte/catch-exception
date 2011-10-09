@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.catch-exception</groupId>
   <artifactId>catch-exception</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.2-SNAPSHOT</version>
   <name>catch-exception</name>
   <description>Catch and verify exceptions</description>
 
@@ -41,9 +41,12 @@
     <!--
       1. Set release version.
       2. Execute: mvn clean install source:jar javadoc:jar
-      3. Update javadoc: "copy target/apidocs catch-exception.javadoc"
-      4. "Commit catch-exception.javadoc"
-      5. Set snapshot version. Increase version. 
+      3. Zip the three jars (classes, source, javadoc).
+      4. Upload at google code using summary "classes, sources and javadocs"
+      5. Update javadoc: "copy target/apidocs catch-exception.javadoc"
+      6. "Commit catch-exception.javadoc"
+      7. Set snapshot version. Increase version.
+      8. "Commit catch-exception"
        -->
     <plugins>
 
