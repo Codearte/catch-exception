@@ -57,7 +57,8 @@ class AbstractExceptionProcessingInvocationHandler<E extends Exception> {
             Class<E> clazz, boolean assertException) {
 
         if (clazz == null) {
-            throw new IllegalArgumentException("clazz must not be null");
+            throw new IllegalArgumentException(
+                    "exceptionClazz must not be null");
         }
         if (target == null) {
             throw new IllegalArgumentException("target must not be null");

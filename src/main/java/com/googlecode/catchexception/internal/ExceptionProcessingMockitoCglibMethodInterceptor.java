@@ -14,7 +14,7 @@ import org.mockito.cglib.proxy.MethodProxy;
  *            The type of the exception that shall be caught and (optionally)
  *            verified
  */
-class ExceptionProcessingMockitoCglibMethodInterceptor<E extends Exception>
+public class ExceptionProcessingMockitoCglibMethodInterceptor<E extends Exception>
         extends AbstractExceptionProcessingInvocationHandler<E> implements
         MethodInterceptor {
 

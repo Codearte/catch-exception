@@ -1,7 +1,10 @@
 package com.googlecode.catchexception;
 
+import org.mockito.cglib.proxy.MethodInterceptor;
+
 import com.googlecode.catchexception.internal.DelegatingJdkProxyFactory;
 import com.googlecode.catchexception.internal.ExceptionHolder;
+import com.googlecode.catchexception.internal.ExceptionProcessingMockitoCglibMethodInterceptor;
 import com.googlecode.catchexception.internal.MockitoCglibJmockObjenesisProxyFactory;
 
 /**
@@ -331,15 +334,21 @@ if (caughtException() != null) {
 
     /**
      * Delegates to
-     * {@link DelegatingProxyFactory#createProxy(Object, Class, boolean)} and
+     * {@link DelegatingProxyFactory#createProxy(Class, MethodInterceptor)} and
      * wraps {@link ClassCastException} with a more meaningful exception.
      */
     @SuppressWarnings("javadoc")
     private static <T, E extends Exception> T processException(T obj,
-            Class<E> clazz, boolean assertException) {
+            Class<E> exceptionClazz, boolean assertException) {
 
-        return new MockitoCglibJmockObjenesisProxyFactory().createProxy(obj,
-                clazz, assertException);
+        if (obj == null) {
+            throw new IllegalArgumentException("obj must not be null");
+        }
+
+        return new MockitoCglibJmockObjenesisProxyFactory().createProxy(obj
+                .getClass(),
+                new ExceptionProcessingMockitoCglibMethodInterceptor<E>(obj,
+                        exceptionClazz, assertException));
 
     }
 

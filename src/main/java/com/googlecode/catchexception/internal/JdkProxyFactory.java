@@ -1,11 +1,11 @@
 package com.googlecode.catchexception.internal;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.mockito.internal.creation.jmock.SearchingClassLoader;
+import org.mockito.cglib.proxy.Enhancer;
+import org.mockito.cglib.proxy.MethodInterceptor;
 
 /**
  * This {@link ProxyFactory} uses {@link Proxy JDK proxies} to create proxies,
@@ -22,15 +22,12 @@ class JdkProxyFactory implements ProxyFactory {
      * lang.Object, java.lang.Class, boolean)
      */
     @SuppressWarnings("unchecked")
-    public <T, E extends Exception> T createProxy(T obj,
-            Class<E> exceptionClazz, boolean assertException) {
-
-        InvocationHandler invocationHandler = new ExceptionProcessingJdkInvocationHandler<E>(
-                obj, exceptionClazz, assertException);
+    public <T, E extends Exception> T createProxy(Class<?> targetClass,
+            MethodInterceptor interceptor) {
 
         // get all the interfaces (is there an easier way?)
         Set<Class<?>> interfaces = new HashSet<Class<?>>();
-        Class<?> clazz = obj.getClass();
+        Class<?> clazz = targetClass;
         while (true) {
             for (Class<?> interfaze : clazz.getInterfaces()) {
                 interfaces.add(interfaze);
@@ -42,23 +39,13 @@ class JdkProxyFactory implements ProxyFactory {
         }
         interfaces.add(JdkProxy.class);
 
-        // get class loader
-        ClassLoader classLoader;
-        if (JdkProxy.class.getClassLoader().equals(
-                obj.getClass().getClassLoader())) {
-            classLoader = obj.getClass().getClassLoader();
-        } else {
-            // combine the class loader of the object and the class loader of
-            // JdkProxy
-            classLoader = new SearchingClassLoader(
-                    JdkProxy.class.getClassLoader(), obj.getClass()
-                            .getClassLoader());
-        }
+        // create interceptor
+        // MethodInterceptor interceptor = new
+        // ExceptionProcessingMockitoCglibMethodInterceptor<E>(
+        // obj, exceptionClazz, assertException);
 
-        // create the proxy
-        return (T) Proxy.newProxyInstance( //
-                classLoader, //
-                interfaces.toArray(new Class<?>[interfaces.size()]), //
-                invocationHandler);
+        return (T) Enhancer.create(Object.class,
+                interfaces.toArray(new Class<?>[interfaces.size()]),
+                interceptor);
     }
 }
