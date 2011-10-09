@@ -1,5 +1,7 @@
 package com.googlecode.catchexception.internal;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Holds a caught exception {@link ThreadLocal per Thread}.
  * 
@@ -10,6 +12,9 @@ public class ExceptionHolder {
 
     /**
      * The container for the most recently caught exception.
+     * <p>
+     * There is no need to use {@link WeakReference weak references} here as all
+     * the code is for testing so that we don't have to care about memory leaks.
      */
     private static final ThreadLocal<Exception> caughtException = new ThreadLocal<Exception>();
 

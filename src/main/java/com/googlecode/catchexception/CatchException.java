@@ -374,7 +374,13 @@ if (caughtException() != null) {
 
     /**
      * Sets the {@link #caughtException() caught exception} to null. This does
-     * not affect exceptions saved in other threads than the current one.
+     * not affect exceptions saved at threads other than the current one.
+     * <p>
+     * Actually you probably never need to call this method because each method
+     * call on a proxied object in the current thread resets the caught
+     * exception. But if you want to improve test isolation or if you want to
+     * 'clean up' after testing (to avoid memory leaks), call the method before
+     * or after testing.
      */
     public static void resetCaughtException() {
         ExceptionHolder.set(null);
