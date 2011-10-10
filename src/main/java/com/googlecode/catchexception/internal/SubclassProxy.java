@@ -5,7 +5,7 @@ package com.googlecode.catchexception.internal;
  * This is useful for testing.
  * <p>
  * EXAMPLE:
- * <code><pre>assert new SubclassProxyFactory(...).createProxy(obj) instanceof SubclassProxy;
+ * <code><pre class="prettyprint lang-java">assert new SubclassProxyFactory(...).createProxy(obj) instanceof SubclassProxy;
  * </pre></code>
  * 
  * @author rwoo

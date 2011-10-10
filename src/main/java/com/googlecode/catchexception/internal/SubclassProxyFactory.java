@@ -7,6 +7,8 @@ import org.mockito.internal.creation.jmock.ClassImposterizer;
 /**
  * This {@link ProxyFactory} uses Mockito's jmock package to create proxies that
  * subclass from the target's class.
+ * 
+ * @author rwoo
  */
 public class SubclassProxyFactory implements ProxyFactory {
 

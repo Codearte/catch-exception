@@ -51,7 +51,7 @@
     <plugins>
 
        <!-- http://maven.apache.org/plugins/maven-source-plugin/index.html 
-            mvn source:jar-->
+            mvn source:jar -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -59,11 +59,63 @@
       </plugin>
 
        <!--  http://maven.apache.org/plugins/maven-javadoc-plugin/usage.html 
-             mvn javadoc:jar-->
+             mvn javadoc:jar -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.8</version>
+		<configuration>
+		  <show>private</show>
+		  <use>true</use>
+          <!-- is obviously redundant (but why?) <javadocDirectory>${basedir}/src/main/javadoc</javadocDirectory> -->
+		  <docfilessubdirs>true</docfilessubdirs>
+		  <stylesheetfile>${basedir}/src/main/javadoc/stylesheet/stylesheet-modified.css</stylesheetfile> 
+		  <footer xml:space="preserve"><![CDATA[
+		 
+<script type='text/javascript'>
+/* TODO move this code to a property file or something similar */
+
+/**
+  * @author http://www.javascriptkit.com/javatutors/loadjavascriptcss.shtml
+  */
+function loadjscssfile(filename, filetype){
+ if (filetype=='js') { /* if filename is a external JavaScript file */
+   var fileref=document.createElement('script');
+   fileref.setAttribute('type','text/javascript');
+   fileref.setAttribute('src', filename);
+ }
+ else if (filetype=='css') { /* if filename is an external CSS file */
+   var fileref=document.createElement('link');
+   fileref.setAttribute('rel', 'stylesheet');
+   fileref.setAttribute('type', 'text/css');
+   fileref.setAttribute('href', filename);
+ }
+ if (typeof fileref!='undefined') {
+   document.getElementsByTagName('head')[0].appendChild(fileref);
+ }
+}
+
+function pathToRoot(belowroot, url) {
+   var result = new RegExp('(.*[\\/])' + belowroot + '[\\/]').exec(url);
+   if (result == null) {
+     return 'xxx'; /* nothing found */
+   }
+   else {
+     return RegExp.$1;
+   }
+}
+/* test: alert('roopath test:' + pathToRoot('org', 'http://apache.org/doc/org/2011/org/apache/xmlbeans/org-package.html')); */
+var rootpath = pathToRoot('com', '' + window.location.href );
+/* var rootpath =  '../../../'; */
+/* such an alert breaks the code. why? alert('rootpath: ' + rootpath); */
+loadjscssfile(rootpath + 'doc-files/google-code-prettify/prettify.js', 'js');
+loadjscssfile(rootpath + 'doc-files/google-code-prettify/prettify.css', 'css');
+/* prettyPrint(); does not work (as the code is not loaded yet?) */
+window.setTimeout('prettyPrint();',0);		
+</script>			
+		  ]]>
+		  </footer><!-- footer or bottom makes no difference for javascript -->
+		</configuration>
       </plugin>
       
     </plugins>

@@ -35,7 +35,7 @@ import com.googlecode.catchexception.internal.SubclassProxyFactory;
  * <h3 id="1">1. How to use catch-exception?</h3>
  * <p>
  * The most basic usage is:
- * <code><pre>import static com.googlecode.catchexception.CatchException.*;
+ * <code><pre class="prettyprint lang-java">import static com.googlecode.catchexception.CatchException.*;
 
 // call customerService.prepareBilling(Prize.Zero)
 // and catch the exception if any is thrown 
@@ -45,7 +45,7 @@ catchException(customerService).prepareBilling(Prize.Zero);
 assert caughtException() instanceof IllegalArgumentException;</pre></code>
  * <p>
  * You can combine the two lines of code in a single one if you like:
- * <code><pre>// call customerService.prepareBilling(Prize.Zero)
+ * <code><pre class="prettyprint lang-java">// call customerService.prepareBilling(Prize.Zero)
 // and throw an ExceptionNotThrownAssertionError if
 // the expected exception is not thrown 
 verifyException(customerService, IllegalArgumentException.class).prepareBilling(Prize.Zero);</pre></code>
@@ -56,12 +56,12 @@ verifyException(customerService, IllegalArgumentException.class).prepareBilling(
  * <p>
  * A third variant allows you to select the type of exceptions you want to catch
  * (no verification involved):
- * <code><pre>// catch IllegalArgumentExceptions but no other exceptions 
+ * <code><pre class="prettyprint lang-java">// catch IllegalArgumentExceptions but no other exceptions 
 catchException(customerService, IllegalArgumentException.class).prepareBilling(Prize.Zero);</pre></code>
  * <p>
  * The fourth and last variant verifies that some exception is thrown, i.e. the
  * type of the exception does not matter:
- * <code><pre>verifyException(customerService).prepareBilling(Prize.Zero);</pre></code>
+ * <code><pre class="prettyprint lang-java">verifyException(customerService).prepareBilling(Prize.Zero);</pre></code>
  * <p>
  * In all variants you can use <code>caughtException()</code> afterwards to
  * inspect the caught exception.
@@ -116,7 +116,8 @@ catchException(customerService, IllegalArgumentException.class).prepareBilling(P
  * other threads.
  * <h3 id="5"><a name="proxies" />5. My code throws a ClassCastException. Why?</h3>
  * <p>
- * Example: <code><pre>StringBuilder sb = new StringBuilder();
+ * Example:
+ * <code><pre class="prettyprint lang-java">StringBuilder sb = new StringBuilder();
 catchException(sb).charAt(-2); // throws ClassCastException</pre></code>
  * <p>
  * Probably you have tested a final class. Proxy factories usually try to
@@ -127,7 +128,7 @@ catchException(sb).charAt(-2); // throws ClassCastException</pre></code>
  * interface type. This works because the created proxy is not longer required
  * to have the same type as the original class but it must only have the same
  * interface.
- * <code><pre>// first variant
+ * <code><pre class="prettyprint lang-java">// first variant
 StringBuilder sb = new StringBuilder();
 catchException((CharSequence) sb).charAt(-2); // works fine
 
@@ -137,13 +138,14 @@ catchException(sb).charAt(-2); // works fine</pre></code> If the tested
  * method does no belong to an interface fall back to the try/catch-blocks.
  * <h3 id="6">6. The exception is not caught. Why?</h3>
  * <p>
- * Example: <code><pre>ServiceImpl impl = new ServiceImpl();
+ * Example:
+ * <code><pre class="prettyprint lang-java">ServiceImpl impl = new ServiceImpl();
 catchException(impl).do(); // do() is a final method that throws an exception</pre></code>
  * <p>
  * Probably you have tested a final method. If that tested method belongs to an
  * interface you could use {@link #interfaces(Object)} to fix that problem. But
  * then the syntax starts to become ugly.
- * <code><pre>Service api = new ServiceImpl();
+ * <code><pre class="prettyprint lang-java">Service api = new ServiceImpl();
 catchException(interfaces(api)).do(); // works fine</pre></code> I recommend
  * to use try/catch blocks in such cases.
  * 
@@ -167,11 +169,12 @@ catchException(interfaces(api)).do(); // works fine</pre></code> I recommend
  * <h3 id="10">10. Is there a way to get rid of the throws clause in my test
  * method?</h3>
  * <p>
- * Example: <code><pre>public void testSomething() throws Exception {
-...
-catchException(obj).do(); // do() throws a checked exception</pre></code>
- * No, although the exception is always caught you cannot omit the throws clause
- * in your test method.
+ * Example:
+ * <code><pre class="prettyprint lang-java">public void testSomething() throws Exception {
+    ...
+    catchException(obj).do(); // do() throws a checked exception</pre></code> No,
+ * although the exception is always caught you cannot omit the throws clause in
+ * your test method.
  * <h3 id="11">11. Can I catch errors instead of exceptions?</h3>
  * <p>
  * At the moment you can't catch {@link Throwable throwables} that are not
@@ -207,7 +210,7 @@ public class CatchException {
      * thrown exception (for further verifications).
      * <p>
      * The following example verifies that obj.doX() throws a Exception:
-     * <code><pre>verifyException(obj).doX(); // catch and verify
+     * <code><pre class="prettyprint lang-java">verifyException(obj).doX(); // catch and verify
 assert "foobar".equals(caughtException().getMessage()); // further analysis
 </pre></code>
      * <p>
@@ -234,7 +237,7 @@ assert "foobar".equals(caughtException().getMessage()); // further analysis
      * access to the thrown exception (for further verifications).
      * <p>
      * The following example verifies that obj.doX() throws a MyException:
-     * <code><pre>verifyException(obj, MyException.class).doX(); // catch and verify
+     * <code><pre class="prettyprint lang-java">verifyException(obj, MyException.class).doX(); // catch and verify
 assert "foobar".equals(caughtException().getMessage()); // further analysis
 </pre></code>
      * <p>
@@ -269,7 +272,7 @@ assert "foobar".equals(caughtException().getMessage()); // further analysis
      * <p>
      * In the following example you catch exceptions that are thrown by
      * obj.doX():
-     * <code><pre>catchException(obj).doX(); // catch
+     * <code><pre class="prettyprint lang-java">catchException(obj).doX(); // catch
 if (caughtException() != null) {
     assert "foobar".equals(caughtException().getMessage()); // further analysis
 }</pre></code>
@@ -299,7 +302,7 @@ if (caughtException() != null) {
      * <p>
      * In the following example you catch exceptions of type MyException that
      * are thrown by obj.doX():
-     * <code><pre>catchException(obj, MyException.class).doX(); // catch
+     * <code><pre class="prettyprint lang-java">catchException(obj, MyException.class).doX(); // catch
 if (caughtException() != null) {
     assert "foobar".equals(caughtException().getMessage()); // further analysis
 }</pre></code>
@@ -334,9 +337,13 @@ if (caughtException() != null) {
     }
 
     /**
+     * Creates a proxy that processes exceptions thrown by the underlying
+     * object.
+     * <p>
      * Delegates to
-     * {@link DelegatingProxyFactory#createProxy(Class, MethodInterceptor)} and
-     * wraps {@link ClassCastException} with a more meaningful exception.
+     * {@link SubclassProxyFactory#createProxy(Class, MethodInterceptor)} which
+     * itself might delegate to
+     * {@link InterfaceOnlyProxyFactory#createProxy(Class, MethodInterceptor)}.
      */
     @SuppressWarnings("javadoc")
     private static <T, E extends Exception> T processException(T obj,

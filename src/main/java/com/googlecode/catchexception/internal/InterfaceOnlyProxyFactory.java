@@ -12,6 +12,8 @@ import org.mockito.cglib.proxy.MethodInterceptor;
  * {@link InterfaceOnlyProxy}. But in contrast to the proxies created by
  * {@link SubclassProxyFactory} such a proxy does not subclass the class of the
  * underlying object.
+ * 
+ * @author rwoo
  */
 public class InterfaceOnlyProxyFactory implements ProxyFactory {
 

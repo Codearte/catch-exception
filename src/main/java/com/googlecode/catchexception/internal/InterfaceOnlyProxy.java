@@ -5,7 +5,7 @@ package com.googlecode.catchexception.internal;
  * testing.
  * <p>
  * EXAMPLE:
- * <code><pre>assert new InterfaceOnlyProxyFactory(...).createProxy(obj) instanceof InterfaceOnlyProxy;
+ * <code><pre class="prettyprint lang-java">assert new InterfaceOnlyProxyFactory(...).createProxy(obj) instanceof InterfaceOnlyProxy;
  * </pre></code>
  * 
  * @author rwoo
