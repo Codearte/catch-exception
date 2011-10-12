@@ -3,10 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.catch-exception</groupId>
   <artifactId>catch-exception</artifactId>
-  <version>1.0.3-SNAPSHOT</version>
+  <version>1.0.2</version>
+  <packaging>jar</packaging>
   <name>catch-exception</name>
   <description>Catch and verify exceptions</description>
+  <url>http://code.google.com/p/catch-exception/</url>
 
+
+    
   <properties>
     <!-- Prevents "[WARNING] Using platform encoding (Cp1252 actually) to copy 
                   filtered resources, i.e. build is platform dependent!
@@ -122,5 +126,29 @@ window.setTimeout('prettyPrint();',0);
       
     </plugins>
   </build>
+
+  <licenses>
+    <license>
+      <name>Apache 2</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>rwoo</id>
+      <name>Rod Woo</name>
+      <email>rwoo@gmx.de</email>
+    </developer>
+  </developers>
+  
+  <scm>
+    <connection>scm:hg:https://code.google.com/p/catch-exception/</connection>
+    <developerConnection>scm:hg:https://code.google.com/p/catch-exception/</developerConnection>
+    <tag>HEAD</tag>
+    <url>http://code.google.com/p/catch-exception/source/browse/</url>
+  </scm>  
   
 </project>
