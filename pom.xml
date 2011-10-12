@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.catch-exception</groupId>
   <artifactId>catch-exception</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.0.2</version>
   <name>catch-exception</name>
   <description>Catch and verify exceptions</description>
 
@@ -67,6 +67,8 @@
 		<configuration>
 		  <show>private</show>
 		  <use>true</use>
+		  <overview>${basedir}/src/main/javadoc/overview/overview.html</overview>
+		  <linksource>true</linksource>
           <!-- is obviously redundant (but why?) <javadocDirectory>${basedir}/src/main/javadoc</javadocDirectory> -->
 		  <docfilessubdirs>true</docfilessubdirs>
 		  <stylesheetfile>${basedir}/src/main/javadoc/stylesheet/stylesheet-modified.css</stylesheetfile> 

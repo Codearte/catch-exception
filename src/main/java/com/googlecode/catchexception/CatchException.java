@@ -177,7 +177,7 @@ catchException(interfaces(api)).do(); // works fine</pre></code> I recommend
  * your test method.
  * <h3 id="11">11. Can I catch errors instead of exceptions?</h3>
  * <p>
- * At the moment you can't catch {@link Throwable throwables} that are not
+ * At the moment you cannot catch {@link Throwable throwables} that are not
  * {@link Exception exceptions}. But this could be easily changed if someone
  * wants to get this feature.
  * 
