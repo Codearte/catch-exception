@@ -145,6 +145,9 @@ window.setTimeout('prettyPrint();',0);
       </plugin>
 
 
+       <!-- 
+         add headers if "maven verify" fails (due to license:check) 
+        mvn license:format   -->
         <plugin>
           <groupId>com.google.code.maven-license-plugin</groupId>
           <artifactId>maven-license-plugin</artifactId>
@@ -154,6 +157,13 @@ window.setTimeout('prettyPrint();',0);
             <includes>
               <include>src/**</include>
             </includes>
+            <excludes>
+              <!-- exclude third party code -->
+              <exclude>src/main/javadoc/doc-files/google-code-prettify/**</exclude>
+              <!--  stylesheet-modified.css excluded as most of the code is from the original doclet -->
+              <exclude>src/main/javadoc/stylesheet/stylesheet-modified.css</exclude>
+              <!-- automatically excluded :-) <exclude>src/etc/header.txt</exclude>  -->
+            </excludes>
             <useDefaultExcludes>true</useDefaultExcludes>
             <useDefaultMapping>true</useDefaultMapping>
             <properties>
@@ -162,7 +172,6 @@ window.setTimeout('prettyPrint();',0);
             </properties>
             <encoding>UTF-8</encoding>
           </configuration>
-          <!-- 
           <executions>
             <execution>
               <goals>
@@ -170,7 +179,6 @@ window.setTimeout('prettyPrint();',0);
               </goals>
             </execution>
           </executions>
-           -->
         </plugin>
 
     </plugins>
