@@ -40,7 +40,7 @@ public class SubclassProxyFactory implements ProxyFactory {
         try {
 
             proxy = (T) ClassImposterizer.INSTANCE.imposterise(interceptor,
-                    targetClass, SubclassProxy.class);
+                    targetClass);
 
         } catch (MockitoException e) {
 

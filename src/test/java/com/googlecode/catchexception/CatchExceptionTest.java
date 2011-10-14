@@ -6,6 +6,7 @@ import static com.googlecode.catchexception.CatchException.interfaces;
 import static com.googlecode.catchexception.CatchException.resetCaughtException;
 import static com.googlecode.catchexception.CatchException.verifyException;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -22,7 +23,6 @@ import org.junit.Test;
 
 import com.googlecode.catchexception.internal.ExceptionHolder;
 import com.googlecode.catchexception.internal.InterfaceOnlyProxy;
-import com.googlecode.catchexception.internal.SubclassProxy;
 
 /**
  * Tests {@link CatchException}.
@@ -460,7 +460,7 @@ public class CatchExceptionTest {
 
         try {
             PublicSomethingImpl proxy = catchException(obj);
-            assertTrue(proxy instanceof SubclassProxy);
+            assertFalse(proxy instanceof InterfaceOnlyProxy);
             proxy.doThrowAssertionError();
             fail("AssertionError is expected");
         } catch (AssertionError e) {

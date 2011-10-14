@@ -11,6 +11,10 @@ import com.googlecode.catchexception.internal.SubclassProxyFactory;
 /**
  * The methods of this class catch and verify exceptions in <em>a single line of
  * code</em> and make them available for further analysis.
+ * <p>
+ * This javadoc content is also available on the <a
+ * href="http://code.google.com/p/catch-exception/"
+ * >http://code.google.com/p/catch-exception/</a>
  * 
  * <h1>Documentation</h1>
  * <p>
@@ -24,8 +28,6 @@ import com.googlecode.catchexception.internal.SubclassProxyFactory;
  * <a href="#8">8. The caught exception is not available in another thread.
  * Why?</a><br/>
  * <a href="#9">9. How do I catch an exception thrown by a static method?</a> <br/>
- * <a href="#10">10. Is there a way to get rid of the throws clause in my test
- * method?</a> <br/>
  * <a href="#11">11. Can I catch errors instead of exceptions?</a> <br/>
  * 
  * 
@@ -135,7 +137,16 @@ catchException((CharSequence) sb).charAt(-2); // works fine
 // second variant
 CharSequence sb = new StringBuilder();
 catchException(sb).charAt(-2); // works fine</pre></code> If the tested
- * method does no belong to an interface fall back to the try/catch-blocks.
+ * method does no belong to an interface fall back to the try/catch-blocks or
+ * use <a
+ * href="http://code.google.com/p/catch-exception/wiki/Dependencies">Powermock
+ * </a>.
+ * <code><pre class="prettyprint lang-java">// example for
+ PowerMock with JUnit4
+&#064;RunWith(PowerMockRunner.class)
+&#064;PrepareForTest({ MyFinalType.class })
+public class MyTest {
+</pre></code>
  * <h3 id="6">6. The exception is not caught. Why?</h3>
  * <p>
  * Example:
