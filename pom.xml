@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.catch-exception</groupId>
   <artifactId>catch-exception</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>catch-exception</name>
   <description>Catch and verify exceptions</description>
@@ -204,7 +204,6 @@ window.setTimeout('prettyPrint();',0);
   <scm>
     <connection>scm:hg:https://code.google.com/p/catch-exception/</connection>
     <developerConnection>scm:hg:https://code.google.com/p/catch-exception/</developerConnection>
-    <tag>HEAD</tag>
     <url>http://code.google.com/p/catch-exception/source/browse/</url>
   </scm>
 
