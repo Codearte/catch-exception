@@ -65,6 +65,10 @@
 
   <build>
     <!--
+      Deploy snapshot to sonatype snapshot release repository:
+      mvn clean source:jar javadoc:jar install deploy
+      // the classes are signed but the source and javadoc are not signed
+    
       1. Set release version.
       2. Execute: mvn clean install source:jar javadoc:jar
       3. Zip the three jars (classes, source, javadoc).
@@ -76,14 +80,16 @@
        -->
     <plugins>
 
-      <!-- http://maven.apache.org/plugins/maven-source-plugin/index.html mvn source:jar -->
+      <!-- http://maven.apache.org/plugins/maven-source-plugin/index.html 
+         mvn source:jar -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <version>2.1.2</version>
       </plugin>
 
-      <!-- http://maven.apache.org/plugins/maven-javadoc-plugin/usage.html mvn javadoc:jar -->
+      <!-- http://maven.apache.org/plugins/maven-javadoc-plugin/usage.html
+         mvn javadoc:jar -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -181,8 +187,30 @@ window.setTimeout('prettyPrint();',0);
           </executions>
         </plugin>
 
+        <!-- automatic signing of created artifacts (at least the classes jar)
+           https://docs.sonatype.org/display/Repository/How+To+Generate+PGP+Signatures+With+Maven
+           Then simply deploy your artifacts use normal maven command:
+           $ mvn clean deploy -Dgpg.passphrase=yourpassphrase
+           If you don’t specify the passphrase, you will be prompted for one.
+            -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>1.4</version>
+          <executions>
+            <execution>
+              <id>sign-artifacts</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>sign</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
     </plugins>
   </build>
+  
 
   <licenses>
     <license>
