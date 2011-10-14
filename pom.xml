@@ -9,7 +9,11 @@
   <description>Catch and verify exceptions</description>
   <url>http://code.google.com/p/catch-exception/</url>
 
-
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
     
   <properties>
     <!-- Prevents "[WARNING] Using platform encoding (Cp1252 actually) to copy 
