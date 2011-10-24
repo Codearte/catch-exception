@@ -27,9 +27,9 @@ import com.googlecode.catchexception.internal.SubclassProxyFactory;
  * The methods of this class catch and verify exceptions in <em>a single line of
  * code</em> and make them available for further analysis.
  * <p>
- * This javadoc content is also available on the <a
- * href="http://code.google.com/p/catch-exception/"
- * >http://code.google.com/p/catch-exception/</a>
+ * This Javadoc content is also available on the <a
+ * href="http://code.google.com/p/catch-exception/" >catch-exception</a> web
+ * page.
  * 
  * <h1>Documentation</h1>
  * <p>
