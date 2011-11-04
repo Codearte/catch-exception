@@ -39,6 +39,14 @@
          -->
     </dependency>
 
+    <!-- optional runtime scope dependencies +++++++++++++++++++++++++++++++ -->
+    <dependency>
+        <groupId>org.easytesting</groupId>
+        <artifactId>fest-assert</artifactId>
+        <version>1.4</version>
+        <optional>true</optional>
+    </dependency>
+
     <!-- required test scope dependencies ++++++++++++++++++++++++++++++++++ -->
     <dependency>
       <groupId>junit</groupId>
