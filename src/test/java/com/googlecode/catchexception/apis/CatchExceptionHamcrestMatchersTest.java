@@ -1,0 +1,196 @@
+package com.googlecode.catchexception.apis;
+
+import static com.googlecode.catchexception.CatchException.catchException;
+import static com.googlecode.catchexception.CatchException.caughtException;
+import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.hasMessage;
+import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.hasMessageThat;
+import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.hasNoCause;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.containsString;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.internal.matchers.Find;
+
+/**
+ * Tests {@link CatchExceptionHamcrestMatchers}.
+ * 
+ * @author rwoo
+ * 
+ */
+@SuppressWarnings("javadoc")
+public class CatchExceptionHamcrestMatchersTest {
+
+    @Before
+    public void setup() {
+        List<String> fellowshipOfTheRing = new ArrayList<String>();
+        // let's do some team building :)
+        fellowshipOfTheRing.add("frodo");
+        fellowshipOfTheRing.add("sam");
+        fellowshipOfTheRing.add("merry");
+        fellowshipOfTheRing.add("pippin");
+        fellowshipOfTheRing.add("gandalf");
+        fellowshipOfTheRing.add("legolas");
+        fellowshipOfTheRing.add("gimli");
+        fellowshipOfTheRing.add("aragorn");
+        fellowshipOfTheRing.add("boromir");
+
+        // assertThat(fellowshipOfTheRing, hasSize(9));
+        catchException(fellowshipOfTheRing).get(9); // argggl !
+        // caughtException().printStackTrace();
+    }
+
+    private void assertMessage(String foundMessage,
+            String expectedExpectedPart, String expectedGotPart) {
+
+        // System.out.println(foundMessage);
+
+        String[] foundParts = foundMessage.split("(?=got:)");
+        assertEquals("split of foundMessage did not work: " + foundMessage, 2,
+                foundParts.length);
+        String foundExpectedPart = foundParts[0].trim();
+        String foundGotPart = foundParts[1].trim();
+        assertEquals(expectedExpectedPart, foundExpectedPart);
+        assertEquals(expectedGotPart, foundGotPart);
+    }
+
+    @Test
+    public void testMatcher_instanceOf() {
+
+        assertThat(caughtException(),
+                instanceOf(IndexOutOfBoundsException.class));
+
+        assertThat(caughtException(), is(IndexOutOfBoundsException.class));
+
+        try {
+            assertThat(caughtException(),
+                    instanceOf(IllegalArgumentException.class));
+            throw new RuntimeException("AssertionError expected");
+        } catch (AssertionError e) {
+            assertMessage(
+                    e.getMessage(),
+                    "Expected: an instance of java.lang.IllegalArgumentException",
+                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+        }
+    }
+
+    private static org.hamcrest.Matcher<String> containsPattern(String regex) {
+        return new Find(regex);
+    }
+
+    @Test
+    public void learningtestMatcher_hasMessage_findRegex() {
+
+        assertThat(caughtException(),
+                hasMessageThat(containsPattern("Index: \\d+")));
+
+        try {
+            assertThat(caughtException(),
+                    hasMessageThat(containsPattern("Index : \\d+")));
+            throw new RuntimeException("AssertionError expected");
+        } catch (AssertionError e) {
+            // OK
+        }
+    }
+
+    @Test
+    public void testMatcher_hasMessage_equalByString() {
+
+        assertThat(caughtException(), hasMessage("Index: 9, Size: 9"));
+
+        try {
+            assertThat(caughtException(), hasMessage("something went wrong"));
+            throw new RuntimeException("AssertionError expected");
+        } catch (AssertionError e) {
+            assertMessage(e.getMessage(),
+                    "Expected: has a message that is \"something went wrong\"",
+                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+        }
+    }
+
+    @Test
+    public void testMatcher_hasMessage_equalByStringMatcher() {
+
+        assertThat(caughtException(), hasMessageThat(is("Index: 9, Size: 9")));
+
+        try {
+            assertThat(caughtException(),
+                    hasMessageThat(is("something went wrong")));
+            throw new RuntimeException("AssertionError expected");
+        } catch (AssertionError e) {
+            assertMessage(e.getMessage(),
+                    "Expected: has a message that is \"something went wrong\"",
+                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+        }
+    }
+
+    @Test
+    public void testMatcher_hasMessage_containsByStringMatcher() {
+
+        assertThat(caughtException(),
+                hasMessageThat(is(containsString("Index: 9"))));
+
+        try {
+            assertThat(caughtException(),
+                    hasMessageThat(is(containsString("Index: 8"))));
+            throw new RuntimeException("AssertionError expected");
+        } catch (AssertionError e) {
+            assertMessage(
+                    e.getMessage(),
+                    "Expected: has a message that is a string containing \"Index: 8\"",
+                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+        }
+    }
+
+    @Test
+    public void testMatcher_hasNoCause() {
+
+        assertThat(caughtException(), hasNoCause());
+
+        try {
+            assertThat(new RuntimeException(caughtException()), hasNoCause());
+            throw new RuntimeException("AssertionError expected");
+        } catch (AssertionError e) {
+            assertMessage(
+                    e.getMessage(), //
+                    "Expected: has no cause",
+                    "got: <java.lang.RuntimeException: "
+                            + "java.lang.IndexOutOfBoundsException:"
+                            + " Index: 9, Size: 9>");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testMatcher_allOf() {
+
+        assertThat(caughtException(), allOf( //
+                instanceOf(IndexOutOfBoundsException.class), //
+                hasMessage("Index: 9, Size: 9"),//
+                hasNoCause() //
+                ));
+
+        try {
+            assertThat(caughtException(), allOf( //
+                    instanceOf(IndexOutOfBoundsException.class), //
+                    hasMessage("something went wrong"),//
+                    hasNoCause() //
+                    ));
+            throw new RuntimeException("AssertionError expected");
+        } catch (AssertionError e) {
+            assertMessage(e.getMessage(), "Expected: " //
+                    + "(an instance of java.lang.IndexOutOfBoundsException" //
+                    + " and has a message that is \"something went wrong\"" //
+                    + " and has no cause)",
+                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+        }
+
+    }
+}
