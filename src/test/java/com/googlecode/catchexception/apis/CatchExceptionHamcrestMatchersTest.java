@@ -58,14 +58,12 @@ public class CatchExceptionHamcrestMatchersTest {
         fellowshipOfTheRing.add("boromir");
 
         // assertThat(fellowshipOfTheRing, hasSize(9));
-        catchException(fellowshipOfTheRing).get(9); // argggl !
+        catchException(fellowshipOfTheRing).get(9);
         // caughtException().printStackTrace();
     }
 
     private void assertMessage(String foundMessage,
             String expectedExpectedPart, String expectedGotPart) {
-
-        // System.out.println(foundMessage);
 
         String[] foundParts = foundMessage.split("(?=got:)");
         assertEquals("split of foundMessage did not work: " + foundMessage, 2,

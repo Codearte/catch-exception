@@ -17,6 +17,9 @@ package com.googlecode.catchexception;
 
 import org.mockito.cglib.proxy.MethodInterceptor;
 
+import com.googlecode.catchexception.apis.CatchExceptionBdd;
+import com.googlecode.catchexception.apis.CatchExceptionFestAssertions;
+import com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers;
 import com.googlecode.catchexception.internal.DelegatingInterceptor;
 import com.googlecode.catchexception.internal.ExceptionHolder;
 import com.googlecode.catchexception.internal.ExceptionProcessingInterceptor;
@@ -82,6 +85,14 @@ catchException(customerService, IllegalArgumentException.class).prepareBilling(P
  * <p>
  * In all variants you can use <code>caughtException()</code> afterwards to
  * inspect the caught exception.
+ * <p>
+ * Finally, there some alternative ways to catch and verify exceptions:
+ * <ul>
+ * <li>{@link CatchExceptionBdd} - a BDD-like approach,
+ * <li> {@link CatchExceptionHamcrestMatchers} - Hamcrest assertions
+ * <li> {@link CatchExceptionFestAssertions} - FEST (yet another way to express
+ * assertions)
+ * </ul>
  * <h3 id="2">2. What is this stuff actually good for?</h3>
  * <p>
  * This class targets concise and robust code in tests. Dadid Saff, a commiter

@@ -23,7 +23,7 @@ import com.googlecode.catchexception.ExceptionNotThrownAssertionError;
 
 /**
  * Supports <a
- * href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>
+ * href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>-like
  * approach to catch and verify exceptions (<i>given/when/then</i>).
  * <p>
  * EXAMPLE:

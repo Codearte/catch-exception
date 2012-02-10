@@ -22,16 +22,24 @@ import com.googlecode.catchexception.apis.hamcrest.ExceptionMessageMatcher;
 import com.googlecode.catchexception.apis.hamcrest.ExceptionNoCauseMatcher;
 
 /**
- * Provides some {@link Matcher matchers} to match some {@link Exception
- * exception} properties.
+ * Provides some Hamcrest {@link Matcher matchers} to match some
+ * {@link Exception exception} properties.
  * <p>
  * EXAMPLE:
- * <code><pre class="prettyprint lang-java">assertThat(caughtException(),
+ * <code><pre class="prettyprint lang-java">// given an empty list
+List myList = new ArrayList();
+
+// when we try to get first element of the list
+catchException(myList).get(1);
+
+// then we expect an IndexOutOfBoundsException with message "Index: 1, Size: 0" 
+assertThat(caughtException(),
   allOf(
     is(IndexOutOfBoundsException.class), 
-    hasMessage("Index: 9, Size: 9"),
+    hasMessage("Index: 1, Size: 0"),
     hasNoCause()
-  ));</pre></code>
+  )
+);</pre></code>
  * <p>
  * To combine the standard Hamcrest matchers, your custom matchers, these
  * matchers, and other matcher collections (as {@link JUnitMatchers}) in a
@@ -39,9 +47,10 @@ import com.googlecode.catchexception.apis.hamcrest.ExceptionNoCauseMatcher;
  * href="http://code.google.com/p/hamcrest/wiki/Tutorial#Sugar_generation">Sugar
  * generation</a>.
  * <p>
- * I would like to use <a
- * href="http://code.google.com/p/hamsandwich">hamsandwich</a> but it's not in
- * any maven repository yet.
+ * Hint: This class might use <a
+ * href="http://code.google.com/p/hamsandwich">hamsandwich</a> in the future but
+ * as long as hamsandwich is not in any public maven repository, this class will
+ * not use hamsandwich.
  * 
  * @author rwoo
  */
