@@ -42,6 +42,18 @@ then(caughtException())
 // then we expect an IndexOutOfBoundsException (alternatively)
 thenThrown(IndexOutOfBoundsException.class);
 </pre></code>
+ * <p>
+ * The Method {@link #then(Exception)} uses <a
+ * href="http://code.google.com/p/fest/">FEST</a> assertions. You can use them
+ * directly if you like:
+ * <code><pre class="prettyprint lang-java">// import static org.fest.assertions.Assertions.assertThat;
+
+// then we expect an IndexOutOfBoundsException
+assertThat(caughtException())
+        .isInstanceOf(IndexOutOfBoundsException.class)
+        .hasMessage("Index: 1, Size: 0") 
+        .hasNoCause();
+</pre></code>
  * 
  * @author rwoo
  * 

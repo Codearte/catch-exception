@@ -18,8 +18,8 @@ package com.googlecode.catchexception.apis;
 import org.hamcrest.Matcher;
 import org.junit.matchers.JUnitMatchers;
 
-import com.googlecode.catchexception.apis.hamcrest.ExceptionMessageMatcher;
-import com.googlecode.catchexception.apis.hamcrest.ExceptionNoCauseMatcher;
+import com.googlecode.catchexception.apis.internal.hamcrest.ExceptionMessageMatcher;
+import com.googlecode.catchexception.apis.internal.hamcrest.ExceptionNoCauseMatcher;
 
 /**
  * Provides some Hamcrest {@link Matcher matchers} to match some

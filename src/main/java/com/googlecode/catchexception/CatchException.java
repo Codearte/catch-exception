@@ -18,7 +18,6 @@ package com.googlecode.catchexception;
 import org.mockito.cglib.proxy.MethodInterceptor;
 
 import com.googlecode.catchexception.apis.CatchExceptionBdd;
-import com.googlecode.catchexception.apis.CatchExceptionFestAssertions;
 import com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers;
 import com.googlecode.catchexception.internal.DelegatingInterceptor;
 import com.googlecode.catchexception.internal.ExceptionHolder;
@@ -90,8 +89,6 @@ catchException(customerService, IllegalArgumentException.class).prepareBilling(P
  * <ul>
  * <li>{@link CatchExceptionBdd} - a BDD-like approach,
  * <li> {@link CatchExceptionHamcrestMatchers} - Hamcrest assertions
- * <li> {@link CatchExceptionFestAssertions} - FEST (yet another way to express
- * assertions)
  * </ul>
  * <h3 id="2">2. What is this stuff actually good for?</h3>
  * <p>

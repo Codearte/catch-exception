@@ -39,6 +39,23 @@ public class CatchExceptionBddTest {
 
     @SuppressWarnings("rawtypes")
     @Test
+    public void testAssertThat() {
+        // given an empty list
+        List myList = new ArrayList();
+
+        // when we try to get first element of the list
+        when(myList).get(1);
+
+        // then we expect an IndexOutOfBoundsException
+        assertThat(caughtException()) //
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasNoCause();
+
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Test
     public void testThen() {
         // given an empty list
         List myList = new ArrayList();
@@ -54,12 +71,33 @@ public class CatchExceptionBddTest {
 
         // test: caughtException() ==null
         try {
-            assertThat((Throwable) null).isInstanceOf(
-                    IndexOutOfBoundsException.class);
+            then(null).isInstanceOf(IndexOutOfBoundsException.class);
 
         } catch (AssertionError e) {
             assertEquals("expecting actual value not to be null",
                     e.getMessage());
+        }
+
+        // test: caughtException() == new RuntimeException()
+        try {
+            then(new RuntimeException()).isInstanceOf(
+                    IndexOutOfBoundsException.class);
+
+        } catch (AssertionError e) {
+            assertEquals("expected instance of:<java.lang."
+                    + "IndexOutOfBoundsException> but was instance "
+                    + "of:<java.lang.RuntimeException>", e.getMessage());
+        }
+
+        // test: caughtException() has other unexpected message
+        try {
+            then(caughtException()) //
+                    .isInstanceOf(IndexOutOfBoundsException.class) //
+                    .hasMessage("Hi!");
+
+        } catch (AssertionError e) {
+            assertEquals("expected:<'[Hi!]'> but was:"
+                    + "<'[Index: 500, Size: 9]'>", e.getMessage());
         }
     }
 
