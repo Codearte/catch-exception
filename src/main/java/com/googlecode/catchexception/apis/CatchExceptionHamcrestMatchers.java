@@ -23,6 +23,10 @@ import com.googlecode.catchexception.apis.hamcrest.ExceptionNoCauseMatcher;
  * single class follow the instructions outlined in <a
  * href="http://code.google.com/p/hamcrest/wiki/Tutorial#Sugar_generation">Sugar
  * generation</a>.
+ * <p>
+ * I would like to use <a
+ * href="http://code.google.com/p/hamsandwich">hamsandwich</a> but it's not in
+ * any maven repository yet.
  * 
  * @author rwoo
  */
