@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/** Private package. This package provides everything that is needed to
+/** This private package provides everything that is needed to
  *  implement {@link com.googlecode.catchexception.CatchException} 
  *  (the primary API). The types of this package might change between micro-releases. */
 package com.googlecode.catchexception.internal;

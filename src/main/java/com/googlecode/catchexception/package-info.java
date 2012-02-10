@@ -13,6 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/** Public package. This package contains the primary API to catch and verify exceptions.
+/** This public package contains the primary API to catch and verify exceptions.
  You find more information in {@link com.googlecode.catchexception.CatchException}. */
 package com.googlecode.catchexception;
