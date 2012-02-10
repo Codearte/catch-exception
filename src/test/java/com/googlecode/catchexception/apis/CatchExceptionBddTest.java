@@ -97,7 +97,7 @@ public class CatchExceptionBddTest {
 
         } catch (AssertionError e) {
             assertEquals("expected:<'[Hi!]'> but was:"
-                    + "<'[Index: 500, Size: 9]'>", e.getMessage());
+                    + "<'[Index: 1, Size: 0]'>", e.getMessage());
         }
     }
 
