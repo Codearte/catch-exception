@@ -47,12 +47,46 @@ public class CatchExceptionFestAssertionsTest {
     public void testAssertThat_standardFest() {
 
         // assertThat(fellowshipOfTheRing, hasSize(9));
-        catchException(fellowshipOfTheRing).get(9); // argggl !
+        catchException(fellowshipOfTheRing).get(500);
 
+        // well, the following code tests FEST ... thus it'a rather a learning
+        // test, or an integration test
         assertThat(caughtException())
                 .isInstanceOf(IndexOutOfBoundsException.class)
-                .hasMessage("Index: 9, Size: 9") //
+                .hasMessage("Index: 500, Size: 9") //
                 .hasNoCause();
+
+        // test: caughtException() ==null
+        try {
+            assertThat((Throwable) null).isInstanceOf(
+                    IndexOutOfBoundsException.class);
+
+        } catch (AssertionError e) {
+            assertEquals("expecting actual value not to be null",
+                    e.getMessage());
+        }
+
+        // test: caughtException() == new RuntimeException()
+        try {
+            assertThat(new RuntimeException()).isInstanceOf(
+                    IndexOutOfBoundsException.class);
+
+        } catch (AssertionError e) {
+            assertEquals("expected instance of:<java.lang."
+                    + "IndexOutOfBoundsException> but was instance "
+                    + "of:<java.lang.RuntimeException>", e.getMessage());
+        }
+
+        // test: caughtException() has other unexpected message
+        try {
+            assertThat(caughtException()) //
+                    .isInstanceOf(IndexOutOfBoundsException.class) //
+                    .hasMessage("Hi!");
+
+        } catch (AssertionError e) {
+            assertEquals("expected:<'[Hi!]'> but was:"
+                    + "<'[Index: 500, Size: 9]'>", e.getMessage());
+        }
     }
 
     @Test
