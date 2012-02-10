@@ -109,8 +109,8 @@
           <!-- is obviously redundant (but why?) <javadocDirectory>${basedir}/src/main/javadoc</javadocDirectory> -->
           <docfilessubdirs>true</docfilessubdirs>
           <stylesheetfile>${basedir}/src/main/javadoc/stylesheet/stylesheet-modified.css</stylesheetfile>
-          <footer xml:space="preserve"><![CDATA[
-		 
+              <footer xml:space="preserve"><![CDATA[
+     
 <script type='text/javascript'>
 /* TODO move this code to a property file or something similar */
 
@@ -135,25 +135,55 @@ function loadjscssfile(filename, filetype){
 }
 
 function pathToRoot(belowroot, url) {
-   var result = new RegExp('(.*[\\/])' + belowroot + '[\\/]').exec(url);
+   var result = new RegExp('(.*[\\/])' + belowroot + '[\\/].*').exec(url);
    if (result == null) {
-     return 'xxx'; /* nothing found */
+     return null; /* nothing found */
    }
    else {
      return RegExp.$1;
    }
 }
+
+/* prettyPrint(); does not work (as the code is not loaded yet?) */
+var tryToRunPrettyPrint = 5;
+function runPrettyPrint() {
+  if (typeof prettyPrint == 'function') {
+    if (console) {
+       console.log("prettyPrint is available and will be started now");
+    }
+    prettyPrint();
+    if (console) {
+        console.log("prettyPrint has been successfully applied");
+    }
+  }
+  else if (tryToRunPrettyPrint > 0) {
+    tryToRunPrettyPrint = tryToRunPrettyPrint - 1;
+    if (console) {
+        console.log("we sleep a bit before we try to run prettyPrint again");
+    }
+    window.setTimeout('runPrettyPrint();',500);
+  }
+}
+
 /* test: alert('roopath test:' + pathToRoot('org', 'http://apache.org/doc/org/2011/org/apache/xmlbeans/org-package.html')); */
 var rootpath = pathToRoot('com', '' + window.location.href );
-/* var rootpath =  '../../../'; */
-/* such an alert breaks the code. why? alert('rootpath: ' + rootpath); */
-loadjscssfile(rootpath + 'doc-files/google-code-prettify/prettify.js', 'js');
-loadjscssfile(rootpath + 'doc-files/google-code-prettify/prettify.css', 'css');
-/* prettyPrint(); does not work (as the code is not loaded yet?) */
-window.setTimeout('prettyPrint();',0);		
-</script>			
-		  ]]>
-		  </footer><!-- footer or bottom makes no difference for javascript -->
+
+if (rootpath != null) {
+  /* var rootpath =  '../../../'; */
+  /* such an alert breaks the code. why? alert('rootpath: ' + rootpath); */
+  loadjscssfile(rootpath + 'doc-files/google-code-prettify/prettify.js', 'js');
+  loadjscssfile(rootpath + 'doc-files/google-code-prettify/prettify.css', 'css');
+
+  window.setTimeout('runPrettyPrint();',500);
+}
+else {
+    if (console) {
+        console.log("no rootpath found by analysing " + window.location.href);
+    }
+}
+</script>     
+      ]]>
+              </footer><!-- footer or bottom makes no difference for javascript -->
         </configuration>
       </plugin>
 

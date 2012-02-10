@@ -30,7 +30,7 @@ import com.googlecode.catchexception.ExceptionNotThrownAssertionError;
  * <code><pre class="prettyprint lang-java">// given an empty list
 List myList = new ArrayList();
 
-// when we try to get first element of the list
+// when we try to get the first element of the list
 when(myList).get(1);
 
 // then we expect an IndexOutOfBoundsException
