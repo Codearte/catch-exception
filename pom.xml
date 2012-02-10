@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.catch-exception</groupId>
   <artifactId>catch-exception</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>catch-exception</name>
   <description>Catch and verify exceptions</description>
@@ -72,18 +72,32 @@
 
   <build>
     <!--
-      Deploy snapshot to sonatype snapshot release repository:
-      mvn clean source:jar javadoc:jar install deploy
-      // the classes are signed but the source and javadoc are not signed
-    
-      1. Set release version.
-      2. Execute: mvn clean install source:jar javadoc:jar
-      3. Zip the three jars (classes, source, javadoc).
-      4. Upload at google code using summary "classes, sources and javadocs"
-      5. Update javadoc: "copy target/apidocs catch-exception.javadoc"
-      6. "Commit catch-exception.javadoc"
-      7. Set snapshot version. Increase version.
-      8. "Commit catch-exception"
+      A. How to release?
+      According to Section '7b. Stage Existing Artifacts' in 
+      <a href="https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-7b.StageExistingArtifacts">
+      Sonatype OSS Maven Repository Usage Guide</a> I have chosen the
+      following way:
+      
+      1. Set release version in pom.xml, i.e. remove the -SNAPSHOT suffix.
+      2. catch-exception>mvn clean source:jar javadoc:jar install
+      This creates, signs ands installs the artifacts in the local repository.
+      3. %USER_NAME%\.m2\repository\com\googlecode\catch-exception\catch-exception\1.0.4\>jar -cvf bundle.jar catch-exception-1.0.4.pom catch-exception-1.0.4.pom.asc catch-exception-1.0.4.jar catch-exception-1.0.4.jar.asc catch-exception-1.0.4-javadoc.jar catch-exception-1.0.4-javadoc.jar.asc catch-exception-1.0.4-sources.jar catch-exception-1.0.4-sources.jar.asc
+      This creates a bundle (zip) that contains all artifacts.
+      4. Then go to Nexus UI, click Staging Upload in the left column [etc.], see the last paragraph of section 7b.
+      5. Follow the steps described in section '8. Release It'.
+      6. Increase the version in pom.xml and add a -SNAPSHOT suffix.
+      7. Commit.
+
+      B. How to add a new download to the google page?
+      1. Rename bundle.jar to catch-exception-1.0.4.zip.
+      2. Upload at google code using summary "pom, classes, sources and javadocs"
+      Easy. It's google.   
+   
+      C. How to update the javadoc pages?
+      
+      1. Copy catch-exception/target/apidocs to catch-exception.javadoc/.
+      2. Commit.
+      
        -->
     <plugins>
 
