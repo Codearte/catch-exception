@@ -20,8 +20,8 @@
       resources, i.e. build is platform dependent! See http://maven.apache.org/general.html#encoding-warning -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <!-- successfully tested versions: 1.4.10, 1.4.9, 1.4.8, 1.4.7, 1.4.6 -->
-    <powermock.version>1.4.10</powermock.version>
+    <!-- successfully tested versions: 1.5.1, 1.5, 1.4.12, 1.4.11, 1.4.10, 1.4.9, 1.4.8, 1.4.7, 1.4.6 -->
+    <powermock.version>1.5.1</powermock.version>
     
     <!-- used by maven-license-plugin -->
     <project.inceptionYear>2011</project.inceptionYear>
@@ -32,9 +32,9 @@
     <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
-        <version>1.8.5</version>
+        <version>1.9.5</version>
         <!-- 
-          successfully tested versions: 1.8.1, 1.8.2, 1.8.3, 1.8.4, 1.8.5, 1.9.0-rc1 
+          successfully tested versions: 1.8.1, 1.8.2, 1.8.3, 1.8.4, 1.8.5, 1.9.0-rc1, 1.9.0, 1.9.5-rc1, 1.9.5
           not compatible versions: 1.5, 1.6, 1.7 
          -->
     </dependency>
@@ -259,7 +259,7 @@ else {
           </executions>
         </plugin>
 
-    </plugins>
+     </plugins>
   </build>
   
 
