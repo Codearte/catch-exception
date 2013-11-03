@@ -94,6 +94,9 @@ public class CatchExceptionBddTest {
         try {
             then(caughtException()) //
                     .isInstanceOf(IndexOutOfBoundsException.class) //
+                    .hasMessageStartingWith("Index: 1") //
+                    .hasMessageEndingWith("Size: 0") //
+                    .hasMessageContaining("Size") //
                     .hasMessage("Hi!");
 
         } catch (AssertionError e) {

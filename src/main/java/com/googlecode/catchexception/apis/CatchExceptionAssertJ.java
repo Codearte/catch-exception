@@ -52,6 +52,9 @@ thenThrown(IndexOutOfBoundsException.class);
 assertThat(caughtException())
         .isInstanceOf(IndexOutOfBoundsException.class)
         .hasMessage("Index: 1, Size: 0") 
+        .hasMessageStartingWith("Index: 1") 
+        .hasMessageEndingWith("Size: 0") 
+        .hasMessageContaining("Size") 
         .hasNoCause();
 </pre></code>
  * 
@@ -129,6 +132,9 @@ when(myList).get(1);
 then(caughtException())
         .isInstanceOf(IndexOutOfBoundsException.class)
         .hasMessage("Index: 1, Size: 0") 
+        .hasMessageStartingWith("Index: 1") 
+        .hasMessageEndingWith("Size: 0")
+        .hasMessageContaining("Size") 
         .hasNoCause();
 </pre></code>
      * 

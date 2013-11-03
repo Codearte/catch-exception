@@ -67,6 +67,9 @@ public class CatchExceptionAssertJTest {
         then(caughtException()) //
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
+                .hasMessageStartingWith("Index: 1") //
+                .hasMessageEndingWith("Size: 0") //
+                .hasMessageContaining("Size") //
                 .hasNoCause();
 
         // test: caughtException() ==null
