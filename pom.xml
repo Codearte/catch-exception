@@ -47,6 +47,13 @@
         <optional>true</optional>
     </dependency>
 
+    <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>1.4.0</version>
+        <optional>true</optional>
+    </dependency>
+
     <!-- required test scope dependencies ++++++++++++++++++++++++++++++++++ -->
     <dependency>
       <groupId>junit</groupId>
@@ -101,6 +108,18 @@
        -->
     <plugins>
 
+      <!-- define the target JVM -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+        
+        
       <!-- http://maven.apache.org/plugins/maven-source-plugin/index.html 
          mvn source:jar -->
       <plugin>
@@ -238,27 +257,6 @@ else {
           </executions>
         </plugin>
 
-        <!-- automatic signing of created artifacts (at least the classes jar)
-           https://docs.sonatype.org/display/Repository/How+To+Generate+PGP+Signatures+With+Maven
-           Then simply deploy your artifacts use normal maven command:
-           $ mvn clean deploy -Dgpg.passphrase=yourpassphrase
-           If you don’t specify the passphrase, you will be prompted for one.
-            -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.4</version>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
      </plugins>
   </build>
   
@@ -286,4 +284,42 @@ else {
     <url>http://code.google.com/p/catch-exception/source/browse/</url>
   </scm>
 
+  <profiles>
+  
+    <!-- automatic signing of created artifacts (at least the classes jar) -->
+    <profile>
+        <id>sign</id>
+        <build>
+            <plugins>
+            
+                <!-- the last thing to do during the verify phase: -->
+            
+                <!-- automatic signing of created artifacts (at least the classes jar)
+                   https://docs.sonatype.org/display/Repository/How+To+Generate+PGP+Signatures+With+Maven
+                   Then simply deploy your artifacts use normal maven command:
+                   $ mvn clean deploy -Dgpg.passphrase=yourpassphrase
+                   If you don’t specify the passphrase, you will be prompted for one.
+                    -->
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-gpg-plugin</artifactId>
+                  <version>1.4</version>
+                  <executions>
+                    <execution>
+                      <id>sign-artifacts</id>
+                      <phase>verify</phase>
+                      <goals>
+                        <goal>sign</goal>
+                      </goals>
+                    </execution>
+                  </executions>
+                </plugin>
+            
+            </plugins>
+        
+        </build>
+    </profile>
+  
+  </profiles>
+  
 </project>
