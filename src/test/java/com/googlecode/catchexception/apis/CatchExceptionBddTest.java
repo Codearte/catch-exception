@@ -19,7 +19,7 @@ import static com.googlecode.catchexception.CatchException.caughtException;
 import static com.googlecode.catchexception.apis.CatchExceptionBdd.then;
 import static com.googlecode.catchexception.apis.CatchExceptionBdd.thenThrown;
 import static com.googlecode.catchexception.apis.CatchExceptionBdd.when;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -74,8 +74,7 @@ public class CatchExceptionBddTest {
             then(null).isInstanceOf(IndexOutOfBoundsException.class);
 
         } catch (AssertionError e) {
-            assertEquals("expecting actual value not to be null",
-                    e.getMessage());
+            assertEquals("expecting actual not to be null", e.getMessage());
         }
 
         // test: caughtException() == new RuntimeException()
@@ -84,9 +83,11 @@ public class CatchExceptionBddTest {
                     IndexOutOfBoundsException.class);
 
         } catch (AssertionError e) {
-            assertEquals("expected instance of:<java.lang."
-                    + "IndexOutOfBoundsException> but was instance "
-                    + "of:<java.lang.RuntimeException>", e.getMessage());
+            assertEquals(
+                    "expected <java.lang.RuntimeException> to be an instance of:" //
+                            + "\n<java.lang.IndexOutOfBoundsException>" //
+                            + "\nbut was instance of:" //
+                            + "\n<java.lang.RuntimeException>", e.getMessage());
         }
 
         // test: caughtException() has other unexpected message
@@ -96,8 +97,10 @@ public class CatchExceptionBddTest {
                     .hasMessage("Hi!");
 
         } catch (AssertionError e) {
-            assertEquals("expected:<'[Hi!]'> but was:"
-                    + "<'[Index: 1, Size: 0]'>", e.getMessage());
+            assertEquals("expected message:" //
+                    + "\n<'Hi!'>" //
+                    + "\n but was:" //
+                    + "\n<'Index: 1, Size: 0'>", e.getMessage());
         }
     }
 
