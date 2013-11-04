@@ -19,23 +19,32 @@ import java.lang.reflect.Method;
 
 import org.mockito.cglib.proxy.MethodInterceptor;
 import org.mockito.cglib.proxy.MethodProxy;
+import org.mockito.internal.creation.DelegatingMockitoMethodProxy;
+import org.mockito.internal.creation.cglib.CGLIBHacker;
 
 /**
  * This {@link AbstractExceptionProcessingInvocationHandler} implements
  * {@link MethodInterceptor} for Mockito's cglib variant.
  * 
- * @author rwoo
+ * @author rwoo, federico.gaule at gmail.com
  * @param <E>
  *            The type of the exception that shall be caught and (optionally)
  *            verified
  */
-public class ExceptionProcessingInterceptor<E extends Exception>
-        extends AbstractExceptionProcessingInvocationHandler<E> implements
+public class ExceptionProcessingInterceptor<E extends Exception> extends
+        AbstractExceptionProcessingInvocationHandler<E> implements
         MethodInterceptor {
 
+    /**
+     * We use this object to change the naming policy that is used by
+     * {@link MethodProxy#helper}. The new naming policy avoids duplicate class
+     * definitions.
+     */
+    private CGLIBHacker cglibHacker = new CGLIBHacker();
+
     @SuppressWarnings("javadoc")
-    public ExceptionProcessingInterceptor(Object target,
-            Class<E> clazz, boolean assertException) {
+    public ExceptionProcessingInterceptor(Object target, Class<E> clazz,
+            boolean assertException) {
         super(target, clazz, assertException);
     }
 
@@ -47,10 +56,14 @@ public class ExceptionProcessingInterceptor<E extends Exception>
      * java.lang.reflect.Method, java.lang.Object[],
      * org.mockito.cglib.proxy.MethodProxy)
      */
+    @Override
     public Object intercept(Object obj, Method method, Object[] args,
             MethodProxy proxy) throws Throwable {
 
         beforeInvocation();
+
+        cglibHacker.setMockitoNamingPolicy(new DelegatingMockitoMethodProxy(
+                proxy));
 
         try {
 
