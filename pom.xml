@@ -168,7 +168,6 @@
           <linksource>true</linksource>
           <!-- is obviously redundant (but why?) <javadocDirectory>${basedir}/src/main/javadoc</javadocDirectory> -->
           <docfilessubdirs>true</docfilessubdirs>
-          <stylesheetfile>${basedir}/src/main/javadoc/stylesheet/stylesheet-modified.css</stylesheetfile>
               <footer xml:space="preserve"><![CDATA[
      
 <script type='text/javascript'>
@@ -263,8 +262,6 @@ else {
             <excludes>
               <!-- exclude third party code -->
               <exclude>src/main/javadoc/doc-files/google-code-prettify/**</exclude>
-              <!--  stylesheet-modified.css excluded as most of the code is from the original doclet -->
-              <exclude>src/main/javadoc/stylesheet/stylesheet-modified.css</exclude>
               <!-- automatically excluded :-) <exclude>src/etc/header.txt</exclude>  -->
             </excludes>
             <useDefaultExcludes>true</useDefaultExcludes>
