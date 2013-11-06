@@ -26,6 +26,7 @@ import com.googlecode.catchexception.throwable.internal.ThrowableProcessingInter
 /**
  * 
  * @author rwoo
+ * @since 1.2.0
  * 
  */
 public class CatchThrowable {

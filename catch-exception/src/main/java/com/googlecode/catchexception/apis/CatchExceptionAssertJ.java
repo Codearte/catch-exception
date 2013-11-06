@@ -59,7 +59,7 @@ assertThat(caughtException())
 </pre></code>
  * 
  * @author rwoo
- * 
+ * @since 1.1.0
  */
 public class CatchExceptionAssertJ {
 

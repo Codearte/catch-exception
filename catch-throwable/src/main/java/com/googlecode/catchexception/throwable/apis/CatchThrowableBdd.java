@@ -56,6 +56,7 @@ assertThat(caughtThrowable())
 </pre></code>
  * 
  * @author rwoo
+ * @since 1.2.0
  * 
  */
 public class CatchThrowableBdd {

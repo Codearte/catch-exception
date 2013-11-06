@@ -16,6 +16,7 @@
 package com.googlecode.catchexception.throwable.apis;
 
 import org.hamcrest.Matcher;
+import org.junit.matchers.JUnitMatchers;
 
 import com.googlecode.catchexception.throwable.apis.internal.hamcrest.ThrowableMessageMatcher;
 import com.googlecode.catchexception.throwable.apis.internal.hamcrest.ThrowableNoCauseMatcher;
@@ -46,6 +47,7 @@ assertThat(caughtThrowable(),
  * as hamsandwich is not in any public maven repository, this class will not use hamsandwich.
  * 
  * @author rwoo
+ * @since 1.2.0
  */
 public class CatchThrowableHamcrestMatchers {
 
