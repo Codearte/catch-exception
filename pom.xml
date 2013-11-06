@@ -72,6 +72,13 @@
       2. Copy catch-exception/target/site/apidocs to catch-exception.javadoc/. 
       3. Commit.
       
+      +++ UPDATE +++
+      
+      <a href="https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-7a.3.StageaRelease>
+      7a.3. Stage a Release</a>
+      works as well if %HOME%/.hgrc and %HOME%/.m2/settings.xml contain the appropriate credentials.
+      Do not forget to create the javadoc between release:prepare and release:perform. 
+
        -->
     <plugins>
 
