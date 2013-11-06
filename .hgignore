@@ -3,3 +3,4 @@ syntax: regexp
 target*
 syntax: glob
 .project
+.classpath
