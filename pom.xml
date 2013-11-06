@@ -67,8 +67,9 @@
    
       C. How to update the javadoc pages?
       
-      1. Copy catch-exception/target/apidocs to catch-exception.javadoc/.
-      2. Commit.
+      1. Run mvn site
+      2. Copy catch-exception/target/site/apidocs to catch-exception.javadoc/. 
+      3. Commit.
       
        -->
     <plugins>
