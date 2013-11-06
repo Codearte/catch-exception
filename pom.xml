@@ -239,9 +239,9 @@ else {
       <plugins>
       
         <!-- 
-		  The phase "package" should create the test.jar as well 
-		  so that the artifact can be signed during the phase 'verify'.
-		 -->
+          The phase "package" should create the test.jar as well 
+          so that the artifact can be signed during the phase 'verify'.
+         -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
@@ -256,11 +256,11 @@ else {
         </plugin>
 
 
-		<!-- 
+        <!-- 
          mvn source:jar 
-		 The phase "verify" should create the sources.jar and test-sources.jar as well 
-		 so that the artifact can be signed during the phase 'verify'.
-		 -->
+         The phase "verify" should create the sources.jar and test-sources.jar as well 
+         so that the artifact can be signed during the phase 'verify'.
+         -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
