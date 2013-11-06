@@ -1,11 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.catch-exception</groupId>
-  <artifactId>catch-exception</artifactId>
+  <artifactId>catch-exception-parent</artifactId>
   <version>1.1.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>catch-exception</name>
-  <description>Catch and verify exceptions</description>
+  <packaging>pom</packaging>
+  <description>Catch and verify exceptions - parent module</description>
   <url>http://code.google.com/p/catch-exception/</url>
 
   <!--  required by Sonatype OOS hosting -->
@@ -27,79 +26,18 @@
     
     <!-- used by maven-license-plugin -->
     <project.inceptionYear>2011</project.inceptionYear>
+    
+    <!-- needed for javadoc, license and so on -->
+    <catchException.parent>${project.basedir}</catchException.parent>
+
   </properties>
+  
+  <modules>
+    <module>catch-exception</module>
+  </modules>
+
 
   <dependencies>
-    <!-- required runtime scope dependencies +++++++++++++++++++++++++++++++ -->
-    <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>1.9.5</version>
-        <!-- 
-          successfully tested versions: 1.8.1, 1.8.2, 1.8.3, 1.8.4, 1.8.5, 1.9.0-rc1, 1.9.0, 1.9.5-rc1, 1.9.5
-          not compatible versions: 1.5, 1.6, 1.7 
-         -->
-    </dependency>
-
-    <!-- optional runtime scope dependencies +++++++++++++++++++++++++++++++ -->
-    <dependency>
-        <groupId>org.easytesting</groupId>
-        <artifactId>fest-assert-core</artifactId>
-        <version>2.0M10</version>
-        <optional>true</optional>
-    </dependency>
-
-    <dependency>
-        <groupId>org.assertj</groupId>
-        <artifactId>assertj-core</artifactId>
-        <version>1.4.0</version>
-        <optional>true</optional>
-    </dependency>
-
-    <!-- required test scope dependencies ++++++++++++++++++++++++++++++++++ -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.8.2</version>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-module-junit4</artifactId>
-      <version>${powermock.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-api-mockito</artifactId>
-      <version>${powermock.version}</version>
-      <scope>test</scope>
-    </dependency>
-    
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${spring.version}</version>
-        <scope>test</scope>
-    </dependency>    
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-test</artifactId>
-        <version>${spring.version}</version>
-        <scope>test</scope>
-        </dependency>    
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
-        <version>${spring.version}</version>
-        <scope>test</scope>
-    </dependency>    
-    <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>3.0.1</version>
-        <scope>test</scope>
-    </dependency>
   
   </dependencies>
 
@@ -147,14 +85,6 @@
       </plugin>
         
         
-      <!-- http://maven.apache.org/plugins/maven-source-plugin/index.html 
-         mvn source:jar -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>2.2.1</version>
-      </plugin>
-
       <!-- http://maven.apache.org/plugins/maven-javadoc-plugin/usage.html
          mvn javadoc:jar -->
       <plugin>
@@ -164,10 +94,28 @@
         <configuration>
           <show>private</show>
           <use>true</use>
-          <overview>${basedir}/src/main/javadoc/overview/overview.html</overview>
+          <overview>${catchException.parent}/src/main/javadoc/overview/overview.html</overview>
           <linksource>true</linksource>
-          <!-- is obviously redundant (but why?) <javadocDirectory>${basedir}/src/main/javadoc</javadocDirectory> -->
           <docfilessubdirs>true</docfilessubdirs>
+        </configuration>
+        <!--  http://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html#Using_The_aggregate_Goals 
+          # generate the aggregated javadoc manually:
+          mvn site
+         -->
+        <executions>
+          <execution>
+            <id>aggregate</id>
+            <goals>
+              <goal>aggregate</goal>
+            </goals>
+            <phase>site</phase>
+            <!-- Specific configuration for the aggregate report -->
+            <configuration>
+              <show>private</show>
+              <use>true</use>
+              <overview>${basedir}/src/main/javadoc/overview/overview.html</overview>
+              <linksource>true</linksource>
+              <docfilessubdirs>true</docfilessubdirs>
               <footer xml:space="preserve"><![CDATA[
      
 <script type='text/javascript'>
@@ -243,7 +191,9 @@ else {
 </script>     
       ]]>
               </footer><!-- footer or bottom makes no difference for javascript -->
-        </configuration>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
 
@@ -255,7 +205,7 @@ else {
           <artifactId>maven-license-plugin</artifactId>
           <version>1.4.0</version>
           <configuration>
-            <header>${basedir}/src/etc/header.txt</header>
+            <header>${catchException.parent}/src/etc/header.txt</header>
             <includes>
               <include>src/**</include>
             </includes>
@@ -282,6 +232,57 @@ else {
         </plugin>
 
      </plugins>
+
+
+    <pluginManagement>
+    
+      <plugins>
+      
+        <!-- 
+		  The phase "package" should create the test.jar as well 
+		  so that the artifact can be signed during the phase 'verify'.
+		 -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.3.1</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>test-jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+
+		<!-- 
+         mvn source:jar 
+		 The phase "verify" should create the sources.jar and test-sources.jar as well 
+		 so that the artifact can be signed during the phase 'verify'.
+		 -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>2.2.1</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>jar-no-fork</goal>
+                <goal>test-jar-no-fork</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+
+      </plugins>
+    
+    </pluginManagement>
+
+
   </build>
   
 
