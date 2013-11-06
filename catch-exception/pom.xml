@@ -6,10 +6,7 @@
     <version>1.2.1-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
-  <groupId>com.googlecode.catch-exception</groupId>
   <artifactId>catch-exception</artifactId>
-  <version>1.2.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
   <description>Catch and verify exceptions</description>
   <url>http://code.google.com/p/catch-exception/</url>
 
