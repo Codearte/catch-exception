@@ -103,7 +103,7 @@
         <artifactId>maven-jar-plugin</artifactId>
       </plugin>
 
-      <!-- phase "verify" should create the sources.jar and test-sources.jar as well  -->
+      <!-- phase "package" should create the sources.jar and test-sources.jar as well  -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>

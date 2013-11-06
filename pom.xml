@@ -258,7 +258,7 @@ else {
 
         <!-- 
          mvn source:jar 
-         The phase "verify" should create the sources.jar and test-sources.jar as well 
+         The phase "package" should create the sources.jar and test-sources.jar as well 
          so that the artifact can be signed during the phase 'verify'.
          -->
         <plugin>
@@ -268,7 +268,7 @@ else {
           <executions>
             <execution>
               <id>attach-sources</id>
-              <phase>verify</phase>
+              <phase>package</phase>
               <goals>
                 <goal>jar-no-fork</goal>
                 <goal>test-jar-no-fork</goal>
