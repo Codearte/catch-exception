@@ -34,6 +34,7 @@
   
   <modules>
     <module>catch-exception</module>
+    <module>catch-throwable</module>
   </modules>
 
 
