@@ -28,8 +28,9 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("javadoc")
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class MySessionComponent {
+public class MySessionComponent implements IMySessionComponent {
 
+    @Override
     public void doError() {
         throw new IllegalStateException();
     }

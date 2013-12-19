@@ -15,11 +15,16 @@
  */
 package com.googlecode.catchexception.integration.spring;
 
+import static com.googlecode.catchexception.CatchException.catchException;
+import static com.googlecode.catchexception.CatchException.interfaces;
 import static com.googlecode.catchexception.apis.CatchExceptionBdd.thenThrown;
 import static com.googlecode.catchexception.apis.CatchExceptionBdd.when;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.cglib.proxy.Enhancer;
+import org.mockito.cglib.proxy.NoOp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -49,8 +54,11 @@ public class SpringIntegrationTest {
     @Autowired
     MySingleton myController;
 
+    @Autowired
+    MySessionComponent mySessionComponent;
+
     @Test
-    public void test1() {
+    public void test_Issue10_1() {
         when(new MySessionComponent()).doError();
         thenThrown(IllegalStateException.class);
 
@@ -58,12 +66,64 @@ public class SpringIntegrationTest {
         myController.sampleAction();
     }
 
-    // @Test
-    // public void test2() {
-    // myController.sampleAction();
-    //
-    // when(new MySessionComponent()).doError();
-    // // CatchException.caughtException().printStackTrace();
-    // thenThrown(IllegalStateException.class);
-    // }
+    /**
+     * The test is ignored because activating the test would make the other test
+     * for the same issue meaningless. Sounds a bit weird but this is how it
+     * works.
+     */
+    @Test
+    @Ignore
+    public void test_Issue10_2_deactivatedToPreventSideEffectOnOtherTest() {
+        myController.sampleAction();
+
+        when(new MySessionComponent()).doError();
+        // CatchException.caughtException().printStackTrace();
+        thenThrown(IllegalStateException.class);
+    }
+
+    @Test
+    @Ignore
+    public void test_Issue13_1_failsATM() {
+
+        when(mySessionComponent).doError();
+        thenThrown(IllegalStateException.class);
+    }
+
+    @Test
+    public void test_Issue13_2_workaroundIfThereAreInterfaces() {
+
+        when((IMySessionComponent) interfaces(mySessionComponent)).doError();
+        thenThrown(IllegalStateException.class);
+    }
+
+    @Test
+    @Ignore
+    public void test_Issue13_3_proxyCanBeProxiedTwice_UsingImposteriser_failsATM() {
+
+        MySessionComponent comp1 = catchException(mySessionComponent);
+        MySessionComponent comp2 = catchException(comp1);
+        comp2.doError();
+    }
+
+    @Test
+    @Ignore
+    public void test_Issue13_3_proxyCanBeProxiedTwice_UsingCgLibEnhancer() {
+
+        MySessionComponent comp1 = (MySessionComponent) Enhancer.create(
+                MySessionComponent.class, new NoOp() {
+                });
+
+        MySessionComponent comp2 = (MySessionComponent) Enhancer.create(
+                comp1.getClass(), new NoOp() {
+                });
+
+        MySessionComponent comp3 = (MySessionComponent) Enhancer.create(
+                comp2.getClass(), new NoOp() {
+                });
+
+        when(comp1).doError(); // fails here
+        when(comp2).doError();
+        when(comp3).doError();
+    }
+
 }
