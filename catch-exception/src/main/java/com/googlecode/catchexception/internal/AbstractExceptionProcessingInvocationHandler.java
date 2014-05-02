@@ -15,6 +15,7 @@
  */
 package com.googlecode.catchexception.internal;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.googlecode.catchexception.ExceptionNotThrownAssertionError;
@@ -136,6 +137,16 @@ class AbstractExceptionProcessingInvocationHandler<E extends Exception> {
      */
     protected Object afterInvocationThrowsException(Exception e, Method method)
             throws Error, Exception {
+
+        if (e instanceof InvocationTargetException) {
+            Throwable targetThrowable = ((InvocationTargetException) e)
+                    .getTargetException();
+            if (targetThrowable instanceof Exception) {
+                e = (Exception) targetThrowable;
+            } else {
+                throw (Error) targetThrowable;
+            }
+        }
 
         // is the thrown exception of the expected type?
         if (!clazz.isAssignableFrom(e.getClass())) {

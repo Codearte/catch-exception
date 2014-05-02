@@ -565,4 +565,11 @@ public class CatchThrowableTest {
         }
     }
 
+    @Test
+    public void testProtected() throws Exception {
+        PublicSomethingImpl obj = new PublicSomethingImpl();
+        catchThrowable(obj).dooo();
+        assertTrue(caughtThrowable() instanceof MyThrowable);
+    }
+
 }

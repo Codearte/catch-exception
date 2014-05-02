@@ -79,10 +79,12 @@ public class CatchExceptionTest {
         private NonVisible(String fsdfsdfd) {
         }
 
+        @Override
         public void doNothing() {
             //
         }
 
+        @Override
         public void doThrow() {
             throw new UnsupportedOperationException("siodsdnsgz");
         }
@@ -91,6 +93,7 @@ public class CatchExceptionTest {
             //
         }
 
+        @Override
         public void doThrowAssertionError() {
             //
         }
@@ -534,4 +537,10 @@ public class CatchExceptionTest {
         }
     }
 
+    @Test
+    public void testProtected() throws Exception {
+        PublicSomethingImpl obj = new PublicSomethingImpl();
+        catchException(obj).dooo();
+        assertTrue(caughtException() instanceof MyException);
+    }
 }

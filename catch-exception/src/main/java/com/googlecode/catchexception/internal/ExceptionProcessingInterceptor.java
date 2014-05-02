@@ -67,13 +67,20 @@ public class ExceptionProcessingInterceptor<E extends Exception> extends
 
         try {
 
-            Object retval = proxy.invoke(target, args);
+            method.setAccessible(true);
+
+            Object retval = method.invoke(target, args);
 
             return afterInvocation(retval);
 
         } catch (Exception e) {
 
             return afterInvocationThrowsException(e, method);
+
+        } finally {
+
+            method.setAccessible(false);
+
         }
     }
 }

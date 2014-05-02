@@ -45,4 +45,9 @@ public class PublicSomethingImpl implements Something {
     public void doThrowAssertionError() {
         throw new AssertionError(123);
     }
+
+    protected void dooo() {
+        throw new MyThrowable();
+    }
+
 }

@@ -15,6 +15,7 @@
  */
 package com.googlecode.catchexception.throwable.internal;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.googlecode.catchexception.throwable.ThrowableNotThrownAssertionError;
@@ -125,6 +126,12 @@ class AbstractThrowableProcessingInvocationHandler<E extends Throwable> {
         // BEGIN specific to catch-throwable
         if (e instanceof ThrowableNotThrownAssertionError) {
             throw e;
+        }
+        // END specific to catch-throwable
+
+        // BEGIN specific to catch-throwable
+        if (e instanceof InvocationTargetException) {
+            e = ((InvocationTargetException) e).getTargetException();
         }
         // END specific to catch-throwable
 

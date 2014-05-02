@@ -22,10 +22,12 @@ public class PublicSomethingImpl implements Something {
         super();
     }
 
+    @Override
     public void doNothing() {
         //
     }
 
+    @Override
     public void doThrow() {
         throw new UnsupportedOperationException();
     }
@@ -34,7 +36,12 @@ public class PublicSomethingImpl implements Something {
         //
     }
 
+    @Override
     public void doThrowAssertionError() {
         throw new AssertionError(123);
+    }
+
+    protected void dooo() {
+        throw new MyException();
     }
 }

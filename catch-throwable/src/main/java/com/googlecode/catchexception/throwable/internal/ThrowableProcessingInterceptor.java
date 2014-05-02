@@ -23,57 +23,56 @@ import org.mockito.internal.creation.DelegatingMockitoMethodProxy;
 import org.mockito.internal.creation.cglib.CGLIBHacker;
 
 /**
- * This {@link AbstractThrowableProcessingInvocationHandler} implements
- * {@link MethodInterceptor} for Mockito's cglib variant.
+ * This {@link AbstractThrowableProcessingInvocationHandler} implements {@link MethodInterceptor} for Mockito's cglib
+ * variant.
  * 
  * @author rwoo, federico.gaule at gmail.com
  * @param <E>
- *            The type of the throwable that shall be caught and (optionally)
- *            verified
+ *            The type of the throwable that shall be caught and (optionally) verified
  */
 public class ThrowableProcessingInterceptor<E extends Throwable> extends
-        AbstractThrowableProcessingInvocationHandler<E> implements
-        MethodInterceptor {
+        AbstractThrowableProcessingInvocationHandler<E> implements MethodInterceptor {
 
     /**
-     * We use this object to change the naming policy that is used by
-     * {@link MethodProxy#helper}. The new naming policy avoids duplicate class
-     * definitions.
+     * We use this object to change the naming policy that is used by {@link MethodProxy#helper}. The new naming policy
+     * avoids duplicate class definitions.
      */
     private CGLIBHacker cglibHacker = new CGLIBHacker();
 
     @SuppressWarnings("javadoc")
-    public ThrowableProcessingInterceptor(Object target, Class<E> clazz,
-            boolean assertThrowable) {
+    public ThrowableProcessingInterceptor(Object target, Class<E> clazz, boolean assertThrowable) {
         super(target, clazz, assertThrowable);
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.mockito.cglib.proxy.MethodInterceptor#intercept(java.lang.Object,
-     * java.lang.reflect.Method, java.lang.Object[],
-     * org.mockito.cglib.proxy.MethodProxy)
+     * @see org.mockito.cglib.proxy.MethodInterceptor#intercept(java.lang.Object, java.lang.reflect.Method,
+     * java.lang.Object[], org.mockito.cglib.proxy.MethodProxy)
      */
     @Override
-    public Object intercept(Object obj, Method method, Object[] args,
-            MethodProxy proxy) throws Throwable {
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
 
         beforeInvocation();
 
-        cglibHacker.setMockitoNamingPolicy(new DelegatingMockitoMethodProxy(
-                proxy));
+        cglibHacker.setMockitoNamingPolicy(new DelegatingMockitoMethodProxy(proxy));
 
         try {
 
-            Object retval = proxy.invoke(target, args);
+            method.setAccessible(true);
+
+            Object retval = method.invoke(target, args);
 
             return afterInvocation(retval);
 
         } catch (Throwable e) {
 
             return afterInvocationThrowsThrowable(e, method);
+
+        } finally {
+
+            method.setAccessible(false);
+
         }
     }
 }
