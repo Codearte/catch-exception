@@ -19,6 +19,8 @@ import org.mockito.cglib.proxy.MethodInterceptor;
 import org.mockito.exceptions.base.MockitoException;
 import org.mockito.internal.creation.jmock.ClassImposterizer;
 
+import java.lang.reflect.Modifier;
+
 /**
  * This {@link ProxyFactory} uses Mockito's jmock package to create proxies that
  * subclass from the target's class.
@@ -43,7 +45,7 @@ public class SubclassProxyFactory implements ProxyFactory {
     public <T> T createProxy(Class<?> targetClass, MethodInterceptor interceptor) {
 
         // can we subclass the class of the target?
-        if (!ClassImposterizer.INSTANCE.canImposterise(targetClass)) {
+        if (!canImposterise(targetClass)) {
 
             // delegate
             return fallbackProxyFactory.<T> createProxy(targetClass,
@@ -65,5 +67,9 @@ public class SubclassProxyFactory implements ProxyFactory {
         }
 
         return proxy;
+    }
+
+    private boolean canImposterise(Class<?> type) {
+        return !type.isPrimitive() && !Modifier.isFinal(type.getModifiers()) && !type.isAnonymousClass();
     }
 }
