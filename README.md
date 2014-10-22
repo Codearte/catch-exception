@@ -1,3 +1,9 @@
+# Catch-exception
+
+Catch and verify exceptions in a single line of code
+
+[![Build Status](https://travis-ci.org/Codearte/catch-exception.svg)](https://travis-ci.org/Codearte/catch-exception)
+
 This library catches exceptions in a single line of code and makes them available for further analysis.
 
 # Usage
