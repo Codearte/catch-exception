@@ -40,10 +40,6 @@ then(caughtThrowable())
 // then we expect an IndexOutOfBoundsThrowable (alternatively)
 thenThrown(IndexOutOfBoundsThrowable.class);
 </pre></code>
- * <p>
- * The Method {@link #then(Throwable)} uses <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a>
- * assertions. You can use them directly if you like:
- * <code><pre class="prettyprint lang-java">// import static org.assertj.core.api.Assertions.assertThat;
 
 // then we expect an IndexOutOfBoundsThrowable
 assertThat(caughtThrowable())
@@ -62,9 +58,7 @@ assertThat(caughtThrowable())
 public class CatchThrowableAssertJ {
 
     /**
-     * Use it together with {@link #then(Throwable)} or {@link #thenThrown(Class)} in order to catch an throwable and to
-     * get access to the thrown throwable (for further verifications).
-     * 
+     *
      * @param <T>
      *            The type of the given <code>obj</code>.
      * 
@@ -107,36 +101,6 @@ thenThrown(IndexOutOfBoundsThrowable.class);
         } else {
             // the caught throwable is of the expected type -> nothing to do :-)
         }
-    }
-
-    /**
-     * Enables <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a> assertions about the caught
-     * throwable.
-     * <p>
-     * EXAMPLE: <code><pre class="prettyprint lang-java">// given an empty list
-List myList = new ArrayList();
-
-// when we try to get first element of the list
-when(myList).get(1);
-
-// then we expect an IndexOutOfBoundsThrowable
-then(caughtThrowable())
-        .isInstanceOf(IndexOutOfBoundsThrowable.class)
-        .hasMessage("Index: 1, Size: 0") 
-        .hasMessageStartingWith("Index: 1") 
-        .hasMessageEndingWith("Size: 0")
-        .hasMessageContaining("Size") 
-        .hasNoCause();
-</pre></code>
-     * 
-     * @param actualThrowable
-     *            the value to be the target of the assertions methods.
-     * @return Returns the created assertion object.
-     * @see Assertions#assertThat(Throwable)
-     */
-    public static ThrowableAssert then(Throwable actualThrowable) {
-        // delegate to AssertJ assertions
-        return Assertions.assertThat(actualThrowable);
     }
 
 }

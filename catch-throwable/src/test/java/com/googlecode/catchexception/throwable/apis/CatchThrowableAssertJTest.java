@@ -16,16 +16,17 @@
 package com.googlecode.catchexception.throwable.apis;
 
 import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
-import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.then;
 import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.thenThrown;
 import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.when;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.assertj.core.api.BDDAssertions;
 import org.junit.Test;
 
 /**
@@ -72,14 +73,6 @@ public class CatchThrowableAssertJTest {
                 .hasMessageContaining("Size") //
                 .hasNoCause();
 
-        // test: caughtThrowable() ==null
-        try {
-            then(null).isInstanceOf(IndexOutOfBoundsException.class);
-
-        } catch (AssertionError e) {
-            assertEquals("\nExpecting actual not to be null", e.getMessage());
-        }
-
         // test: caughtThrowable() == new RuntimeException()
         try {
             then(new RuntimeException()).isInstanceOf(IndexOutOfBoundsException.class);
@@ -101,9 +94,9 @@ public class CatchThrowableAssertJTest {
 
         } catch (AssertionError e) {
             assertEquals("\nExpecting message:" //
-                    + "\n <'Hi!'>" //
+                    + "\n <\"Hi!\">" //
                     + "\nbut was:" //
-                    + "\n <'Index: 1, Size: 0'>", e.getMessage());
+                    + "\n <\"Index: 1, Size: 0\">", e.getMessage());
         }
     }
 

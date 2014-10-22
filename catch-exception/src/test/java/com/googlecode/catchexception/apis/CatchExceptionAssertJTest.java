@@ -16,10 +16,10 @@
 package com.googlecode.catchexception.apis;
 
 import static com.googlecode.catchexception.CatchException.caughtException;
-import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.then;
 import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.thenThrown;
 import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.when;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -72,14 +72,6 @@ public class CatchExceptionAssertJTest {
                 .hasMessageContaining("Size") //
                 .hasNoCause();
 
-        // test: caughtException() ==null
-        try {
-            then(null).isInstanceOf(IndexOutOfBoundsException.class);
-
-        } catch (AssertionError e) {
-            assertEquals("\nExpecting actual not to be null", e.getMessage());
-        }
-
         // test: caughtException() == new RuntimeException()
         try {
             then(new RuntimeException()).isInstanceOf(
@@ -102,9 +94,9 @@ public class CatchExceptionAssertJTest {
 
         } catch (AssertionError e) {
             assertEquals("\nExpecting message:" //
-                    + "\n <'Hi!'>" //
+                    + "\n <\"Hi!\">" //
                     + "\nbut was:" //
-                    + "\n <'Index: 1, Size: 0'>", e.getMessage());
+                    + "\n <\"Index: 1, Size: 0\">", e.getMessage());
         }
     }
 
