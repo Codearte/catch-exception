@@ -31,7 +31,7 @@ verifyException(myList, IndexOutOfBoundsException.class).get(1);
 More information about the usage you find in the [Javadoc documentation](http://javadoc.catch-exception.googlecode.com/hg/index.html?com/googlecode/catchexception/CatchException.html).
 
 # BDD-like
-If you prefer a BDD-like approach, you can use [BDDAssertions](http://joel-costigliola.github.io/assertj/core/api/org/assertj/core/api/BDDAssertions.html) for another code style:
+If you prefer a BDD-like approach, you can use [BDDAssertions](http://joel-costigliola.github.io/assertj/core/api/org/assertj/core/api/BDDAssertions.html) and BDDCatchException for another code style:
 
 ```java
 import static com.googlecode.catchexception.CatchException.*;
