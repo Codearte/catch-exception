@@ -49,25 +49,25 @@
       <version>${powermock.version}</version>
       <scope>test</scope>
     </dependency>
-    
+
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-context</artifactId>
         <version>${spring.version}</version>
         <scope>test</scope>
-    </dependency>    
+    </dependency>
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-test</artifactId>
         <version>${spring.version}</version>
         <scope>test</scope>
-        </dependency>    
+        </dependency>
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
         <version>${spring.version}</version>
         <scope>test</scope>
-    </dependency>    
+    </dependency>
     <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
@@ -81,12 +81,20 @@
         <version>18.0</version>
         <scope>test</scope>
     </dependency>
-  
+
   </dependencies>
 
 
   <build>
     <plugins>
+        <plugin>
+            <groupId>org.eluder.coveralls</groupId>
+            <artifactId>coveralls-maven-plugin</artifactId>
+        </plugin>
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+        </plugin>
 
       <!-- phase "package" should create the test.jar as well  -->
       <plugin>
@@ -102,5 +110,5 @@
 
     </plugins>
   </build>
-    
+
 </project>
