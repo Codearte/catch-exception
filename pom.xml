@@ -20,10 +20,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- successfully tested versions: 1.5.1, 1.5, 1.4.12, 1.4.11, 1.4.10, 1.4.9, 1.4.8, 1.4.7, 1.4.6 -->
-    <powermock.version>1.5.1</powermock.version>
-    
-    <spring.version>3.2.0.RELEASE</spring.version>
-    
+    <powermock.version>1.5.6</powermock.version>
+
+    <spring.version>4.1.1.RELEASE</spring.version>
+
     <!-- used by maven-license-plugin -->
     <project.inceptionYear>2011</project.inceptionYear>
     
