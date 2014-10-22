@@ -35,6 +35,7 @@ If you prefer a BDD-like approach, you can use [BDDAssertions](http://joel-costi
 
 ```java
 import static com.googlecode.catchexception.CatchException.*;
+import static com.googlecode.catchexception.apis.BDDCatchException.*;
 import static org.assertj.core.api.BDDAssertions.then;
 
 // given: an empty list

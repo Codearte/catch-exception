@@ -17,8 +17,8 @@ package com.googlecode.catchexception.integration.spring;
 
 import static com.googlecode.catchexception.CatchException.catchException;
 import static com.googlecode.catchexception.CatchException.interfaces;
-import static com.googlecode.catchexception.apis.CatchExceptionBdd.thenThrown;
-import static com.googlecode.catchexception.apis.CatchExceptionBdd.when;
+import static com.googlecode.catchexception.apis.BDDCatchException.thenThrown;
+import static com.googlecode.catchexception.apis.BDDCatchException.when;
 
 import org.junit.Ignore;
 import org.junit.Test;
