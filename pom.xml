@@ -6,6 +6,7 @@
   <packaging>pom</packaging>
   <description>Catch and verify exceptions - parent module</description>
   <url>https://github.com/Codearte/catch-exception/</url>
+  <name>catch-exception</name>
 
   <!-- Disabled to workaround problem with old maven-gpg-plugin forced in reelase:prepare -->
 <!--
