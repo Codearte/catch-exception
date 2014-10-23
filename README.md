@@ -4,6 +4,9 @@ Catch and verify exceptions in a single line of code
 
 [![Build Status](https://travis-ci.org/Codearte/catch-exception.svg)](https://travis-ci.org/Codearte/catch-exception) [![Coverage Status](https://coveralls.io/repos/Codearte/catch-exception/badge.png)](https://coveralls.io/r/Codearte/catch-exception)
 
+*This is maintenance version of famous [catch-exception](https://code.google.com/p/catch-exception/) library created
+by Rod Woo*.
+
 This library catches exceptions in a single line of code and makes them available for further analysis.
 
 # Usage
