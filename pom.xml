@@ -7,12 +7,14 @@
   <description>Catch and verify exceptions - parent module</description>
   <url>http://code.google.com/p/catch-exception/</url>
 
-  <!--  required by Sonatype OOS hosting -->
+  <!-- Disabled to workaround problem with old maven-gpg-plugin forced in reelase:prepare -->
+<!--
   <parent>
     <groupId>org.sonatype.oss</groupId>
     <artifactId>oss-parent</artifactId>
     <version>7</version>
   </parent>
+-->
 
   <prerequisites>
     <maven>3.0.0</maven>
@@ -90,42 +92,7 @@
 
 
   <build>
-    <!--
-      A. How to release?
-      According to Section '7b. Stage Existing Artifacts' in 
-      <a href="https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-7b.StageExistingArtifacts">
-      Sonatype OSS Maven Repository Usage Guide</a> I have chosen the
-      following way:
-      
-      1. Set release version in pom.xml, i.e. remove the -SNAPSHOT suffix.
-      2. catch-exception>mvn clean source:jar javadoc:jar install -Psign
-      This creates, signs ands installs the artifacts in the local repository.
-      3. %USER_NAME%\.m2\repository\com\googlecode\catch-exception\catch-exception\1.0.4\>jar -cvf bundle.jar catch-exception-1.0.4.pom catch-exception-1.0.4.pom.asc catch-exception-1.0.4.jar catch-exception-1.0.4.jar.asc catch-exception-1.0.4-javadoc.jar catch-exception-1.0.4-javadoc.jar.asc catch-exception-1.0.4-sources.jar catch-exception-1.0.4-sources.jar.asc
-      This creates a bundle (zip) that contains all artifacts.
-      4. Then go to Nexus UI ( https://oss.sonatype.org/ ), click Staging Upload in the left column [etc.], see the last paragraph of section 7b.
-      5. Follow the steps described in section '8. Release It'.
-      6. Increase the version in pom.xml and add a -SNAPSHOT suffix.
-      7. Commit.
 
-      B. How to add a new download to the google page?
-      1. Rename bundle.jar to catch-exception-1.0.4.zip.
-      2. Upload at google code using summary "pom, classes, sources and javadocs"
-      Easy. It's google.   
-   
-      C. How to update the javadoc pages?
-      
-      1. Run mvn site
-      2. Copy catch-exception/target/site/apidocs to catch-exception.javadoc/. 
-      3. Commit.
-      
-      +++ UPDATE +++
-      
-      <a href="https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-7a.3.StageaRelease>
-      7a.3. Stage a Release</a>
-      works as well if %HOME%/.hgrc and %HOME%/.m2/settings.xml contain the appropriate credentials.
-      Do not forget to create the javadoc between release:prepare and release:perform. 
-
-       -->
     <plugins>
 
       <plugin>
@@ -351,6 +318,32 @@ else {
           </executions>
         </plugin>
 
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5.1</version>
+          <configuration>
+            <!-- Workaround for http://jira.codehaus.org/browse/MGPG-9 -->
+            <mavenExecutorId>forked-path</mavenExecutorId>
+            <pushChanges>false</pushChanges>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>1.5</version>
+          <executions>
+            <execution>
+              <id>sign-artifacts</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>sign</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
 
       </plugins>
     
@@ -383,42 +376,50 @@ else {
     <url>http://code.google.com/p/catch-exception/source/browse/</url>
   </scm>
 
+  <distributionManagement>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus Snapshots</name>
+      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <name>Nexus Release Repository</name>
+      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
+
   <profiles>
-  
-    <!-- automatic signing of created artifacts (at least the classes jar) -->
+
     <profile>
-        <id>sign</id>
-        <build>
-            <plugins>
-            
-                <!-- the last thing to do during the verify phase: -->
-            
-                <!-- automatic signing of created artifacts (at least the classes jar)
-                   https://docs.sonatype.org/display/Repository/How+To+Generate+PGP+Signatures+With+Maven
-                   Then simply deploy your artifacts use normal maven command:
-                   $ mvn clean deploy -Dgpg.passphrase=yourpassphrase
-                   If you don’t specify the passphrase, you will be prompted for one.
-                    -->
-                <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-gpg-plugin</artifactId>
-                  <version>1.4</version>
-                  <executions>
-                    <execution>
-                      <id>sign-artifacts</id>
-                      <phase>verify</phase>
-                      <goals>
-                        <goal>sign</goal>
-                      </goals>
-                    </execution>
-                  </executions>
-                </plugin>
-            
-            </plugins>
-        
-        </build>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <!-- Signing files using GPG -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
-  
+
   </profiles>
-  
+
 </project>
