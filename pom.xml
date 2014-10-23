@@ -5,7 +5,7 @@
   <version>1.3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Catch and verify exceptions - parent module</description>
-  <url>http://code.google.com/p/catch-exception/</url>
+  <url>https://github.com/Codearte/catch-exception/</url>
 
   <!-- Disabled to workaround problem with old maven-gpg-plugin forced in reelase:prepare -->
 <!--
@@ -371,9 +371,9 @@ else {
   </developers>
 
   <scm>
-    <connection>scm:hg:https://code.google.com/p/catch-exception/</connection>
-    <developerConnection>scm:hg:https://code.google.com/p/catch-exception/</developerConnection>
-    <url>http://code.google.com/p/catch-exception/source/browse/</url>
+    <connection>scm:git:https://github.com/Codearte/catch-exception.git</connection>
+    <developerConnection>scm:git:git@github.com:Codearte/catch-exception.git</developerConnection>
+    <url>https://github.com/Codearte/catch-exception/</url>
   </scm>
 
   <distributionManagement>
