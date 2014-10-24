@@ -127,6 +127,21 @@ public class CatchExceptionTest {
     }
 
     @Test
+    public void testProxyFactory_AnynomousType_NotMappedAsInterface() throws Exception {
+
+        PublicSomethingImpl obj = new PublicSomethingImpl() {
+
+            @Override
+            public void doThrow() {
+                throw new UnknownFormatConversionException("sdfd");
+            }
+        };
+
+        catchException(obj).doThrow();
+        assertTrue(caughtException() instanceof UnknownFormatConversionException);
+    }
+
+    @Test
     public void testProxyFactory_ProtectedConstructor() {
 
         catchException((Something) new ProtectedSomethingImpl()).doThrow();
