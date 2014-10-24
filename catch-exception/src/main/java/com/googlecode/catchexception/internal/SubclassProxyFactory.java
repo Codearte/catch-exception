@@ -18,13 +18,12 @@ package com.googlecode.catchexception.internal;
 import org.mockito.cglib.proxy.MethodInterceptor;
 import org.mockito.exceptions.base.MockitoException;
 import org.mockito.internal.creation.jmock.ClassImposterizer;
-
-import java.lang.reflect.Modifier;
+import org.mockito.internal.util.MockUtil;
 
 /**
  * This {@link ProxyFactory} uses Mockito's jmock package to create proxies that
  * subclass from the target's class.
- * 
+ *
  * @author rwoo
  */
 public class SubclassProxyFactory implements ProxyFactory {
@@ -33,6 +32,8 @@ public class SubclassProxyFactory implements ProxyFactory {
      * That proxy factory is used if this factory cannot be used.
      */
     private ProxyFactory fallbackProxyFactory = new InterfaceOnlyProxyFactory();
+
+    private MockUtil mockUtil = new MockUtil();
 
     /*
      * (non-Javadoc)
@@ -45,10 +46,10 @@ public class SubclassProxyFactory implements ProxyFactory {
     public <T> T createProxy(Class<?> targetClass, MethodInterceptor interceptor) {
 
         // can we subclass the class of the target?
-        if (!canImposterise(targetClass)) {
+        if (!mockUtil.isTypeMockable(targetClass)) {
 
             // delegate
-            return fallbackProxyFactory.<T> createProxy(targetClass,
+            return fallbackProxyFactory.<T>createProxy(targetClass,
                     interceptor);
         }
 
@@ -62,14 +63,11 @@ public class SubclassProxyFactory implements ProxyFactory {
         } catch (MockitoException e) {
 
             // delegate
-            return fallbackProxyFactory.<T> createProxy(targetClass,
+            return fallbackProxyFactory.<T>createProxy(targetClass,
                     interceptor);
         }
 
         return proxy;
     }
 
-    private boolean canImposterise(Class<?> type) {
-        return !type.isPrimitive() && !Modifier.isFinal(type.getModifiers()) && !type.isAnonymousClass();
-    }
 }
