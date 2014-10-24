@@ -327,7 +327,9 @@ else {
             <!-- Workaround for http://jira.codehaus.org/browse/MGPG-9 -->
             <mavenExecutorId>forked-path</mavenExecutorId>
             <pushChanges>false</pushChanges>
-            <autoVersionSubmodules>true</autoVersionSubmodules>
+	    <autoVersionSubmodules>true</autoVersionSubmodules>
+	    <!-- To remove parent from a tag name -->
+	    <tagNameFormat>catch-exception-@{project.version}</tagNameFormat>
           </configuration>
         </plugin>
 
