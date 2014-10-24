@@ -15,10 +15,11 @@
  */
 package com.googlecode.catchexception.internal;
 
+import java.lang.reflect.Modifier;
+
 import org.mockito.cglib.proxy.MethodInterceptor;
 import org.mockito.exceptions.base.MockitoException;
 import org.mockito.internal.creation.jmock.ClassImposterizer;
-import org.mockito.internal.util.MockUtil;
 
 /**
  * This {@link ProxyFactory} uses Mockito's jmock package to create proxies that
@@ -33,8 +34,6 @@ public class SubclassProxyFactory implements ProxyFactory {
      */
     private ProxyFactory fallbackProxyFactory = new InterfaceOnlyProxyFactory();
 
-    private MockUtil mockUtil = new MockUtil();
-
     /*
      * (non-Javadoc)
      * 
@@ -46,7 +45,7 @@ public class SubclassProxyFactory implements ProxyFactory {
     public <T> T createProxy(Class<?> targetClass, MethodInterceptor interceptor) {
 
         // can we subclass the class of the target?
-        if (!mockUtil.isTypeMockable(targetClass)) {
+        if (!isTypeMockable(targetClass)) {
 
             // delegate
             return fallbackProxyFactory.<T>createProxy(targetClass,
@@ -70,4 +69,7 @@ public class SubclassProxyFactory implements ProxyFactory {
         return proxy;
     }
 
+    public boolean isTypeMockable(Class<?> type) {
+        return !type.isPrimitive() && !Modifier.isFinal(type.getModifiers());
+    }
 }

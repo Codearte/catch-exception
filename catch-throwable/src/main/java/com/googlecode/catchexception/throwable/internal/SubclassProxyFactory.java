@@ -15,16 +15,15 @@
  */
 package com.googlecode.catchexception.throwable.internal;
 
+import java.lang.reflect.Modifier;
+
 import org.mockito.cglib.proxy.MethodInterceptor;
 import org.mockito.exceptions.base.MockitoException;
 import org.mockito.internal.creation.jmock.ClassImposterizer;
-import org.mockito.internal.util.MockUtil;
-
-import java.lang.reflect.Modifier;
 
 /**
  * This {@link ProxyFactory} uses Mockito's jmock package to create proxies that subclass from the target's class.
- * 
+ *
  * @author rwoo
  */
 public class SubclassProxyFactory implements ProxyFactory {
@@ -33,8 +32,6 @@ public class SubclassProxyFactory implements ProxyFactory {
      * That proxy factory is used if this factory cannot be used.
      */
     private ProxyFactory fallbackProxyFactory = new InterfaceOnlyProxyFactory();
-
-    private MockUtil mockUtil = new MockUtil();
 
     /*
      * (non-Javadoc)
@@ -46,10 +43,10 @@ public class SubclassProxyFactory implements ProxyFactory {
     public <T> T createProxy(Class<?> targetClass, MethodInterceptor interceptor) {
 
         // can we subclass the class of the target?
-        if (!mockUtil.isTypeMockable(targetClass)) {
+        if (!isTypeMockable(targetClass)) {
 
             // delegate
-            return fallbackProxyFactory.<T> createProxy(targetClass, interceptor);
+            return fallbackProxyFactory.<T>createProxy(targetClass, interceptor);
         }
 
         // create proxy
@@ -61,10 +58,14 @@ public class SubclassProxyFactory implements ProxyFactory {
         } catch (MockitoException e) {
 
             // delegate
-            return fallbackProxyFactory.<T> createProxy(targetClass, interceptor);
+            return fallbackProxyFactory.<T>createProxy(targetClass, interceptor);
         }
 
         return proxy;
+    }
+
+    public boolean isTypeMockable(Class<?> type) {
+        return !type.isPrimitive() && !Modifier.isFinal(type.getModifiers());
     }
 
 }
