@@ -15,8 +15,8 @@
  */
 package com.googlecode.catchexception.apis;
 
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ThrowableAssert;
+import org.fest.assertions.api.Assertions;
+import org.fest.assertions.api.ThrowableAssert;
 
 import com.googlecode.catchexception.CatchException;
 import com.googlecode.catchexception.ExceptionNotThrownAssertionError;
@@ -43,6 +43,10 @@ then(caughtException())
 thenThrown(IndexOutOfBoundsException.class);
 </pre></code>
  * <p>
+ * The Method {@link #then(Exception)} uses <a
+ * href="https://github.com/alexruiz/fest-assert-2.x">FEST Fluent Assertions
+ * 2.x</a>. You can use them directly if you like:
+ * <code><pre class="prettyprint lang-java">// import static org.fest.assertions.Assertions.assertThat;
 
 // then we expect an IndexOutOfBoundsException
 assertThat(caughtException())
@@ -55,11 +59,15 @@ assertThat(caughtException())
 </pre></code>
  * 
  * @author rwoo
- * @since 1.1.0
+ * 
  */
-public class CatchExceptionAssertJ {
+public class CatchExceptionBdd {
 
     /**
+     * Use it together with {@link #then(Exception)} or
+     * {@link #thenThrown(Class)} in order to catch an exception and to get
+     * access to the thrown exception (for further verifications).
+     * 
      * @param <T>
      *            The type of the given <code>obj</code>.
      * 
@@ -106,6 +114,37 @@ thenThrown(IndexOutOfBoundsException.class);
         } else {
             // the caught exception is of the expected type -> nothing to do :-)
         }
+    }
+
+    /**
+     * Enables <a href="https://github.com/alexruiz/fest-assert-2.x">FEST Fluent
+     * Assertions 2.x</a> about the caught exception.
+     * <p>
+     * EXAMPLE:
+     * <code><pre class="prettyprint lang-java">// given an empty list
+List myList = new ArrayList();
+
+// when we try to get first element of the list
+when(myList).get(1);
+
+// then we expect an IndexOutOfBoundsException
+then(caughtException())
+        .isInstanceOf(IndexOutOfBoundsException.class)
+        .hasMessage("Index: 1, Size: 0") 
+        .hasMessageStartingWith("Index: 1") 
+        .hasMessageEndingWith("Size: 0") 
+        .hasMessageContaining("Size") 
+        .hasNoCause();
+</pre></code>
+     * 
+     * @param actualException
+     *            the value to be the target of the assertions methods.
+     * @return Returns the created assertion object.
+     * @see Assertions#assertThat(Throwable)
+     */
+    public static ThrowableAssert then(Exception actualException) {
+        // delegate to FEST assertions
+        return Assertions.assertThat(actualException);
     }
 
 }
