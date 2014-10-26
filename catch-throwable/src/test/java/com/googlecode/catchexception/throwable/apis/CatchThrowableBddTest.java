@@ -15,26 +15,27 @@
  */
 package com.googlecode.catchexception.throwable.apis;
 
-import org.junit.Test;
+import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
+import static com.googlecode.catchexception.throwable.apis.CatchThrowableBdd.then;
+import static com.googlecode.catchexception.throwable.apis.CatchThrowableBdd.thenThrown;
+import static com.googlecode.catchexception.throwable.apis.CatchThrowableBdd.when;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenThrown;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 /**
- * Tests {@link com.googlecode.catchexception.throwable.apis.BDDCatchThrowable}.
+ * Tests {@link CatchThrowableBdd}.
  *
  * @author rwoo
+ *
  */
 @SuppressWarnings("javadoc")
-public class BDDCatchThrowableTest {
+public class CatchThrowableBddTest {
 
     @SuppressWarnings("rawtypes")
     @Test
@@ -66,35 +67,41 @@ public class BDDCatchThrowableTest {
         then(caughtThrowable()) //
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
-                .hasMessageStartingWith("Index: 1") //
-                .hasMessageEndingWith("Size: 0") //
-                .hasMessageContaining("Size") //
                 .hasNoCause();
+
+        // test: caughtThrowable() ==null
+        try {
+            then(null).isInstanceOf(IndexOutOfBoundsException.class);
+
+        } catch (AssertionError e) {
+            assertEquals("expecting actual not to be null", e.getMessage());
+        }
 
         // test: caughtThrowable() == new RuntimeException()
         try {
             then(new RuntimeException()).isInstanceOf(IndexOutOfBoundsException.class);
 
         } catch (AssertionError e) {
-            assertEquals("\nExpecting:" //
-                    + "\n <java.lang.RuntimeException>" //
-                    + "\nto be an instance of:" //
-                    + "\n <java.lang.IndexOutOfBoundsException>" //
+            assertEquals("expected <java.lang.RuntimeException> to be an instance of:" //
+                    + "\n<java.lang.IndexOutOfBoundsException>" //
                     + "\nbut was instance of:" //
-                    + "\n <java.lang.RuntimeException>", e.getMessage());
+                    + "\n<java.lang.RuntimeException>", e.getMessage());
         }
 
         // test: caughtThrowable() has other unexpected message
         try {
             then(caughtThrowable()) //
                     .isInstanceOf(IndexOutOfBoundsException.class) //
+                    .hasMessageStartingWith("Index: 1") //
+                    .hasMessageEndingWith("Size: 0") //
+                    .hasMessageContaining("Size") //
                     .hasMessage("Hi!");
 
         } catch (AssertionError e) {
-            assertEquals("\nExpecting message:" //
-                    + "\n <\"Hi!\">" //
-                    + "\nbut was:" //
-                    + "\n <\"Index: 1, Size: 0\">", e.getMessage());
+            assertEquals("expected message:" //
+                    + "\n<'Hi!'>" //
+                    + "\n but was:" //
+                    + "\n<'Index: 1, Size: 0'>", e.getMessage());
         }
     }
 

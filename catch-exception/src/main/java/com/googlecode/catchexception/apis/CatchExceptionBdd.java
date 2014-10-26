@@ -59,8 +59,10 @@ assertThat(caughtException())
 </pre></code>
  * 
  * @author rwoo
- * 
+ * @see com.googlecode.catchexception.apis.BDDCatchException
+ * @deprecated As of release 1.3.0, replaced by {@link com.googlecode.catchexception.apis.BDDCatchException()}
  */
+@Deprecated
 public class CatchExceptionBdd {
 
     /**
