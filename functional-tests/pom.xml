@@ -12,11 +12,31 @@
 
   <artifactId>functional-tests</artifactId>
 
+  <properties>
+    <!-- needed for javadoc, license and so on -->
+    <catchException.parent>${project.parent.basedir}</catchException.parent>
+  </properties>
+
   <modules>
     <module>catch-exception-assertj17</module>
     <module>catch-throwable-assertj17</module>
     <module>catch-exception-assertj16</module>
     <module>catch-throwable-assertj16</module>
   </modules>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.5.2</version>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
 </project>

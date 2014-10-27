@@ -13,7 +13,7 @@
 
   <properties>
     <!-- needed for javadoc, license and so on -->
-    <catchException.parent>${project.parent.basedir}</catchException.parent>
+    <catchException.parent>${project.parent.parent.basedir}</catchException.parent>
   </properties>
 
   <dependencies>
