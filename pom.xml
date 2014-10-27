@@ -289,6 +289,9 @@ else {
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>2.5</version>
+          <configuration>
+            <skipIfEmpty>true</skipIfEmpty>
+          </configuration>
           <executions>
             <execution>
               <goals>
@@ -347,14 +350,6 @@ else {
               </goals>
             </execution>
           </executions>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <configuration>
-            <skipIfEmpty>true</skipIfEmpty>
-          </configuration>
         </plugin>
 
       </plugins>
