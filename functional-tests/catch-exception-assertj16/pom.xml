@@ -3,14 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>catch-exception-parent</artifactId>
+    <artifactId>functional-tests</artifactId>
     <groupId>eu.codearte.catch-exception</groupId>
     <version>1.3.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>catch-throwable-assertj17</artifactId>
-
+  <artifactId>catch-exception-assertj16</artifactId>
   <properties>
     <!-- needed for javadoc, license and so on -->
     <catchException.parent>${project.parent.basedir}</catchException.parent>
@@ -19,14 +18,14 @@
   <dependencies>
     <dependency>
       <groupId>eu.codearte.catch-exception</groupId>
-      <artifactId>catch-throwable</artifactId>
+      <artifactId>catch-exception</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>1.7.0</version>
+      <version>1.6.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>

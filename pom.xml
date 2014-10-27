@@ -42,10 +42,7 @@
   <modules>
     <module>catch-exception</module>
     <module>catch-throwable</module>
-    <module>catch-exception-assertj17</module>
-    <module>catch-throwable-assertj17</module>
-    <module>catch-exception-assertj16</module>
-    <module>catch-throwable-assertj16</module>
+    <module>functional-tests</module>
   </modules>
 
 
