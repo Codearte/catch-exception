@@ -34,24 +34,7 @@ import static org.junit.Assert.assertEquals;
  * @author rwoo
  */
 @SuppressWarnings("javadoc")
-public class BDDCatchThrowableTest {
-
-    @SuppressWarnings("rawtypes")
-    @Test
-    public void testAssertThat() {
-        // given an empty list
-        List myList = new ArrayList();
-
-        // when we try to get first element of the list
-        when(myList).get(1);
-
-        // then we expect an IndexOutOfBoundsException
-        assertThat(caughtThrowable()) //
-                .isInstanceOf(IndexOutOfBoundsException.class) //
-                .hasMessage("Index: 1, Size: 0") //
-                .hasNoCause();
-
-    }
+public class BDDCatchThrowableAssertJ16Test extends BDDCatchThrowableTest {
 
     @SuppressWarnings("rawtypes")
     @Test
@@ -97,42 +80,4 @@ public class BDDCatchThrowableTest {
                     + "\n <\"Index: 1, Size: 0\">", e.getMessage());
         }
     }
-
-    @SuppressWarnings("rawtypes")
-    @Test
-    public void testThenThrown() {
-
-        // given a list with nine elements
-        List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
-
-        // when we try to get the 500th element
-        when(myList).get(500);
-
-        // then we expect an IndexOutOfBoundsException
-        thenThrown(IndexOutOfBoundsException.class);
-
-        // test: caughtThrowable() ==null
-        when(myList).get(0);
-        try {
-            thenThrown(IndexOutOfBoundsException.class);
-
-        } catch (AssertionError e) {
-            assertEquals("Neither a throwable of type java.lang." + "IndexOutOfBoundsException nor another throwable "
-                    + "was thrown", e.getMessage());
-        }
-
-        // test: caughtThrowable() is not IllegalArgumentException
-        when(myList).get(500);
-        try {
-            thenThrown(IllegalArgumentException.class);
-
-        } catch (AssertionError e) {
-            assertEquals("Throwable of type java.lang.IllegalArgumentException"
-                            + " expected but was not thrown. Instead a throwable of"
-                            + " type class java.lang.ArrayIndexOutOfBoundsException" + " with message '500' was thrown.",
-                    e.getMessage());
-        }
-
-    }
-
 }
