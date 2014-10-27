@@ -2,7 +2,7 @@
 
 Catch and verify exceptions in a single line of code
 
-[![Build Status](https://travis-ci.org/Codearte/catch-exception.svg)](https://travis-ci.org/Codearte/catch-exception) [![Coverage Status](https://coveralls.io/repos/Codearte/catch-exception/badge.png)](https://coveralls.io/r/Codearte/catch-exception) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/eu.codearte.catch-exception/catch-exception/badge.svg)](https://maven-badges.herokuapp.com/maven-central/eu.codearte.catch-exception/catch-exception)
+[![Build Status](https://travis-ci.org/Codearte/catch-exception.svg)](https://travis-ci.org/Codearte/catch-exception) [![Coverage Status](https://img.shields.io/coveralls/Codearte/catch-exception.svg)](https://coveralls.io/r/Codearte/catch-exception?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/eu.codearte.catch-exception/catch-exception/badge.svg)](https://maven-badges.herokuapp.com/maven-central/eu.codearte.catch-exception/catch-exception)
 
 *This is maintenance version of famous [catch-exception](https://code.google.com/p/catch-exception/) library created
 by Rod Woo*.
