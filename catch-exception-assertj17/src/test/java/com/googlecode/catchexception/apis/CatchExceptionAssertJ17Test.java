@@ -13,26 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.throwable.apis;
+package com.googlecode.catchexception.apis;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
-import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.then;
-import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.when;
+import static com.googlecode.catchexception.CatchException.caughtException;
+import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.then;
+import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.when;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Tests {@link CatchThrowableAssertJ}.
+ * Tests {@link CatchExceptionAssertJ}.
  *
  * @author rwoo
- *
  */
-@SuppressWarnings("javadoc")
-public class CatchThrowableAssertJTest {
+public class CatchExceptionAssertJ17Test {
 
     @SuppressWarnings("rawtypes")
     @Test
@@ -44,7 +42,7 @@ public class CatchThrowableAssertJTest {
         when(myList).get(1);
 
         // then we expect an IndexOutOfBoundsException
-        then(caughtThrowable()) //
+        then(caughtException()) //
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasMessageStartingWith("Index: 1") //
@@ -52,9 +50,10 @@ public class CatchThrowableAssertJTest {
                 .hasMessageContaining("Size") //
                 .hasNoCause();
 
-        // test: caughtThrowable() == new RuntimeException()
+        // test: caughtException() == new RuntimeException()
         try {
-            then(new RuntimeException()).isInstanceOf(IndexOutOfBoundsException.class);
+            then(new RuntimeException()).isInstanceOf(
+                    IndexOutOfBoundsException.class);
 
         } catch (AssertionError e) {
             assertEquals("\nExpecting:" //
@@ -65,9 +64,9 @@ public class CatchThrowableAssertJTest {
                     + "\n <java.lang.RuntimeException>", e.getMessage());
         }
 
-        // test: caughtThrowable() has other unexpected message
+        // test: caughtException() has other unexpected message
         try {
-            then(caughtThrowable()) //
+            then(caughtException()) //
                     .isInstanceOf(IndexOutOfBoundsException.class) //
                     .hasMessage("Hi!");
 

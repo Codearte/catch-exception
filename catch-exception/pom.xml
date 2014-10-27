@@ -33,6 +33,7 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <optional>true</optional>
+      <version>1.5.0</version>
     </dependency>
 
     <!-- required test scope dependencies ++++++++++++++++++++++++++++++++++ -->

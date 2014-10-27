@@ -73,9 +73,9 @@ public class CatchThrowableAssertJTest {
 
         } catch (AssertionError e) {
             assertEquals("\nExpecting message:" //
-                    + "\n <\"Hi!\">" //
+                    + "\n <'Hi!'>" //
                     + "\nbut was:" //
-                    + "\n <\"Index: 1, Size: 0\">", e.getMessage());
+                    + "\n <'Index: 1, Size: 0'>", e.getMessage());
         }
     }
 
