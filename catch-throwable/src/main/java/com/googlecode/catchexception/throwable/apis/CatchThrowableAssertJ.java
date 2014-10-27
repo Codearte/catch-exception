@@ -16,11 +16,7 @@
 package com.googlecode.catchexception.throwable.apis;
 
 import org.assertj.core.api.AbstractThrowableAssert;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ThrowableAssert;
-
-import com.googlecode.catchexception.throwable.CatchThrowable;
-import com.googlecode.catchexception.throwable.ThrowableNotThrownAssertionError;
+import org.assertj.core.api.CompatibilityAssertions;
 
 /**
  * Use BDDCatchThrowable
@@ -61,7 +57,7 @@ public class CatchThrowableAssertJ extends BDDCatchThrowable{
      */
     public static AbstractThrowableAssert<?, ? extends Throwable> then(Throwable actualThrowable) {
         // delegate to AssertJ assertions
-        return Assertions.assertThat(actualThrowable);
+        return CompatibilityAssertions.assertThat(actualThrowable);
     }
 
 }

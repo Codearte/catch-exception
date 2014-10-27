@@ -18,7 +18,7 @@ package com.googlecode.catchexception.apis;
 import static com.googlecode.catchexception.CatchException.caughtException;
 import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.thenThrown;
 import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.when;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.CompatibilityAssertions.assertThat;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.Assert.assertEquals;
 

@@ -16,11 +16,7 @@
 package com.googlecode.catchexception.apis;
 
 import org.assertj.core.api.AbstractThrowableAssert;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ThrowableAssert;
-
-import com.googlecode.catchexception.CatchException;
-import com.googlecode.catchexception.ExceptionNotThrownAssertionError;
+import org.assertj.core.api.CompatibilityAssertions;
 
 /**
  *
@@ -57,12 +53,13 @@ public class CatchExceptionAssertJ extends BDDCatchException {
      * @param actualException
      *            the value to be the target of the assertions methods.
      * @return Returns the created assertion object.
-     * @see Assertions#assertThat(Throwable)
+     * @see org.assertj.core.api.CompatibilityAssertions#assertThat(Throwable)
      * @deprecated As of release 1.3.0, replaced by {@link org.assertj.core.api.BDDAssertions#then(java.lang.Throwable}
      */
     public static AbstractThrowableAssert<?, ? extends Throwable> then(Exception actualException) {
         // delegate to AssertJ assertions
-        return Assertions.assertThat(actualException);
+        return CompatibilityAssertions.assertThat(actualException);
     }
+
 
 }

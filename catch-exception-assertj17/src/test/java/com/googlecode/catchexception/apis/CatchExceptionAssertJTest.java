@@ -26,7 +26,7 @@ import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.when;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Tests {@link com.googlecode.catchexception.apis.CatchExceptionAssertJ}.
+ * Tests {@link CatchExceptionAssertJ}.
  *
  * @author rwoo
  */
