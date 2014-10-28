@@ -15,30 +15,25 @@
  */
 package com.googlecode.catchexception.apis;
 
-import static com.googlecode.catchexception.CatchException.catchException;
-import static com.googlecode.catchexception.CatchException.caughtException;
-import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.hasMessage;
-import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.hasMessageThat;
-import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.hasNoCause;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.containsString;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.matchers.Find;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.googlecode.catchexception.CatchException.catchException;
+import static com.googlecode.catchexception.CatchException.caughtException;
+import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.containsString;
+
 /**
  * Tests {@link CatchExceptionHamcrestMatchers}.
- * 
+ *
  * @author rwoo
- * 
  */
 @SuppressWarnings("javadoc")
 public class CatchExceptionHamcrestMatchersTest {
@@ -63,9 +58,9 @@ public class CatchExceptionHamcrestMatchersTest {
     }
 
     private void assertMessage(String foundMessage,
-            String expectedExpectedPart, String expectedGotPart) {
+                               String expectedExpectedPart, String expectedGotPart) {
 
-        String[] foundParts = foundMessage.split("(?=but:)");
+        String[] foundParts = foundMessage.split("(?=got:)");
         assertEquals("split of foundMessage did not work: " + foundMessage, 2,
                 foundParts.length);
         String foundExpectedPart = foundParts[0].trim();
@@ -80,6 +75,8 @@ public class CatchExceptionHamcrestMatchersTest {
         assertThat(caughtException(),
                 instanceOf(IndexOutOfBoundsException.class));
 
+        assertThat(caughtException(), is(IndexOutOfBoundsException.class));
+
         try {
             assertThat(caughtException(),
                     instanceOf(IllegalArgumentException.class));
@@ -88,7 +85,7 @@ public class CatchExceptionHamcrestMatchersTest {
             assertMessage(
                     e.getMessage(),
                     "Expected: an instance of java.lang.IllegalArgumentException",
-                    "but: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9> is a java.lang.IndexOutOfBoundsException");
+                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
     }
 
@@ -122,7 +119,7 @@ public class CatchExceptionHamcrestMatchersTest {
         } catch (AssertionError e) {
             assertMessage(e.getMessage(),
                     "Expected: has a message that is \"something went wrong\"",
-                    "but: was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
     }
 
@@ -138,7 +135,7 @@ public class CatchExceptionHamcrestMatchersTest {
         } catch (AssertionError e) {
             assertMessage(e.getMessage(),
                     "Expected: has a message that is \"something went wrong\"",
-                    "but: was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
     }
 
@@ -156,7 +153,7 @@ public class CatchExceptionHamcrestMatchersTest {
             assertMessage(
                     e.getMessage(),
                     "Expected: has a message that is a string containing \"Index: 8\"",
-                    "but: was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
     }
 
@@ -172,7 +169,7 @@ public class CatchExceptionHamcrestMatchersTest {
             assertMessage(
                     e.getMessage(), //
                     "Expected: has no cause",
-                    "but: was <java.lang.RuntimeException: "
+                    "got: <java.lang.RuntimeException: "
                             + "java.lang.IndexOutOfBoundsException:"
                             + " Index: 9, Size: 9>");
         }
@@ -186,21 +183,21 @@ public class CatchExceptionHamcrestMatchersTest {
                 instanceOf(IndexOutOfBoundsException.class), //
                 hasMessage("Index: 9, Size: 9"),//
                 hasNoCause() //
-                ));
+        ));
 
         try {
             assertThat(caughtException(), allOf( //
                     instanceOf(IndexOutOfBoundsException.class), //
                     hasMessage("something went wrong"),//
                     hasNoCause() //
-                    ));
+            ));
             throw new RuntimeException("AssertionError expected");
         } catch (AssertionError e) {
             assertMessage(e.getMessage(), "Expected: " //
-                    + "(an instance of java.lang.IndexOutOfBoundsException" //
-                    + " and has a message that is \"something went wrong\"" //
-                    + " and has no cause)",
-                    "but: has a message that is \"something went wrong\" was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                            + "(an instance of java.lang.IndexOutOfBoundsException" //
+                            + " and has a message that is \"something went wrong\"" //
+                            + " and has no cause)",
+                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
 
     }
