@@ -56,6 +56,7 @@ assertThat(caughtException())
         .hasNoCause();
 </pre></code>
  * 
+ * @author rwoo
  * @author mariuszs
  * @since 1.3.0
  */
