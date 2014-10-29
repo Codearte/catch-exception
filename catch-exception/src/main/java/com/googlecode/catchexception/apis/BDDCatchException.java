@@ -24,7 +24,9 @@ import com.googlecode.catchexception.ExceptionNotThrownAssertionError;
  * approach to catch and verify exceptions (<i>given/when/then</i>).
  * <p>
  * EXAMPLE:
- * <code><pre class="prettyprint lang-java">// given an empty list
+ * <code><pre class="prettyprint lang-java">import static org.assertj.core.api.BDDAssertions.then;
+
+// given an empty list
 List myList = new ArrayList();
 
 // when we try to get the first element of the list
@@ -40,6 +42,9 @@ then(caughtException())
 thenThrown(IndexOutOfBoundsException.class);
 </pre></code>
  * <p>
+ * The Method {@link org.assertj.core.api.BDDAssertions#then(Throwable)} is originated from <a
+ * href="http://assertj.org">AssertJ</a>. You can also use method <code>assertThat</code>:
+ * <code><pre class="prettyprint lang-java">// import static org.assertj.core.api.Assertions.assertThat;
 
 // then we expect an IndexOutOfBoundsException
 assertThat(caughtException())
@@ -51,7 +56,7 @@ assertThat(caughtException())
         .hasNoCause();
 </pre></code>
  * 
- * @author rwoo
+ * @author mariuszs
  * @since 1.3.0
  */
 public class BDDCatchException {

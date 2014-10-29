@@ -62,57 +62,9 @@ import com.googlecode.catchexception.throwable.ThrowableNotThrownAssertionError;
  *
  */
 @Deprecated
-public class CatchThrowableBdd {
+public class CatchThrowableBdd extends BDDCatchThrowable {
 
-    /**
-     * Use it together with {@link #then(Throwable)} or {@link #thenThrown(Class)} in order to catch an throwable and to
-     * get access to the thrown throwable (for further verifications).
-     *
-     * @param <T>
-     *            The type of the given <code>obj</code>.
-     *
-     * @param obj
-     *            The instance that shall be proxied. Must not be <code>null</code>.
-     * @return Returns a proxy for the given object. The proxy catches throwables of the given type when a method on the
-     *         proxy is called.
-     * @see CatchThrowable#catchThrowable(Object)
-     */
-    public static <T> T when(T obj) {
-        return CatchThrowable.catchThrowable(obj);
-    }
-
-    /**
-     * Throws an assertion if no throwable is thrown or if an throwable of an unexpected type is thrown.
-     * <p>
-     * EXAMPLE:
-     * <code><pre class="prettyprint lang-java">// given a list with nine members
-     List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
-
-     // when we try to get the 500th member of the fellowship
-     when(myList).get(500);
-
-     // then we expect an IndexOutOfBoundsThrowable
-     thenThrown(IndexOutOfBoundsThrowable.class);
-     </pre></code>
-     *
-     * @param actualThrowableClazz
-     *            the expected type of the caught throwable.
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static void thenThrown(Class actualThrowableClazz) {
-        Throwable e = CatchThrowable.caughtThrowable();
-        if (e == null) {
-            // no throwable caught -> assertion failed
-            throw new ThrowableNotThrownAssertionError(actualThrowableClazz);
-        } else if (!actualThrowableClazz.isAssignableFrom(CatchThrowable.caughtThrowable().getClass())) {
-            // caught throwable is of wrong type -> assertion failed
-            throw new ThrowableNotThrownAssertionError(actualThrowableClazz, e);
-        } else {
-            // the caught throwable is of the expected type -> nothing to do :-)
-        }
-    }
-
-    /**
+     /**
      * Enables <a href="https://github.com/alexruiz/fest-assert-2.x">FEST Fluent Assertions 2.x</a> about the caught
      * throwable.
      * <p>

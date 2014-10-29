@@ -63,60 +63,7 @@ assertThat(caughtException())
  * @deprecated As of release 1.3.0, replaced by {@link com.googlecode.catchexception.apis.BDDCatchException()}
  */
 @Deprecated
-public class CatchExceptionBdd {
-
-    /**
-     * Use it together with {@link #then(Exception)} or
-     * {@link #thenThrown(Class)} in order to catch an exception and to get
-     * access to the thrown exception (for further verifications).
-     * 
-     * @param <T>
-     *            The type of the given <code>obj</code>.
-     * 
-     * @param obj
-     *            The instance that shall be proxied. Must not be
-     *            <code>null</code>.
-     * @return Returns a proxy for the given object. The proxy catches
-     *         exceptions of the given type when a method on the proxy is
-     *         called.
-     * @see CatchException#catchException(Object)
-     */
-    public static <T> T when(T obj) {
-        return CatchException.catchException(obj);
-    }
-
-    /**
-     * Throws an assertion if no exception is thrown or if an exception of an
-     * unexpected type is thrown.
-     * <p>
-     * EXAMPLE:
-     * <code><pre class="prettyprint lang-java">// given a list with nine members
-List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
-
-// when we try to get the 500th member of the fellowship
-when(myList).get(500);
-
-// then we expect an IndexOutOfBoundsException
-thenThrown(IndexOutOfBoundsException.class);
-</pre></code>
-     * 
-     * @param actualExceptionClazz
-     *            the expected type of the caught exception.
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static void thenThrown(Class actualExceptionClazz) {
-        Exception e = CatchException.caughtException();
-        if (e == null) {
-            // no exception caught -> assertion failed
-            throw new ExceptionNotThrownAssertionError(actualExceptionClazz);
-        } else if (!actualExceptionClazz.isAssignableFrom(CatchException
-                .caughtException().getClass())) {
-            // caught exception is of wrong type -> assertion failed
-            throw new ExceptionNotThrownAssertionError(actualExceptionClazz, e);
-        } else {
-            // the caught exception is of the expected type -> nothing to do :-)
-        }
-    }
+public class CatchExceptionBdd extends BDDCatchException {
 
     /**
      * Enables <a href="https://github.com/alexruiz/fest-assert-2.x">FEST Fluent
