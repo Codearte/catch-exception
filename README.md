@@ -138,6 +138,6 @@ Nothing to do at the moment. There are no open issues and no open feature reques
 Thanks to Szczepan Faber who made some suggestions about a BDD-like syntax for catch-exception. Finally, his ideas triggered the enhancements that came with the 1.0.4 release.
 
 # Questions, Suggestions, Issues
-Questions and suggestions are welcome and can be sent to the [discussion group](http://groups.google.com/group/catch-exception-discuss). Issues can be reported on the [Issues page](http://code.google.com/p/catch-exception/issues/list) of this project.
+Questions, suggestions and Issues are welcome and can be reported via [Issues page](https://github.com/Codearte/catch-exception/issues) of this project.
 
 Please give me feedback of any kind. It is highly appreciated.
