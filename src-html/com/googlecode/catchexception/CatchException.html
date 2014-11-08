@@ -1,0 +1,502 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="pl">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/**<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (C) 2011 rwoo@gmx.de<a name="line.2"></a>
+<span class="sourceLineNo">003</span> *<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * you may not use this file except in compliance with the License.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * You may obtain a copy of the License at<a name="line.6"></a>
+<span class="sourceLineNo">007</span> *<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *         http://www.apache.org/licenses/LICENSE-2.0<a name="line.8"></a>
+<span class="sourceLineNo">009</span> *<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Unless required by applicable law or agreed to in writing, software<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * distributed under the License is distributed on an "AS IS" BASIS,<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * See the License for the specific language governing permissions and<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * limitations under the License.<a name="line.14"></a>
+<span class="sourceLineNo">015</span> */<a name="line.15"></a>
+<span class="sourceLineNo">016</span>package com.googlecode.catchexception;<a name="line.16"></a>
+<span class="sourceLineNo">017</span><a name="line.17"></a>
+<span class="sourceLineNo">018</span>import org.mockito.cglib.proxy.MethodInterceptor;<a name="line.18"></a>
+<span class="sourceLineNo">019</span><a name="line.19"></a>
+<span class="sourceLineNo">020</span>import com.googlecode.catchexception.apis.CatchExceptionBdd;<a name="line.20"></a>
+<span class="sourceLineNo">021</span>import com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers;<a name="line.21"></a>
+<span class="sourceLineNo">022</span>import com.googlecode.catchexception.internal.DelegatingInterceptor;<a name="line.22"></a>
+<span class="sourceLineNo">023</span>import com.googlecode.catchexception.internal.ExceptionHolder;<a name="line.23"></a>
+<span class="sourceLineNo">024</span>import com.googlecode.catchexception.internal.ExceptionProcessingInterceptor;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import com.googlecode.catchexception.internal.InterfaceOnlyProxyFactory;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import com.googlecode.catchexception.internal.SubclassProxyFactory;<a name="line.26"></a>
+<span class="sourceLineNo">027</span><a name="line.27"></a>
+<span class="sourceLineNo">028</span>/**<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * The methods of this class catch and verify exceptions in &lt;em&gt;a single line of<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * code&lt;/em&gt; and make them available for further analysis.<a name="line.30"></a>
+<span class="sourceLineNo">031</span> * &lt;p&gt;<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * This Javadoc content is also available on the &lt;a<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * href="http://code.google.com/p/catch-exception/" &gt;catch-exception&lt;/a&gt; web<a name="line.33"></a>
+<span class="sourceLineNo">034</span> * page.<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * <a name="line.35"></a>
+<span class="sourceLineNo">036</span> * &lt;h1&gt;Documentation&lt;/h1&gt;<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * &lt;p&gt;<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * &lt;b&gt; &lt;a href="#1"&gt;1. How to use catch-exception?&lt;/a&gt;&lt;br/&gt;<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * &lt;a href="#2"&gt;2. What is this stuff actually good for?&lt;/a&gt; &lt;br/&gt;<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * &lt;a href="#3"&gt;3. How does it work internally?&lt;/a&gt;&lt;br/&gt;<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * &lt;a href="#4"&gt;4. When is the caught exception reset?&lt;/a&gt;&lt;br/&gt;<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * &lt;a href="#5"&gt;5. My code throws a ClassCastException. Why?&lt;/a&gt; &lt;br/&gt;<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * &lt;a href="#6"&gt;6. The exception is not caught. Why?&lt;/a&gt; &lt;br/&gt;<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * &lt;a href="#7"&gt;7. Do I have to care about memory leaks?&lt;/a&gt; &lt;br/&gt;<a name="line.44"></a>
+<span class="sourceLineNo">045</span> * &lt;a href="#8"&gt;8. The caught exception is not available in another thread.<a name="line.45"></a>
+<span class="sourceLineNo">046</span> * Why?&lt;/a&gt;&lt;br/&gt;<a name="line.46"></a>
+<span class="sourceLineNo">047</span> * &lt;a href="#9"&gt;9. How do I catch an exception thrown by a static method?&lt;/a&gt; &lt;br/&gt;<a name="line.47"></a>
+<span class="sourceLineNo">048</span> * &lt;a href="#11"&gt;11. Can I catch errors instead of exceptions?&lt;/a&gt; &lt;br/&gt;<a name="line.48"></a>
+<span class="sourceLineNo">049</span> * <a name="line.49"></a>
+<span class="sourceLineNo">050</span> * <a name="line.50"></a>
+<span class="sourceLineNo">051</span> * <a name="line.51"></a>
+<span class="sourceLineNo">052</span> * &lt;/b&gt;<a name="line.52"></a>
+<span class="sourceLineNo">053</span> * &lt;p&gt;<a name="line.53"></a>
+<span class="sourceLineNo">054</span> * &lt;h3 id="1"&gt;1. How to use catch-exception?&lt;/h3&gt;<a name="line.54"></a>
+<span class="sourceLineNo">055</span> * &lt;p&gt;<a name="line.55"></a>
+<span class="sourceLineNo">056</span> * The most basic usage is:<a name="line.56"></a>
+<span class="sourceLineNo">057</span> * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;import static com.googlecode.catchexception.CatchException.*;<a name="line.57"></a>
+<span class="sourceLineNo">058</span><a name="line.58"></a>
+<span class="sourceLineNo">059</span>// call customerService.prepareBilling(Prize.Zero)<a name="line.59"></a>
+<span class="sourceLineNo">060</span>// and catch the exception if any is thrown <a name="line.60"></a>
+<span class="sourceLineNo">061</span>catchException(customerService).prepareBilling(Prize.Zero);<a name="line.61"></a>
+<span class="sourceLineNo">062</span><a name="line.62"></a>
+<span class="sourceLineNo">063</span>// assert that an IllegalArgumentException was thrown<a name="line.63"></a>
+<span class="sourceLineNo">064</span>assert caughtException() instanceof IllegalArgumentException;&lt;/pre&gt;&lt;/code&gt;<a name="line.64"></a>
+<span class="sourceLineNo">065</span> * &lt;p&gt;<a name="line.65"></a>
+<span class="sourceLineNo">066</span> * You can combine the two lines of code in a single one if you like:<a name="line.66"></a>
+<span class="sourceLineNo">067</span> * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;// call customerService.prepareBilling(Prize.Zero)<a name="line.67"></a>
+<span class="sourceLineNo">068</span>// and throw an ExceptionNotThrownAssertionError if<a name="line.68"></a>
+<span class="sourceLineNo">069</span>// the expected exception is not thrown <a name="line.69"></a>
+<span class="sourceLineNo">070</span>verifyException(customerService, IllegalArgumentException.class).prepareBilling(Prize.Zero);&lt;/pre&gt;&lt;/code&gt;<a name="line.70"></a>
+<span class="sourceLineNo">071</span> * There is a minor difference between both variants. In the first variant you<a name="line.71"></a>
+<span class="sourceLineNo">072</span> * must start the JVM with option &lt;code&gt;-ea&lt;/code&gt; to enable the assertion. The<a name="line.72"></a>
+<span class="sourceLineNo">073</span> * second variant does not use JDK assertions and ,therefore, always verifies<a name="line.73"></a>
+<span class="sourceLineNo">074</span> * the caught exception.<a name="line.74"></a>
+<span class="sourceLineNo">075</span> * &lt;p&gt;<a name="line.75"></a>
+<span class="sourceLineNo">076</span> * A third variant allows you to select the type of exceptions you want to catch<a name="line.76"></a>
+<span class="sourceLineNo">077</span> * (no verification involved):<a name="line.77"></a>
+<span class="sourceLineNo">078</span> * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;// catch IllegalArgumentExceptions but no other exceptions <a name="line.78"></a>
+<span class="sourceLineNo">079</span>catchException(customerService, IllegalArgumentException.class).prepareBilling(Prize.Zero);&lt;/pre&gt;&lt;/code&gt;<a name="line.79"></a>
+<span class="sourceLineNo">080</span> * &lt;p&gt;<a name="line.80"></a>
+<span class="sourceLineNo">081</span> * The fourth and last variant verifies that some exception is thrown, i.e. the<a name="line.81"></a>
+<span class="sourceLineNo">082</span> * type of the exception does not matter:<a name="line.82"></a>
+<span class="sourceLineNo">083</span> * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;verifyException(customerService).prepareBilling(Prize.Zero);&lt;/pre&gt;&lt;/code&gt;<a name="line.83"></a>
+<span class="sourceLineNo">084</span> * &lt;p&gt;<a name="line.84"></a>
+<span class="sourceLineNo">085</span> * In all variants you can use &lt;code&gt;caughtException()&lt;/code&gt; afterwards to<a name="line.85"></a>
+<span class="sourceLineNo">086</span> * inspect the caught exception.<a name="line.86"></a>
+<span class="sourceLineNo">087</span> * &lt;p&gt;<a name="line.87"></a>
+<span class="sourceLineNo">088</span> * Finally, there some alternative ways to catch and verify exceptions:<a name="line.88"></a>
+<span class="sourceLineNo">089</span> * &lt;ul&gt;<a name="line.89"></a>
+<span class="sourceLineNo">090</span> * &lt;li&gt;{@link CatchExceptionBdd} - a BDD-like approach,<a name="line.90"></a>
+<span class="sourceLineNo">091</span> * &lt;li&gt; {@link CatchExceptionHamcrestMatchers} - Hamcrest assertions<a name="line.91"></a>
+<span class="sourceLineNo">092</span> * &lt;/ul&gt;<a name="line.92"></a>
+<span class="sourceLineNo">093</span> * &lt;h3 id="2"&gt;2. What is this stuff actually good for?&lt;/h3&gt;<a name="line.93"></a>
+<span class="sourceLineNo">094</span> * &lt;p&gt;<a name="line.94"></a>
+<span class="sourceLineNo">095</span> * This class targets concise and robust code in tests. Dadid Saff, a commiter<a name="line.95"></a>
+<span class="sourceLineNo">096</span> * to JUnit, has &lt;a<a name="line.96"></a>
+<span class="sourceLineNo">097</span> * href="http://shareandenjoy.saff.net/2006/12/assertthrownexception_20.html"<a name="line.97"></a>
+<span class="sourceLineNo">098</span> * &gt;discussed&lt;/a&gt; this approach in 2007. Let me summarize the arguments here.<a name="line.98"></a>
+<span class="sourceLineNo">099</span> * &lt;p&gt;<a name="line.99"></a>
+<span class="sourceLineNo">100</span> * There are two advantages of the approach proposed here in comparison to the<a name="line.100"></a>
+<span class="sourceLineNo">101</span> * use of try/catch blocks.<a name="line.101"></a>
+<span class="sourceLineNo">102</span> * &lt;ul&gt;<a name="line.102"></a>
+<span class="sourceLineNo">103</span> * &lt;li&gt;The test is more concise and easier to read.<a name="line.103"></a>
+<span class="sourceLineNo">104</span> * &lt;li&gt;The test cannot be corrupted by a missing assertion. Assume you forgot to<a name="line.104"></a>
+<span class="sourceLineNo">105</span> * type &lt;code&gt;fail()&lt;/code&gt; behind the method call that is expected to throw an<a name="line.105"></a>
+<span class="sourceLineNo">106</span> * exception.<a name="line.106"></a>
+<span class="sourceLineNo">107</span> * &lt;/ul&gt;<a name="line.107"></a>
+<span class="sourceLineNo">108</span> * &lt;p&gt;<a name="line.108"></a>
+<span class="sourceLineNo">109</span> * There are also some advantages of this approach in comparison to test<a name="line.109"></a>
+<span class="sourceLineNo">110</span> * runner-specific mechanisms that catch and verify exceptions.<a name="line.110"></a>
+<span class="sourceLineNo">111</span> * &lt;ul&gt;<a name="line.111"></a>
+<span class="sourceLineNo">112</span> * &lt;li&gt;A single test can verify more than one thrown exception.<a name="line.112"></a>
+<span class="sourceLineNo">113</span> * &lt;li&gt;The test can verify the properties of the thrown exception after the<a name="line.113"></a>
+<span class="sourceLineNo">114</span> * exception is caught.<a name="line.114"></a>
+<span class="sourceLineNo">115</span> * &lt;li&gt;The test can specify by which method call the exception must be thrown.<a name="line.115"></a>
+<span class="sourceLineNo">116</span> * &lt;li&gt;The test does not depend on a specific test runner (JUnit4, TestNG).<a name="line.116"></a>
+<span class="sourceLineNo">117</span> * &lt;/ul&gt;<a name="line.117"></a>
+<span class="sourceLineNo">118</span> * &lt;p&gt;<a name="line.118"></a>
+<span class="sourceLineNo">119</span> * &lt;h3 id="3"&gt;3. How does it work internally?&lt;/h3&gt;<a name="line.119"></a>
+<span class="sourceLineNo">120</span> * &lt;p&gt;<a name="line.120"></a>
+<span class="sourceLineNo">121</span> * The method &lt;code&gt;catchException(obj)&lt;/code&gt; wraps the given object with a<a name="line.121"></a>
+<span class="sourceLineNo">122</span> * proxy that catches the exception, then (optionally) verifies the exception,<a name="line.122"></a>
+<span class="sourceLineNo">123</span> * and finally attaches the exception to the current &lt;a<a name="line.123"></a>
+<span class="sourceLineNo">124</span> * name="threadlocal"&gt;thread&lt;/a&gt; for further analysis. The &lt;a<a name="line.124"></a>
+<span class="sourceLineNo">125</span> * href="#proxies"&gt;known limitations&lt;/a&gt; for proxies apply.<a name="line.125"></a>
+<span class="sourceLineNo">126</span> * &lt;p&gt;<a name="line.126"></a>
+<span class="sourceLineNo">127</span> * Is both memory consumption and runtime a concern for you? Then use try/catch<a name="line.127"></a>
+<span class="sourceLineNo">128</span> * blocks instead of this class. Because in this case the creation of proxies is<a name="line.128"></a>
+<span class="sourceLineNo">129</span> * an unnecessary overhead. If only either memory consumption or runtime is an<a name="line.129"></a>
+<span class="sourceLineNo">130</span> * issue for you, feel free to configure the cache of the underlying proxy<a name="line.130"></a>
+<span class="sourceLineNo">131</span> * factories as appropriate.<a name="line.131"></a>
+<span class="sourceLineNo">132</span> * &lt;h3 id="4"&gt;4. When is the caught exception reset?&lt;/h3&gt;<a name="line.132"></a>
+<span class="sourceLineNo">133</span> * &lt;p&gt;<a name="line.133"></a>
+<span class="sourceLineNo">134</span> * The Method {@link #caughtException()} returns the exception thrown by the<a name="line.134"></a>
+<span class="sourceLineNo">135</span> * last method call on a proxied object in the current thread, i.e. it is reset<a name="line.135"></a>
+<span class="sourceLineNo">136</span> * by calling a method on the proxied object. If the called method has not<a name="line.136"></a>
+<span class="sourceLineNo">137</span> * thrown an exception, &lt;code&gt;caughtException()&lt;/code&gt; returns null.<a name="line.137"></a>
+<span class="sourceLineNo">138</span> * &lt;p&gt;<a name="line.138"></a>
+<span class="sourceLineNo">139</span> * To reset the caught exception manually, call {@link #resetCaughtException()}.<a name="line.139"></a>
+<span class="sourceLineNo">140</span> * At the moment there is no way to reset exceptions that have been caught in<a name="line.140"></a>
+<span class="sourceLineNo">141</span> * other threads.<a name="line.141"></a>
+<span class="sourceLineNo">142</span> * &lt;h3 id="5"&gt;&lt;a name="proxies" /&gt;5. My code throws a ClassCastException. Why?&lt;/h3&gt;<a name="line.142"></a>
+<span class="sourceLineNo">143</span> * &lt;p&gt;<a name="line.143"></a>
+<span class="sourceLineNo">144</span> * Example:<a name="line.144"></a>
+<span class="sourceLineNo">145</span> * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;StringBuilder sb = new StringBuilder();<a name="line.145"></a>
+<span class="sourceLineNo">146</span>catchException(sb).charAt(-2); // throws ClassCastException&lt;/pre&gt;&lt;/code&gt;<a name="line.146"></a>
+<span class="sourceLineNo">147</span> * &lt;p&gt;<a name="line.147"></a>
+<span class="sourceLineNo">148</span> * Probably you have tested a final class. Proxy factories usually try to<a name="line.148"></a>
+<span class="sourceLineNo">149</span> * subclass the type of the proxied object. This is not possible if the original<a name="line.149"></a>
+<span class="sourceLineNo">150</span> * class is final. But there is a way out. If the tested method belongs to an<a name="line.150"></a>
+<span class="sourceLineNo">151</span> * interface, then you can cast the argument (here: &lt;code&gt;sb&lt;/code&gt;) to that<a name="line.151"></a>
+<span class="sourceLineNo">152</span> * interface or ,easier, change the declared type of the argument to the<a name="line.152"></a>
+<span class="sourceLineNo">153</span> * interface type. This works because the created proxy is not longer required<a name="line.153"></a>
+<span class="sourceLineNo">154</span> * to have the same type as the original class but it must only have the same<a name="line.154"></a>
+<span class="sourceLineNo">155</span> * interface.<a name="line.155"></a>
+<span class="sourceLineNo">156</span> * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;// first variant<a name="line.156"></a>
+<span class="sourceLineNo">157</span>StringBuilder sb = new StringBuilder();<a name="line.157"></a>
+<span class="sourceLineNo">158</span>catchException((CharSequence) sb).charAt(-2); // works fine<a name="line.158"></a>
+<span class="sourceLineNo">159</span><a name="line.159"></a>
+<span class="sourceLineNo">160</span>// second variant<a name="line.160"></a>
+<span class="sourceLineNo">161</span>CharSequence sb = new StringBuilder();<a name="line.161"></a>
+<span class="sourceLineNo">162</span>catchException(sb).charAt(-2); // works fine&lt;/pre&gt;&lt;/code&gt; If the tested<a name="line.162"></a>
+<span class="sourceLineNo">163</span> * method does no belong to an interface fall back to the try/catch-blocks or<a name="line.163"></a>
+<span class="sourceLineNo">164</span> * use &lt;a<a name="line.164"></a>
+<span class="sourceLineNo">165</span> * href="http://code.google.com/p/catch-exception/wiki/Dependencies"&gt;Powermock<a name="line.165"></a>
+<span class="sourceLineNo">166</span> * &lt;/a&gt;.<a name="line.166"></a>
+<span class="sourceLineNo">167</span> * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;// example for<a name="line.167"></a>
+<span class="sourceLineNo">168</span> PowerMock with JUnit4<a name="line.168"></a>
+<span class="sourceLineNo">169</span>&amp;#064;RunWith(PowerMockRunner.class)<a name="line.169"></a>
+<span class="sourceLineNo">170</span>&amp;#064;PrepareForTest({ MyFinalType.class })<a name="line.170"></a>
+<span class="sourceLineNo">171</span>public class MyTest {<a name="line.171"></a>
+<span class="sourceLineNo">172</span>&lt;/pre&gt;&lt;/code&gt;<a name="line.172"></a>
+<span class="sourceLineNo">173</span> * &lt;h3 id="6"&gt;6. The exception is not caught. Why?&lt;/h3&gt;<a name="line.173"></a>
+<span class="sourceLineNo">174</span> * &lt;p&gt;<a name="line.174"></a>
+<span class="sourceLineNo">175</span> * Example:<a name="line.175"></a>
+<span class="sourceLineNo">176</span> * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;ServiceImpl impl = new ServiceImpl();<a name="line.176"></a>
+<span class="sourceLineNo">177</span>catchException(impl).do(); // do() is a final method that throws an exception&lt;/pre&gt;&lt;/code&gt;<a name="line.177"></a>
+<span class="sourceLineNo">178</span> * &lt;p&gt;<a name="line.178"></a>
+<span class="sourceLineNo">179</span> * Probably you have tested a final method. If that tested method belongs to an<a name="line.179"></a>
+<span class="sourceLineNo">180</span> * interface you could use {@link #interfaces(Object)} to fix that problem. But<a name="line.180"></a>
+<span class="sourceLineNo">181</span> * then the syntax starts to become ugly.<a name="line.181"></a>
+<span class="sourceLineNo">182</span> * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;Service api = new ServiceImpl();<a name="line.182"></a>
+<span class="sourceLineNo">183</span>catchException(interfaces(api)).do(); // works fine&lt;/pre&gt;&lt;/code&gt; I recommend<a name="line.183"></a>
+<span class="sourceLineNo">184</span> * to use try/catch blocks in such cases.<a name="line.184"></a>
+<span class="sourceLineNo">185</span> * <a name="line.185"></a>
+<span class="sourceLineNo">186</span> * &lt;h3 id="7"&gt;7. Do I have to care about memory leaks?&lt;/h3&gt;<a name="line.186"></a>
+<span class="sourceLineNo">187</span> * &lt;p&gt;<a name="line.187"></a>
+<span class="sourceLineNo">188</span> * This library uses a {@link ThreadLocal}. ThreadLocals are known to cause<a name="line.188"></a>
+<span class="sourceLineNo">189</span> * memory leaks if they refer to a class the garbage collector would like to<a name="line.189"></a>
+<span class="sourceLineNo">190</span> * collect. If you use this library only for testing, then memory leaks do not<a name="line.190"></a>
+<span class="sourceLineNo">191</span> * worry you. If you use this library for other purposes than testing, you<a name="line.191"></a>
+<span class="sourceLineNo">192</span> * should care.<a name="line.192"></a>
+<span class="sourceLineNo">193</span> * &lt;p&gt;<a name="line.193"></a>
+<span class="sourceLineNo">194</span> * &lt;h3 id="8"&gt;8. The caught exception is not available in another thread. Why?&lt;/h3&gt;<a name="line.194"></a>
+<span class="sourceLineNo">195</span> * &lt;p&gt;<a name="line.195"></a>
+<span class="sourceLineNo">196</span> * The caught exception is saved &lt;a href="#threadlocal"&gt;at the thread&lt;/a&gt; the<a name="line.196"></a>
+<span class="sourceLineNo">197</span> * exception is thrown in. This is the reason the exception is not visible<a name="line.197"></a>
+<span class="sourceLineNo">198</span> * within any other thread.<a name="line.198"></a>
+<span class="sourceLineNo">199</span> * &lt;h3 id="9"&gt;9. How do I catch an exception thrown by a static method?&lt;/h3&gt;<a name="line.199"></a>
+<span class="sourceLineNo">200</span> * &lt;p&gt;<a name="line.200"></a>
+<span class="sourceLineNo">201</span> * Unfortunately, catch-exception does not support this. Fall back on try/catch<a name="line.201"></a>
+<span class="sourceLineNo">202</span> * blocks.<a name="line.202"></a>
+<span class="sourceLineNo">203</span> * &lt;h3 id="10"&gt;10. Is there a way to get rid of the throws clause in my test<a name="line.203"></a>
+<span class="sourceLineNo">204</span> * method?&lt;/h3&gt;<a name="line.204"></a>
+<span class="sourceLineNo">205</span> * &lt;p&gt;<a name="line.205"></a>
+<span class="sourceLineNo">206</span> * Example:<a name="line.206"></a>
+<span class="sourceLineNo">207</span> * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;public void testSomething() throws Exception {<a name="line.207"></a>
+<span class="sourceLineNo">208</span>    ...<a name="line.208"></a>
+<span class="sourceLineNo">209</span>    catchException(obj).do(); // do() throws a checked exception&lt;/pre&gt;&lt;/code&gt; No,<a name="line.209"></a>
+<span class="sourceLineNo">210</span> * although the exception is always caught you cannot omit the throws clause in<a name="line.210"></a>
+<span class="sourceLineNo">211</span> * your test method.<a name="line.211"></a>
+<span class="sourceLineNo">212</span> * &lt;h3 id="11"&gt;11. Can I catch errors instead of exceptions?&lt;/h3&gt;<a name="line.212"></a>
+<span class="sourceLineNo">213</span> * &lt;p&gt;<a name="line.213"></a>
+<span class="sourceLineNo">214</span> * Yes, have a look at<a name="line.214"></a>
+<span class="sourceLineNo">215</span> * {@link com.googlecode.catchexception.throwable.CatchThrowable} (in module<a name="line.215"></a>
+<span class="sourceLineNo">216</span> * catch-throwable).<a name="line.216"></a>
+<span class="sourceLineNo">217</span> * <a name="line.217"></a>
+<span class="sourceLineNo">218</span> * @author rwoo<a name="line.218"></a>
+<span class="sourceLineNo">219</span> * @since 16.09.2011<a name="line.219"></a>
+<span class="sourceLineNo">220</span> */<a name="line.220"></a>
+<span class="sourceLineNo">221</span>public class CatchException {<a name="line.221"></a>
+<span class="sourceLineNo">222</span><a name="line.222"></a>
+<span class="sourceLineNo">223</span>    /**<a name="line.223"></a>
+<span class="sourceLineNo">224</span>     * Returns the exception caught during the last call on the proxied object<a name="line.224"></a>
+<span class="sourceLineNo">225</span>     * in the current thread.<a name="line.225"></a>
+<span class="sourceLineNo">226</span>     * <a name="line.226"></a>
+<span class="sourceLineNo">227</span>     * @param &lt;E&gt;<a name="line.227"></a>
+<span class="sourceLineNo">228</span>     *            This type parameter makes some type casts redundant.<a name="line.228"></a>
+<span class="sourceLineNo">229</span>     * @return Returns the exception caught during the last call on the proxied<a name="line.229"></a>
+<span class="sourceLineNo">230</span>     *         object in the current thread - if the call was made through a<a name="line.230"></a>
+<span class="sourceLineNo">231</span>     *         proxy that has been created via<a name="line.231"></a>
+<span class="sourceLineNo">232</span>     *         {@link #verifyException(Object, Class) verifyException()} or<a name="line.232"></a>
+<span class="sourceLineNo">233</span>     *         {@link #catchException(Object, Class) catchException()}. Returns<a name="line.233"></a>
+<span class="sourceLineNo">234</span>     *         null the proxy has not caught an exception. Returns null if the<a name="line.234"></a>
+<span class="sourceLineNo">235</span>     *         caught exception belongs to a class that is no longer<a name="line.235"></a>
+<span class="sourceLineNo">236</span>     *         {@link ClassLoader loaded}.<a name="line.236"></a>
+<span class="sourceLineNo">237</span>     */<a name="line.237"></a>
+<span class="sourceLineNo">238</span>    public static &lt;E extends Exception&gt; E caughtException() {<a name="line.238"></a>
+<span class="sourceLineNo">239</span>        return ExceptionHolder.&lt;E&gt; get();<a name="line.239"></a>
+<span class="sourceLineNo">240</span>    }<a name="line.240"></a>
+<span class="sourceLineNo">241</span><a name="line.241"></a>
+<span class="sourceLineNo">242</span>    /**<a name="line.242"></a>
+<span class="sourceLineNo">243</span>     * Use it to verify that an exception is thrown and to get access to the<a name="line.243"></a>
+<span class="sourceLineNo">244</span>     * thrown exception (for further verifications).<a name="line.244"></a>
+<span class="sourceLineNo">245</span>     * &lt;p&gt;<a name="line.245"></a>
+<span class="sourceLineNo">246</span>     * The following example verifies that obj.doX() throws a Exception:<a name="line.246"></a>
+<span class="sourceLineNo">247</span>     * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;verifyException(obj).doX(); // catch and verify<a name="line.247"></a>
+<span class="sourceLineNo">248</span>assert "foobar".equals(caughtException().getMessage()); // further analysis<a name="line.248"></a>
+<span class="sourceLineNo">249</span>&lt;/pre&gt;&lt;/code&gt;<a name="line.249"></a>
+<span class="sourceLineNo">250</span>     * &lt;p&gt;<a name="line.250"></a>
+<span class="sourceLineNo">251</span>     * If &lt;code&gt;doX()&lt;/code&gt; does not throw a &lt;code&gt;Exception&lt;/code&gt;, then a<a name="line.251"></a>
+<span class="sourceLineNo">252</span>     * {@link ExceptionNotThrownAssertionError} is thrown. Otherwise the thrown<a name="line.252"></a>
+<span class="sourceLineNo">253</span>     * exception can be retrieved via {@link #caughtException()}.<a name="line.253"></a>
+<span class="sourceLineNo">254</span>     * &lt;p&gt;<a name="line.254"></a>
+<span class="sourceLineNo">255</span>     * <a name="line.255"></a>
+<span class="sourceLineNo">256</span>     * @param &lt;T&gt;<a name="line.256"></a>
+<span class="sourceLineNo">257</span>     *            The type of the given &lt;code&gt;obj&lt;/code&gt;.<a name="line.257"></a>
+<span class="sourceLineNo">258</span>     * <a name="line.258"></a>
+<span class="sourceLineNo">259</span>     * @param obj<a name="line.259"></a>
+<span class="sourceLineNo">260</span>     *            The instance that shall be proxied. Must not be<a name="line.260"></a>
+<span class="sourceLineNo">261</span>     *            &lt;code&gt;null&lt;/code&gt;.<a name="line.261"></a>
+<span class="sourceLineNo">262</span>     * @return Returns an object that verifies that each invocation on the<a name="line.262"></a>
+<span class="sourceLineNo">263</span>     *         underlying object throws an exception.<a name="line.263"></a>
+<span class="sourceLineNo">264</span>     */<a name="line.264"></a>
+<span class="sourceLineNo">265</span>    public static &lt;T&gt; T verifyException(T obj) {<a name="line.265"></a>
+<span class="sourceLineNo">266</span>        return verifyException(obj, Exception.class);<a name="line.266"></a>
+<span class="sourceLineNo">267</span>    }<a name="line.267"></a>
+<span class="sourceLineNo">268</span><a name="line.268"></a>
+<span class="sourceLineNo">269</span>    /**<a name="line.269"></a>
+<span class="sourceLineNo">270</span>     * Use it to verify that an exception of specific type is thrown and to get<a name="line.270"></a>
+<span class="sourceLineNo">271</span>     * access to the thrown exception (for further verifications).<a name="line.271"></a>
+<span class="sourceLineNo">272</span>     * &lt;p&gt;<a name="line.272"></a>
+<span class="sourceLineNo">273</span>     * The following example verifies that obj.doX() throws a MyException:<a name="line.273"></a>
+<span class="sourceLineNo">274</span>     * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;verifyException(obj, MyException.class).doX(); // catch and verify<a name="line.274"></a>
+<span class="sourceLineNo">275</span>assert "foobar".equals(caughtException().getMessage()); // further analysis<a name="line.275"></a>
+<span class="sourceLineNo">276</span>&lt;/pre&gt;&lt;/code&gt;<a name="line.276"></a>
+<span class="sourceLineNo">277</span>     * &lt;p&gt;<a name="line.277"></a>
+<span class="sourceLineNo">278</span>     * If &lt;code&gt;doX()&lt;/code&gt; does not throw a &lt;code&gt;MyException&lt;/code&gt;, then a<a name="line.278"></a>
+<span class="sourceLineNo">279</span>     * {@link ExceptionNotThrownAssertionError} is thrown. Otherwise the thrown<a name="line.279"></a>
+<span class="sourceLineNo">280</span>     * exception can be retrieved via {@link #caughtException()}.<a name="line.280"></a>
+<span class="sourceLineNo">281</span>     * &lt;p&gt;<a name="line.281"></a>
+<span class="sourceLineNo">282</span>     * <a name="line.282"></a>
+<span class="sourceLineNo">283</span>     * @param &lt;T&gt;<a name="line.283"></a>
+<span class="sourceLineNo">284</span>     *            The type of the given &lt;code&gt;obj&lt;/code&gt;.<a name="line.284"></a>
+<span class="sourceLineNo">285</span>     * <a name="line.285"></a>
+<span class="sourceLineNo">286</span>     * @param &lt;E&gt;<a name="line.286"></a>
+<span class="sourceLineNo">287</span>     *            The type of the exception that shall be caught.<a name="line.287"></a>
+<span class="sourceLineNo">288</span>     * @param obj<a name="line.288"></a>
+<span class="sourceLineNo">289</span>     *            The instance that shall be proxied. Must not be<a name="line.289"></a>
+<span class="sourceLineNo">290</span>     *            &lt;code&gt;null&lt;/code&gt;.<a name="line.290"></a>
+<span class="sourceLineNo">291</span>     * @param clazz<a name="line.291"></a>
+<span class="sourceLineNo">292</span>     *            The type of the exception that shall be thrown by the<a name="line.292"></a>
+<span class="sourceLineNo">293</span>     *            underlying object. Must not be &lt;code&gt;null&lt;/code&gt;.<a name="line.293"></a>
+<span class="sourceLineNo">294</span>     * @return Returns an object that verifies that each invocation on the<a name="line.294"></a>
+<span class="sourceLineNo">295</span>     *         underlying object throws an exception of the given type.<a name="line.295"></a>
+<span class="sourceLineNo">296</span>     */<a name="line.296"></a>
+<span class="sourceLineNo">297</span>    public static &lt;T, E extends Exception&gt; T verifyException(T obj,<a name="line.297"></a>
+<span class="sourceLineNo">298</span>            Class&lt;E&gt; clazz) {<a name="line.298"></a>
+<span class="sourceLineNo">299</span><a name="line.299"></a>
+<span class="sourceLineNo">300</span>        return processException(obj, clazz, true);<a name="line.300"></a>
+<span class="sourceLineNo">301</span>    }<a name="line.301"></a>
+<span class="sourceLineNo">302</span><a name="line.302"></a>
+<span class="sourceLineNo">303</span>    /**<a name="line.303"></a>
+<span class="sourceLineNo">304</span>     * Use it to catch an exception and to get access to the thrown exception<a name="line.304"></a>
+<span class="sourceLineNo">305</span>     * (for further verifications).<a name="line.305"></a>
+<span class="sourceLineNo">306</span>     * &lt;p&gt;<a name="line.306"></a>
+<span class="sourceLineNo">307</span>     * In the following example you catch exceptions that are thrown by<a name="line.307"></a>
+<span class="sourceLineNo">308</span>     * obj.doX():<a name="line.308"></a>
+<span class="sourceLineNo">309</span>     * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;catchException(obj).doX(); // catch<a name="line.309"></a>
+<span class="sourceLineNo">310</span>if (caughtException() != null) {<a name="line.310"></a>
+<span class="sourceLineNo">311</span>    assert "foobar".equals(caughtException().getMessage()); // further analysis<a name="line.311"></a>
+<span class="sourceLineNo">312</span>}&lt;/pre&gt;&lt;/code&gt;<a name="line.312"></a>
+<span class="sourceLineNo">313</span>     * If &lt;code&gt;doX()&lt;/code&gt; throws a exception, then {@link #caughtException()}<a name="line.313"></a>
+<span class="sourceLineNo">314</span>     * will return the caught exception. If &lt;code&gt;doX()&lt;/code&gt; does not throw a<a name="line.314"></a>
+<span class="sourceLineNo">315</span>     * exception, then {@link #caughtException()} will return &lt;code&gt;null&lt;/code&gt;.<a name="line.315"></a>
+<span class="sourceLineNo">316</span>     * &lt;p&gt;<a name="line.316"></a>
+<span class="sourceLineNo">317</span>     * <a name="line.317"></a>
+<span class="sourceLineNo">318</span>     * @param &lt;T&gt;<a name="line.318"></a>
+<span class="sourceLineNo">319</span>     *            The type of the given &lt;code&gt;obj&lt;/code&gt;.<a name="line.319"></a>
+<span class="sourceLineNo">320</span>     * <a name="line.320"></a>
+<span class="sourceLineNo">321</span>     * @param obj<a name="line.321"></a>
+<span class="sourceLineNo">322</span>     *            The instance that shall be proxied. Must not be<a name="line.322"></a>
+<span class="sourceLineNo">323</span>     *            &lt;code&gt;null&lt;/code&gt;.<a name="line.323"></a>
+<span class="sourceLineNo">324</span>     * @return Returns a proxy for the given object. The proxy catches<a name="line.324"></a>
+<span class="sourceLineNo">325</span>     *         exceptions of the given type when a method on the proxy is<a name="line.325"></a>
+<span class="sourceLineNo">326</span>     *         called.<a name="line.326"></a>
+<span class="sourceLineNo">327</span>     */<a name="line.327"></a>
+<span class="sourceLineNo">328</span>    public static &lt;T&gt; T catchException(T obj) {<a name="line.328"></a>
+<span class="sourceLineNo">329</span><a name="line.329"></a>
+<span class="sourceLineNo">330</span>        return processException(obj, Exception.class, false);<a name="line.330"></a>
+<span class="sourceLineNo">331</span>    }<a name="line.331"></a>
+<span class="sourceLineNo">332</span><a name="line.332"></a>
+<span class="sourceLineNo">333</span>    /**<a name="line.333"></a>
+<span class="sourceLineNo">334</span>     * Use it to catch an exception of a specific type and to get access to the<a name="line.334"></a>
+<span class="sourceLineNo">335</span>     * thrown exception (for further verifications).<a name="line.335"></a>
+<span class="sourceLineNo">336</span>     * &lt;p&gt;<a name="line.336"></a>
+<span class="sourceLineNo">337</span>     * In the following example you catch exceptions of type MyException that<a name="line.337"></a>
+<span class="sourceLineNo">338</span>     * are thrown by obj.doX():<a name="line.338"></a>
+<span class="sourceLineNo">339</span>     * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;catchException(obj, MyException.class).doX(); // catch<a name="line.339"></a>
+<span class="sourceLineNo">340</span>if (caughtException() != null) {<a name="line.340"></a>
+<span class="sourceLineNo">341</span>    assert "foobar".equals(caughtException().getMessage()); // further analysis<a name="line.341"></a>
+<span class="sourceLineNo">342</span>}&lt;/pre&gt;&lt;/code&gt;<a name="line.342"></a>
+<span class="sourceLineNo">343</span>     * If &lt;code&gt;doX()&lt;/code&gt; throws a &lt;code&gt;MyException&lt;/code&gt;, then<a name="line.343"></a>
+<span class="sourceLineNo">344</span>     * {@link #caughtException()} will return the caught exception. If<a name="line.344"></a>
+<span class="sourceLineNo">345</span>     * &lt;code&gt;doX()&lt;/code&gt; does not throw a &lt;code&gt;MyException&lt;/code&gt;, then<a name="line.345"></a>
+<span class="sourceLineNo">346</span>     * {@link #caughtException()} will return &lt;code&gt;null&lt;/code&gt;. If<a name="line.346"></a>
+<span class="sourceLineNo">347</span>     * &lt;code&gt;doX()&lt;/code&gt; throws an exception of another type, i.e. not a<a name="line.347"></a>
+<span class="sourceLineNo">348</span>     * subclass but another class, then this exception is not thrown and<a name="line.348"></a>
+<span class="sourceLineNo">349</span>     * {@link #caughtException()} will return &lt;code&gt;null&lt;/code&gt;.<a name="line.349"></a>
+<span class="sourceLineNo">350</span>     * &lt;p&gt;<a name="line.350"></a>
+<span class="sourceLineNo">351</span>     * <a name="line.351"></a>
+<span class="sourceLineNo">352</span>     * @param &lt;T&gt;<a name="line.352"></a>
+<span class="sourceLineNo">353</span>     *            The type of the given &lt;code&gt;obj&lt;/code&gt;.<a name="line.353"></a>
+<span class="sourceLineNo">354</span>     * <a name="line.354"></a>
+<span class="sourceLineNo">355</span>     * @param &lt;E&gt;<a name="line.355"></a>
+<span class="sourceLineNo">356</span>     *            The type of the exception that shall be caught.<a name="line.356"></a>
+<span class="sourceLineNo">357</span>     * @param obj<a name="line.357"></a>
+<span class="sourceLineNo">358</span>     *            The instance that shall be proxied. Must not be<a name="line.358"></a>
+<span class="sourceLineNo">359</span>     *            &lt;code&gt;null&lt;/code&gt;.<a name="line.359"></a>
+<span class="sourceLineNo">360</span>     * @param clazz<a name="line.360"></a>
+<span class="sourceLineNo">361</span>     *            The type of the exception that shall be caught. Must not be<a name="line.361"></a>
+<span class="sourceLineNo">362</span>     *            &lt;code&gt;null&lt;/code&gt;.<a name="line.362"></a>
+<span class="sourceLineNo">363</span>     * @return Returns a proxy for the given object. The proxy catches<a name="line.363"></a>
+<span class="sourceLineNo">364</span>     *         exceptions of the given type when a method on the proxy is<a name="line.364"></a>
+<span class="sourceLineNo">365</span>     *         called.<a name="line.365"></a>
+<span class="sourceLineNo">366</span>     */<a name="line.366"></a>
+<span class="sourceLineNo">367</span>    public static &lt;T, E extends Exception&gt; T catchException(T obj,<a name="line.367"></a>
+<span class="sourceLineNo">368</span>            Class&lt;E&gt; clazz) {<a name="line.368"></a>
+<span class="sourceLineNo">369</span><a name="line.369"></a>
+<span class="sourceLineNo">370</span>        return processException(obj, clazz, false);<a name="line.370"></a>
+<span class="sourceLineNo">371</span>    }<a name="line.371"></a>
+<span class="sourceLineNo">372</span><a name="line.372"></a>
+<span class="sourceLineNo">373</span>    /**<a name="line.373"></a>
+<span class="sourceLineNo">374</span>     * Creates a proxy that processes exceptions thrown by the underlying<a name="line.374"></a>
+<span class="sourceLineNo">375</span>     * object.<a name="line.375"></a>
+<span class="sourceLineNo">376</span>     * &lt;p&gt;<a name="line.376"></a>
+<span class="sourceLineNo">377</span>     * Delegates to<a name="line.377"></a>
+<span class="sourceLineNo">378</span>     * {@link SubclassProxyFactory#createProxy(Class, MethodInterceptor)} which<a name="line.378"></a>
+<span class="sourceLineNo">379</span>     * itself might delegate to<a name="line.379"></a>
+<span class="sourceLineNo">380</span>     * {@link InterfaceOnlyProxyFactory#createProxy(Class, MethodInterceptor)}.<a name="line.380"></a>
+<span class="sourceLineNo">381</span>     */<a name="line.381"></a>
+<span class="sourceLineNo">382</span>    @SuppressWarnings("javadoc")<a name="line.382"></a>
+<span class="sourceLineNo">383</span>    private static &lt;T, E extends Exception&gt; T processException(T obj,<a name="line.383"></a>
+<span class="sourceLineNo">384</span>            Class&lt;E&gt; exceptionClazz, boolean assertException) {<a name="line.384"></a>
+<span class="sourceLineNo">385</span><a name="line.385"></a>
+<span class="sourceLineNo">386</span>        if (obj == null) {<a name="line.386"></a>
+<span class="sourceLineNo">387</span>            throw new IllegalArgumentException("obj must not be null");<a name="line.387"></a>
+<span class="sourceLineNo">388</span>        }<a name="line.388"></a>
+<span class="sourceLineNo">389</span><a name="line.389"></a>
+<span class="sourceLineNo">390</span>        return new SubclassProxyFactory().&lt;T&gt; createProxy(obj.getClass(),<a name="line.390"></a>
+<span class="sourceLineNo">391</span>                new ExceptionProcessingInterceptor&lt;E&gt;(obj, exceptionClazz,<a name="line.391"></a>
+<span class="sourceLineNo">392</span>                        assertException));<a name="line.392"></a>
+<span class="sourceLineNo">393</span><a name="line.393"></a>
+<span class="sourceLineNo">394</span>    }<a name="line.394"></a>
+<span class="sourceLineNo">395</span><a name="line.395"></a>
+<span class="sourceLineNo">396</span>    /**<a name="line.396"></a>
+<span class="sourceLineNo">397</span>     * Returns a proxy that implements all interfaces of the underlying object.<a name="line.397"></a>
+<span class="sourceLineNo">398</span>     * <a name="line.398"></a>
+<span class="sourceLineNo">399</span>     * @param &lt;T&gt;<a name="line.399"></a>
+<span class="sourceLineNo">400</span>     *            must be an interface the object implements<a name="line.400"></a>
+<span class="sourceLineNo">401</span>     * @param obj<a name="line.401"></a>
+<span class="sourceLineNo">402</span>     *            the object that created proxy will delegate all calls to<a name="line.402"></a>
+<span class="sourceLineNo">403</span>     * @return Returns a proxy that implements all interfaces of the underlying<a name="line.403"></a>
+<span class="sourceLineNo">404</span>     *         object and delegates all calls to that underlying object.<a name="line.404"></a>
+<span class="sourceLineNo">405</span>     */<a name="line.405"></a>
+<span class="sourceLineNo">406</span>    public static &lt;T&gt; T interfaces(T obj) {<a name="line.406"></a>
+<span class="sourceLineNo">407</span><a name="line.407"></a>
+<span class="sourceLineNo">408</span>        if (obj == null) {<a name="line.408"></a>
+<span class="sourceLineNo">409</span>            throw new IllegalArgumentException("obj must not be null");<a name="line.409"></a>
+<span class="sourceLineNo">410</span>        }<a name="line.410"></a>
+<span class="sourceLineNo">411</span><a name="line.411"></a>
+<span class="sourceLineNo">412</span>        return new InterfaceOnlyProxyFactory().&lt;T&gt; createProxy(obj.getClass(),<a name="line.412"></a>
+<span class="sourceLineNo">413</span>                new DelegatingInterceptor(obj));<a name="line.413"></a>
+<span class="sourceLineNo">414</span>    }<a name="line.414"></a>
+<span class="sourceLineNo">415</span><a name="line.415"></a>
+<span class="sourceLineNo">416</span>    /**<a name="line.416"></a>
+<span class="sourceLineNo">417</span>     * Sets the {@link #caughtException() caught exception} to null. This does<a name="line.417"></a>
+<span class="sourceLineNo">418</span>     * not affect exceptions saved at threads other than the current one.<a name="line.418"></a>
+<span class="sourceLineNo">419</span>     * &lt;p&gt;<a name="line.419"></a>
+<span class="sourceLineNo">420</span>     * Actually you probably never need to call this method because each method<a name="line.420"></a>
+<span class="sourceLineNo">421</span>     * call on a proxied object in the current thread resets the caught<a name="line.421"></a>
+<span class="sourceLineNo">422</span>     * exception. But if you want to improve test isolation or if you want to<a name="line.422"></a>
+<span class="sourceLineNo">423</span>     * 'clean up' after testing (to avoid memory leaks), call the method before<a name="line.423"></a>
+<span class="sourceLineNo">424</span>     * or after testing.<a name="line.424"></a>
+<span class="sourceLineNo">425</span>     */<a name="line.425"></a>
+<span class="sourceLineNo">426</span>    public static void resetCaughtException() {<a name="line.426"></a>
+<span class="sourceLineNo">427</span>        ExceptionHolder.set(null);<a name="line.427"></a>
+<span class="sourceLineNo">428</span>    }<a name="line.428"></a>
+<span class="sourceLineNo">429</span><a name="line.429"></a>
+<span class="sourceLineNo">430</span>}<a name="line.430"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
