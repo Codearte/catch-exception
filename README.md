@@ -130,7 +130,7 @@ public void testErrorCollectorWithExpectedException() {
 Sometimes you want to test for an [optional exception in a parameterized test](http://stackoverflow.com/questions/7275859/testing-for-optional-exception-in-parameterized-junit-4-test?rq=1). JUnit4's [ExpecteException](http://kentbeck.github.com/junit/javadoc/latest/org/junit/rules/ExpectedException.html) rule does not help in this case. This is another use case where catch-exception comes in quite handy.
 
 # Download
-Go to the [Installation page](http://code.google.com/p/catch-exception/wiki/Installation) to get the latest release. This page provides also the Maven coordinates, prerequisites, and information about dependencies to other libraries.
+Go to the [Installation page](https://github.com/Codearte/catch-exception/wiki/Installation) to get the latest release. This page provides also the Maven coordinates, prerequisites, and information about dependencies to other libraries.
 
 # Future enhancements
 Nothing to do at the moment. There are no open issues and no open feature requests (last update: 10 Feb 2012).
