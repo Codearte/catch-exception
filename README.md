@@ -32,10 +32,10 @@ The last both lines of code can be combined in a single line of code if you like
 ```java
 verifyException(myList, IndexOutOfBoundsException.class).get(1);
 ```
-More information about the usage you find in the [Javadoc documentation](http://javadoc.catch-exception.googlecode.com/hg/index.html?com/googlecode/catchexception/CatchException.html).
+More information about the usage you find in the [Javadoc documentation](http://codearte.github.io/catch-exception/apidocs/overview-summary.html).
 
 # BDD-like
-If you prefer a BDD-like approach, you can use [BDDAssertions](http://joel-costigliola.github.io/assertj/core/api/org/assertj/core/api/BDDAssertions.html) and BDDCatchException for another code style:
+If you prefer a BDD-like approach, you can use [BDDAssertions](http://joel-costigliola.github.io/assertj/core/api/org/assertj/core/api/BDDAssertions.html) and [BDDCatchException](http://codearte.github.io/catch-exception/apidocs/com/googlecode/catchexception/apis/CatchExceptionBdd.html) for another code style:
 
 ```java
 import static com.googlecode.catchexception.CatchException.*;
@@ -96,10 +96,10 @@ verifyException(builder).get();
 Thanks to the community for the example.
 
 # Catch throwables
-If you want to catch both throwables and exceptions have a look at the [catch-throwable packages](http://javadoc.catch-exception.googlecode.com/hg/index.html?com/googlecode/catchexception/throwable/package-summary.html). They provide the same API as the catch-exception packages but they belong to a different maven module.
+If you want to catch both throwables and exceptions have a look at the `catch-throwable` packages in [javadoc](http://codearte.github.io/catch-exception/apidocs/index.html?overview-summary.html). They provide the same API as the `catch-exception` packages but they belong to a different maven module.
 
 # JUnit4
-If you want to handle expected exceptions, the [documentation](http://javadoc.catch-exception.googlecode.com/hg/index.html?com/googlecode/catchexception/CatchException.html) of catch-exception names some general reasons to prefer catch-exception in comparison to mechanisms that are provided by testing frameworks.
+If you want to handle expected exceptions, the [documentation](http://codearte.github.io/catch-exception/apidocs/com/googlecode/catchexception/CatchException.html) of catch-exception names some general reasons to prefer catch-exception in comparison to mechanisms that are provided by testing frameworks.
 
 But some reasons that are specific to JUnit4 are outlined only here.
 
