@@ -1,0 +1,9 @@
+com.googlecode.catchexception
+com.googlecode.catchexception.apis
+com.googlecode.catchexception.apis.internal.hamcrest
+com.googlecode.catchexception.internal
+com.googlecode.catchexception.throwable
+com.googlecode.catchexception.throwable.apis
+com.googlecode.catchexception.throwable.apis.internal.hamcrest
+com.googlecode.catchexception.throwable.internal
+org.assertj.core.api

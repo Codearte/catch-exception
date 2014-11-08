@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="pl">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/**<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (C) 2011 rwoo@gmx.de<a name="line.2"></a>
+<span class="sourceLineNo">003</span> *<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * you may not use this file except in compliance with the License.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * You may obtain a copy of the License at<a name="line.6"></a>
+<span class="sourceLineNo">007</span> *<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *         http://www.apache.org/licenses/LICENSE-2.0<a name="line.8"></a>
+<span class="sourceLineNo">009</span> *<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Unless required by applicable law or agreed to in writing, software<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * distributed under the License is distributed on an "AS IS" BASIS,<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * See the License for the specific language governing permissions and<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * limitations under the License.<a name="line.14"></a>
+<span class="sourceLineNo">015</span> */<a name="line.15"></a>
+<span class="sourceLineNo">016</span>package com.googlecode.catchexception.throwable.apis;<a name="line.16"></a>
+<span class="sourceLineNo">017</span><a name="line.17"></a>
+<span class="sourceLineNo">018</span>import org.hamcrest.Matcher;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>import org.junit.matchers.JUnitMatchers;<a name="line.19"></a>
+<span class="sourceLineNo">020</span><a name="line.20"></a>
+<span class="sourceLineNo">021</span>import com.googlecode.catchexception.throwable.apis.internal.hamcrest.ThrowableMessageMatcher;<a name="line.21"></a>
+<span class="sourceLineNo">022</span>import com.googlecode.catchexception.throwable.apis.internal.hamcrest.ThrowableNoCauseMatcher;<a name="line.22"></a>
+<span class="sourceLineNo">023</span><a name="line.23"></a>
+<span class="sourceLineNo">024</span>/**<a name="line.24"></a>
+<span class="sourceLineNo">025</span> * Provides some Hamcrest {@link Matcher matchers} to match some {@link Throwable throwable} properties.<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * &lt;p&gt;<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * EXAMPLE: &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;// given an empty list<a name="line.27"></a>
+<span class="sourceLineNo">028</span>List myList = new ArrayList();<a name="line.28"></a>
+<span class="sourceLineNo">029</span><a name="line.29"></a>
+<span class="sourceLineNo">030</span>// when we try to get the first element of the list<a name="line.30"></a>
+<span class="sourceLineNo">031</span>catchThrowable(myList).get(1);<a name="line.31"></a>
+<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">033</span>// then we expect an IndexOutOfBoundsThrowable with message "Index: 1, Size: 0" <a name="line.33"></a>
+<span class="sourceLineNo">034</span>assertThat(caughtThrowable(),<a name="line.34"></a>
+<span class="sourceLineNo">035</span>  allOf(<a name="line.35"></a>
+<span class="sourceLineNo">036</span>    is(IndexOutOfBoundsThrowable.class), <a name="line.36"></a>
+<span class="sourceLineNo">037</span>    hasMessage("Index: 1, Size: 0"),<a name="line.37"></a>
+<span class="sourceLineNo">038</span>    hasNoCause()<a name="line.38"></a>
+<span class="sourceLineNo">039</span>  )<a name="line.39"></a>
+<span class="sourceLineNo">040</span>);&lt;/pre&gt;&lt;/code&gt;<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * &lt;p&gt;<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * To combine the standard Hamcrest matchers, your custom matchers, these matchers, and other matcher collections (as<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * {@link JUnitMatchers}) in a single class follow the instructions outlined in &lt;a<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * href="http://code.google.com/p/hamcrest/wiki/Tutorial#Sugar_generation"&gt;Sugar generation&lt;/a&gt;.<a name="line.44"></a>
+<span class="sourceLineNo">045</span> * &lt;p&gt;<a name="line.45"></a>
+<span class="sourceLineNo">046</span> * Hint: This class might use &lt;a href="http://code.google.com/p/hamsandwich"&gt;hamsandwich&lt;/a&gt; in the future but as long<a name="line.46"></a>
+<span class="sourceLineNo">047</span> * as hamsandwich is not in any public maven repository, this class will not use hamsandwich.<a name="line.47"></a>
+<span class="sourceLineNo">048</span> * <a name="line.48"></a>
+<span class="sourceLineNo">049</span> * @author rwoo<a name="line.49"></a>
+<span class="sourceLineNo">050</span> * @since 1.2.0<a name="line.50"></a>
+<span class="sourceLineNo">051</span> */<a name="line.51"></a>
+<span class="sourceLineNo">052</span>public class CatchThrowableHamcrestMatchers {<a name="line.52"></a>
+<span class="sourceLineNo">053</span><a name="line.53"></a>
+<span class="sourceLineNo">054</span>    /**<a name="line.54"></a>
+<span class="sourceLineNo">055</span>     * EXAMPLE:<a name="line.55"></a>
+<span class="sourceLineNo">056</span>     * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;assertThat(caughtThrowable(), hasMessage("Index: 9, Size: 9"));&lt;/pre&gt;&lt;/code&gt;<a name="line.56"></a>
+<span class="sourceLineNo">057</span>     * <a name="line.57"></a>
+<span class="sourceLineNo">058</span>     * @param &lt;T&gt;<a name="line.58"></a>
+<span class="sourceLineNo">059</span>     *            the throwable subclass<a name="line.59"></a>
+<span class="sourceLineNo">060</span>     * @param expectedMessage<a name="line.60"></a>
+<span class="sourceLineNo">061</span>     *            the expected throwable message<a name="line.61"></a>
+<span class="sourceLineNo">062</span>     * @return Returns a matcher that matches an throwable if it has the given message.<a name="line.62"></a>
+<span class="sourceLineNo">063</span>     */<a name="line.63"></a>
+<span class="sourceLineNo">064</span>    public static &lt;T extends Throwable&gt; org.hamcrest.Matcher&lt;T&gt; hasMessage(String expectedMessage) {<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        return new ThrowableMessageMatcher&lt;T&gt;(expectedMessage);<a name="line.65"></a>
+<span class="sourceLineNo">066</span>    }<a name="line.66"></a>
+<span class="sourceLineNo">067</span><a name="line.67"></a>
+<span class="sourceLineNo">068</span>    /**<a name="line.68"></a>
+<span class="sourceLineNo">069</span>     * EXAMPLES:<a name="line.69"></a>
+<span class="sourceLineNo">070</span>     * &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;assertThat(caughtThrowable(), hasMessageThat(is("Index: 9, Size: 9")));<a name="line.70"></a>
+<span class="sourceLineNo">071</span>assertThat(caughtThrowable(), hasMessageThat(containsString("Index: 9"))); // using JUnitMatchers<a name="line.71"></a>
+<span class="sourceLineNo">072</span>assertThat(caughtThrowable(), hasMessageThat(containsPattern("Index: \\d+"))); // using Mockito's Find&lt;/pre&gt;&lt;/code&gt;<a name="line.72"></a>
+<span class="sourceLineNo">073</span>     * <a name="line.73"></a>
+<span class="sourceLineNo">074</span>     * @param &lt;T&gt;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>     *            the throwable subclass<a name="line.75"></a>
+<span class="sourceLineNo">076</span>     * @param stringMatcher<a name="line.76"></a>
+<span class="sourceLineNo">077</span>     *            a string matcher<a name="line.77"></a>
+<span class="sourceLineNo">078</span>     * @return Returns a matcher that matches an throwable if the given string matcher matches the throwable message.<a name="line.78"></a>
+<span class="sourceLineNo">079</span>     */<a name="line.79"></a>
+<span class="sourceLineNo">080</span>    public static &lt;T extends Throwable&gt; org.hamcrest.Matcher&lt;T&gt; hasMessageThat(Matcher&lt;String&gt; stringMatcher) {<a name="line.80"></a>
+<span class="sourceLineNo">081</span>        return new ThrowableMessageMatcher&lt;T&gt;(stringMatcher);<a name="line.81"></a>
+<span class="sourceLineNo">082</span>    }<a name="line.82"></a>
+<span class="sourceLineNo">083</span><a name="line.83"></a>
+<span class="sourceLineNo">084</span>    /**<a name="line.84"></a>
+<span class="sourceLineNo">085</span>     * EXAMPLE: &lt;code&gt;&lt;pre class="prettyprint lang-java"&gt;assertThat(caughtThrowable(), hasNoCause());&lt;/pre&gt;&lt;/code&gt;<a name="line.85"></a>
+<span class="sourceLineNo">086</span>     * <a name="line.86"></a>
+<span class="sourceLineNo">087</span>     * @param &lt;T&gt;<a name="line.87"></a>
+<span class="sourceLineNo">088</span>     *            the throwable subclass<a name="line.88"></a>
+<span class="sourceLineNo">089</span>     * @return Returns a matcher that matches the throwable if it does not have a {@link Throwable#getCause() cause}.<a name="line.89"></a>
+<span class="sourceLineNo">090</span>     */<a name="line.90"></a>
+<span class="sourceLineNo">091</span>    public static &lt;T extends Throwable&gt; org.hamcrest.Matcher&lt;T&gt; hasNoCause() {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        return new ThrowableNoCauseMatcher&lt;T&gt;();<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    }<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>}<a name="line.95"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
