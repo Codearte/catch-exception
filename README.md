@@ -133,6 +133,7 @@ Sometimes you want to test for an [optional exception in a parameterized test](h
 Go to the [Installation page](https://github.com/Codearte/catch-exception/wiki/Installation) to get the latest release. This page provides also the Maven coordinates, prerequisites, and information about dependencies to other libraries.
 
 # Future enhancements
+This is maintenance project only - new features are not planned.
 
 Read about catching exception with Java 8:
 * [Clean JUnit Throwable-Tests with Java 8 Lambdas](http://www.codeaffine.com/2014/07/28/clean-junit-throwable-tests-with-java-8-lambdas/)
@@ -140,6 +141,7 @@ Read about catching exception with Java 8:
 
 # Credits
 Thanks to Rod Woo, the former author of catch-exception for creating this awesome library.
+
 Thanks to Szczepan Faber who made some suggestions about a BDD-like syntax for catch-exception. Finally, his ideas triggered the enhancements that came with the 1.0.4 release.
 
 # Questions, Suggestions, Issues
