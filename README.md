@@ -56,7 +56,7 @@ then(caughtException())
 The assertions used here are part of [AssertJ 1.6.0](http://joel-costigliola.github.io/assertj/).
 
 # Hamcrest
-If you prefer [Hamcrest](http://code.google.com/p/hamcrest/) matchers to express assertions, you can use [CatchExceptionHamcrestMatchers](http://javadoc.catch-exception.googlecode.com/hg/index.html?com/googlecode/catchexception/apis/CatchExceptionHamcrestMatchers.html) with the following code style:
+If you prefer [Hamcrest](http://hamcrest.org/JavaHamcrest/) matchers to express assertions, you can use [CatchExceptionHamcrestMatchers](http://codearte.github.io/catch-exception/apidocs/com/googlecode/catchexception/apis/CatchExceptionHamcrestMatchers.html) with the following code style:
 
 ```java
 import static com.googlecode.catchexception.CatchException.*;
