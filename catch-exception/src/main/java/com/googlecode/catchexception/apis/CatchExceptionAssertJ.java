@@ -63,38 +63,4 @@ import org.assertj.core.api.CompatibilityAssertions;
 @Deprecated
 public class CatchExceptionAssertJ extends BDDCatchException {
 
-    /**
-     * Enables <a
-     * href="https://github.com/joel-costigliola/assertj-core">AssertJ</a>
-     * assertions about the caught exception.
-     * <p>
-     * EXAMPLE:
-     * <code><pre class="prettyprint lang-java">// given an empty list
-     List myList = new ArrayList();
-
-     // when we try to get first element of the list
-     when(myList).get(1);
-
-     // then we expect an IndexOutOfBoundsException
-     then(caughtException())
-     .isInstanceOf(IndexOutOfBoundsException.class)
-     .hasMessage("Index: 1, Size: 0")
-     .hasMessageStartingWith("Index: 1")
-     .hasMessageEndingWith("Size: 0")
-     .hasMessageContaining("Size")
-     .hasNoCause();
-     </pre></code>
-     *
-     * @param actualException
-     *            the value to be the target of the assertions methods.
-     * @return Returns the created assertion object.
-     * @see org.assertj.core.api.Assertions#assertThat(Throwable)
-     * @deprecated As of release 1.3.0, replaced by {@link org.assertj.core.api.BDDAssertions#then(Throwable)}
-     */
-    public static AbstractThrowableAssert<?, ? extends Throwable> then(Exception actualException) {
-        // delegate to AssertJ assertions
-        return CompatibilityAssertions.assertThat(actualException);
-    }
-
-
 }
