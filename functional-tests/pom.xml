@@ -20,6 +20,7 @@
     <module>catch-throwable-assertj17</module>
     <module>catch-exception-assertj16</module>
     <module>catch-throwable-assertj16</module>
+    <module>catch-exception-java8</module>
   </modules>
 
   <build>
