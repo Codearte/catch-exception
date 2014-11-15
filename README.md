@@ -35,11 +35,11 @@ verifyException(myList, IndexOutOfBoundsException.class).get(1);
 More information about the usage you find in the [Javadoc documentation](http://codearte.github.io/catch-exception/apidocs/overview-summary.html).
 
 # BDD-like
-If you prefer a BDD-like approach, you can use [BDDAssertions](http://joel-costigliola.github.io/assertj/core/api/org/assertj/core/api/BDDAssertions.html) and [BDDCatchException](http://codearte.github.io/catch-exception/apidocs/com/googlecode/catchexception/apis/CatchExceptionBdd.html) for another code style:
+If you prefer a BDD-like approach, you can use [BDDCatchException](http://codearte.github.io/catch-exception/apidocs/com/googlecode/catchexception/apis/CatchExceptionBdd.html) for another code style:
 
 ```java
 import static com.googlecode.catchexception.CatchException.*;
-import static org.assertj.core.api.BDDAssertions.then;
+import static com.googlecode.catchexception.apis.BDDCatchException.*;
 
 // given: an empty list
 List myList = new ArrayList();
@@ -53,7 +53,7 @@ then(caughtException())
         .hasMessage("Index: 1, Size: 0")
         .hasNoCause();
 ```
-The assertions used here are part of [AssertJ 1.6.0](http://joel-costigliola.github.io/assertj/).
+The assertions used here are part of [AssertJ](http://joel-costigliola.github.io/assertj/).
 
 # Hamcrest
 If you prefer [Hamcrest](http://hamcrest.org/JavaHamcrest/) matchers to express assertions, you can use [CatchExceptionHamcrestMatchers](http://codearte.github.io/catch-exception/apidocs/com/googlecode/catchexception/apis/CatchExceptionHamcrestMatchers.html) with the following code style:
