@@ -17,12 +17,14 @@ package com.googlecode.catchexception.throwable.apis;
 
 import com.googlecode.catchexception.throwable.CatchThrowable;
 import com.googlecode.catchexception.throwable.ThrowableNotThrownAssertionError;
+import org.assertj.core.api.AbstractThrowableAssert;
+import org.assertj.core.api.CompatibilityAssertions;
 
 /**
  * Supports <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>-like approach to catch and verify
  * throwables (<i>given/when/then</i>).
  * <p>
- * <code><pre class="prettyprint lang-java">import static org.assertj.core.api.BDDAssertions.then;
+ * <code><pre class="prettyprint lang-java">import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.*;
 
  // given an empty list
 List myList = new ArrayList();
@@ -33,31 +35,17 @@ when(myList).get(1);
 // then we expect an IndexOutOfBoundsThrowable
 then(caughtThrowable())
         .isInstanceOf(IndexOutOfBoundsThrowable.class)
-        .hasMessage("Index: 1, Size: 0") 
+        .hasMessage("Index: 1, Size: 0")
         .hasNoCause();
-        
+
 // then we expect an IndexOutOfBoundsThrowable (alternatively)
 thenThrown(IndexOutOfBoundsThrowable.class);
 </pre></code>
- * <p>
- * The Method {@link org.assertj.core.api.BDDAssertions#then(Throwable)} is originated from <a
- * href="http://assertj.org">AssertJ</a>. You can also use method <code>assertThat</code>:
- * <code><pre class="prettyprint lang-java">// import static org.assertj.core.api.Assertions.assertThat;
-
-// then we expect an IndexOutOfBoundsThrowable
-assertThat(caughtThrowable())
-        .isInstanceOf(IndexOutOfBoundsThrowable.class)
-        .hasMessage("Index: 1, Size: 0") 
-        .hasMessageStartingWith("Index: 1") 
-        .hasMessageEndingWith("Size: 0") 
-        .hasMessageContaining("Size") 
-        .hasNoCause();
-</pre></code>
- * 
+ *
  * @author rwoo
  * @author mariuszs
  * @since 1.3.0
- * 
+ *
  */
 public class BDDCatchThrowable {
 
@@ -73,7 +61,7 @@ public class BDDCatchThrowable {
      * @see com.googlecode.catchexception.throwable.CatchThrowable#catchThrowable(Object)
      */
     public static <T> T when(T obj) {
-        return CatchThrowable.catchThrowable(obj);
+      return CatchThrowable.catchThrowable(obj);
     }
 
     /**
@@ -89,22 +77,40 @@ when(myList).get(500);
 // then we expect an IndexOutOfBoundsThrowable
 thenThrown(IndexOutOfBoundsThrowable.class);
 </pre></code>
-     * 
+     *
      * @param actualThrowableClazz
      *            the expected type of the caught throwable.
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void thenThrown(Class actualThrowableClazz) {
-        Throwable e = CatchThrowable.caughtThrowable();
-        if (e == null) {
-            // no throwable caught -> assertion failed
-            throw new ThrowableNotThrownAssertionError(actualThrowableClazz);
-        } else if (!actualThrowableClazz.isAssignableFrom(CatchThrowable.caughtThrowable().getClass())) {
-            // caught throwable is of wrong type -> assertion failed
-            throw new ThrowableNotThrownAssertionError(actualThrowableClazz, e);
-        } else {
-            // the caught throwable is of the expected type -> nothing to do :-)
-        }
-    }
+      CatchThrowable.catchThrowable(actualThrowableClazz);    }
 
+  /**
+   * Enables <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a> assertions about the caught
+   * throwable.
+   * <p>
+   * EXAMPLE: <code><pre class="prettyprint lang-java">// given an empty list
+   List myList = new ArrayList();
+
+   // when we try to get first element of the list
+   when(myList).get(1);
+
+   // then we expect an IndexOutOfBoundsThrowable
+   then(caughtThrowable())
+   .isInstanceOf(IndexOutOfBoundsThrowable.class)
+   .hasMessage("Index: 1, Size: 0")
+   .hasMessageStartingWith("Index: 1")
+   .hasMessageEndingWith("Size: 0")
+   .hasMessageContaining("Size")
+   .hasNoCause();
+   </pre></code>
+   *
+   * @param actualThrowable
+   *            the value to be the target of the assertions methods.
+   * @return Returns the created assertion object.
+   */
+  public static AbstractThrowableAssert<?, ? extends Throwable> then(Throwable actualThrowable) {
+    // delegate to AssertJ assertions
+    return CompatibilityAssertions.assertThat(actualThrowable);
+  }
 }

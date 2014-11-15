@@ -37,23 +37,6 @@ public class BDDCatchThrowableTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testAssertThat() {
-        // given an empty list
-        List myList = new ArrayList();
-
-        // when we try to get first element of the list
-        when(myList).get(1);
-
-        // then we expect an IndexOutOfBoundsException
-        assertThat(caughtThrowable()) //
-                .isInstanceOf(IndexOutOfBoundsException.class) //
-                .hasMessage("Index: 1, Size: 0") //
-                .hasNoCause();
-
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Test
     public void testThenThrown() {
 
         // given a list with nine elements

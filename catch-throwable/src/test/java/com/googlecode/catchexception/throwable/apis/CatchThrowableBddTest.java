@@ -19,7 +19,6 @@ import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrow
 import static com.googlecode.catchexception.throwable.apis.CatchThrowableBdd.then;
 import static com.googlecode.catchexception.throwable.apis.CatchThrowableBdd.thenThrown;
 import static com.googlecode.catchexception.throwable.apis.CatchThrowableBdd.when;
-import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -36,23 +35,6 @@ import org.junit.Test;
  */
 @SuppressWarnings("javadoc")
 public class CatchThrowableBddTest {
-
-    @SuppressWarnings("rawtypes")
-    @Test
-    public void testAssertThat() {
-        // given an empty list
-        List myList = new ArrayList();
-
-        // when we try to get first element of the list
-        when(myList).get(1);
-
-        // then we expect an IndexOutOfBoundsException
-        assertThat(caughtThrowable()) //
-                .isInstanceOf(IndexOutOfBoundsException.class) //
-                .hasMessage("Index: 1, Size: 0") //
-                .hasNoCause();
-
-    }
 
     @SuppressWarnings("rawtypes")
     @Test

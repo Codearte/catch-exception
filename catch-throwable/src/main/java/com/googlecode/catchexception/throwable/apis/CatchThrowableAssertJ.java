@@ -15,9 +15,6 @@
  */
 package com.googlecode.catchexception.throwable.apis;
 
-import org.assertj.core.api.AbstractThrowableAssert;
-import org.assertj.core.api.CompatibilityAssertions;
-
 /**
  * Supports <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>-like approach to catch and verify
  * throwables (<i>given/when/then</i>).
@@ -37,20 +34,6 @@ import org.assertj.core.api.CompatibilityAssertions;
  // then we expect an IndexOutOfBoundsThrowable (alternatively)
  thenThrown(IndexOutOfBoundsThrowable.class);
  </pre></code>
- * <p>
- * The Method {@link #then(Throwable)} uses <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a>
- * assertions. You can use them directly if you like:
- * <code><pre class="prettyprint lang-java">// import static org.assertj.core.api.Assertions.assertThat;
-
- // then we expect an IndexOutOfBoundsThrowable
- assertThat(caughtThrowable())
- .isInstanceOf(IndexOutOfBoundsThrowable.class)
- .hasMessage("Index: 1, Size: 0")
- .hasMessageStartingWith("Index: 1")
- .hasMessageEndingWith("Size: 0")
- .hasMessageContaining("Size")
- .hasNoCause();
- </pre></code>
  *
  * @author rwoo
  * @since 1.2.0
@@ -59,36 +42,5 @@ import org.assertj.core.api.CompatibilityAssertions;
  */
 @Deprecated
 public class CatchThrowableAssertJ extends BDDCatchThrowable{
-
-    /**
-     * Enables <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a> assertions about the caught
-     * throwable.
-     * <p>
-     * EXAMPLE: <code><pre class="prettyprint lang-java">// given an empty list
-     List myList = new ArrayList();
-
-     // when we try to get first element of the list
-     when(myList).get(1);
-
-     // then we expect an IndexOutOfBoundsThrowable
-     then(caughtThrowable())
-     .isInstanceOf(IndexOutOfBoundsThrowable.class)
-     .hasMessage("Index: 1, Size: 0")
-     .hasMessageStartingWith("Index: 1")
-     .hasMessageEndingWith("Size: 0")
-     .hasMessageContaining("Size")
-     .hasNoCause();
-     </pre></code>
-     *
-     * @param actualThrowable
-     *            the value to be the target of the assertions methods.
-     * @return Returns the created assertion object.
-     * @see org.assertj.core.api.BDDAssertions#then(Throwable)
-     * @deprecated As of release 1.3.0, replaced by {@link org.assertj.core.api.BDDAssertions#then(java.lang.Throwable}
-     */
-    public static AbstractThrowableAssert<?, ? extends Throwable> then(Throwable actualThrowable) {
-        // delegate to AssertJ assertions
-        return CompatibilityAssertions.assertThat(actualThrowable);
-    }
 
 }
