@@ -16,7 +16,8 @@
 package com.googlecode.catchexception.apis;
 
 import com.googlecode.catchexception.CatchException;
-import com.googlecode.catchexception.ExceptionNotThrownAssertionError;
+import org.assertj.core.api.AbstractThrowableAssert;
+import org.assertj.core.api.CompatibilityAssertions;
 
 /**
  * Supports <a
@@ -41,21 +42,7 @@ then(caughtException())
 // then we expect an IndexOutOfBoundsException (alternatively)
 thenThrown(IndexOutOfBoundsException.class);
 </pre></code>
- * <p>
- * The Method {@link org.assertj.core.api.BDDAssertions#then(Throwable)} is originated from <a
- * href="http://assertj.org">AssertJ</a>. You can also use method <code>assertThat</code>:
- * <code><pre class="prettyprint lang-java">// import static org.assertj.core.api.Assertions.assertThat;
-
-// then we expect an IndexOutOfBoundsException
-assertThat(caughtException())
-        .isInstanceOf(IndexOutOfBoundsException.class)
-        .hasMessage("Index: 1, Size: 0") 
-        .hasMessageStartingWith("Index: 1") 
-        .hasMessageEndingWith("Size: 0") 
-        .hasMessageContaining("Size") 
-        .hasNoCause();
-</pre></code>
- * 
+ *
  * @author rwoo
  * @author mariuszs
  * @since 1.3.0
@@ -92,23 +79,44 @@ when(myList).get(500);
 // then we expect an IndexOutOfBoundsException
 thenThrown(IndexOutOfBoundsException.class);
 </pre></code>
-     * 
+     *
      * @param actualExceptionClazz
      *            the expected type of the caught exception.
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void thenThrown(Class actualExceptionClazz) {
-        Exception e = CatchException.caughtException();
-        if (e == null) {
-            // no exception caught -> assertion failed
-            throw new ExceptionNotThrownAssertionError(actualExceptionClazz);
-        } else if (!actualExceptionClazz.isAssignableFrom(CatchException
-                .caughtException().getClass())) {
-            // caught exception is of wrong type -> assertion failed
-            throw new ExceptionNotThrownAssertionError(actualExceptionClazz, e);
-        } else {
-            // the caught exception is of the expected type -> nothing to do :-)
-        }
+      CatchExceptionUtils.thenThrown(actualExceptionClazz);
+    }
+
+  /**
+     * Enables <a
+     * href="https://github.com/joel-costigliola/assertj-core">AssertJ</a>
+     * assertions about the caught exception.
+     * <p>
+     * EXAMPLE:
+     * <code><pre class="prettyprint lang-java">// given an empty list
+     List myList = new ArrayList();
+
+     // when we try to get first element of the list
+     when(myList).get(1);
+
+     // then we expect an IndexOutOfBoundsException
+     then(caughtException())
+     .isInstanceOf(IndexOutOfBoundsException.class)
+     .hasMessage("Index: 1, Size: 0")
+     .hasMessageStartingWith("Index: 1")
+     .hasMessageEndingWith("Size: 0")
+     .hasMessageContaining("Size")
+     .hasNoCause();
+     </pre></code>
+     *
+     * @param actualException
+     *            the value to be the target of the assertions methods.
+     * @return Returns the created assertion object.
+     */
+    public static AbstractThrowableAssert<?, ? extends Throwable> then(Exception actualException) {
+        // delegate to AssertJ assertions
+        return CompatibilityAssertions.assertThat(actualException);
     }
 
 }

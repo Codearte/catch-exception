@@ -42,30 +42,54 @@ then(caughtException())
 // then we expect an IndexOutOfBoundsException (alternatively)
 thenThrown(IndexOutOfBoundsException.class);
 </pre></code>
- * <p>
- * The Method {@link #then(Exception)} uses <a
- * href="https://github.com/alexruiz/fest-assert-2.x">FEST Fluent Assertions
- * 2.x</a>. You can use them directly if you like:
- * <code><pre class="prettyprint lang-java">// import static org.fest.assertions.Assertions.assertThat;
-
-// then we expect an IndexOutOfBoundsException
-assertThat(caughtException())
-        .isInstanceOf(IndexOutOfBoundsException.class)
-        .hasMessage("Index: 1, Size: 0") 
-        .hasMessageStartingWith("Index: 1") 
-        .hasMessageEndingWith("Size: 0") 
-        .hasMessageContaining("Size") 
-        .hasNoCause();
-</pre></code>
- * 
+ *
  * @author rwoo
  * @see com.googlecode.catchexception.apis.BDDCatchException
  * @deprecated As of release 1.3.0, replaced by {@link com.googlecode.catchexception.apis.BDDCatchException()}
  */
 @Deprecated
-public class CatchExceptionBdd extends BDDCatchException {
+public class CatchExceptionBdd {
 
-    /**
+  /**
+   * @param <T>
+   *            The type of the given <code>obj</code>.
+   *
+   * @param obj
+   *            The instance that shall be proxied. Must not be
+   *            <code>null</code>.
+   * @return Returns a proxy for the given object. The proxy catches
+   *         exceptions of the given type when a method on the proxy is
+   *         called.
+   * @see com.googlecode.catchexception.CatchException#catchException(Object)
+   */
+  public static <T> T when(T obj) {
+    return CatchException.catchException(obj);
+  }
+
+  /**
+   * Throws an assertion if no exception is thrown or if an exception of an
+   * unexpected type is thrown.
+   * <p>
+   * EXAMPLE:
+   * <code><pre class="prettyprint lang-java">// given a list with nine members
+   List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+   // when we try to get the 500th member of the fellowship
+   when(myList).get(500);
+
+   // then we expect an IndexOutOfBoundsException
+   thenThrown(IndexOutOfBoundsException.class);
+   </pre></code>
+   *
+   * @param actualExceptionClazz
+   *            the expected type of the caught exception.
+   */
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  public static void thenThrown(Class actualExceptionClazz) {
+    CatchExceptionUtils.thenThrown(actualExceptionClazz);
+  }
+
+  /**
      * Enables <a href="https://github.com/alexruiz/fest-assert-2.x">FEST Fluent
      * Assertions 2.x</a> about the caught exception.
      * <p>

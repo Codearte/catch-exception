@@ -18,14 +18,11 @@ package com.googlecode.catchexception.throwable.apis;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenThrown;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.then;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.Assert.assertEquals;
 
 /**
