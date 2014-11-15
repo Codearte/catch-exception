@@ -22,9 +22,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.googlecode.catchexception.CatchException.caughtException;
-import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.thenThrown;
-import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.when;
-import static org.assertj.core.api.CompatibilityAssertions.assertThat;
+import static com.googlecode.catchexception.apis.BDDCatchException.thenThrown;
+import static com.googlecode.catchexception.apis.BDDCatchException.when;
+import static com.googlecode.catchexception.apis.BDDCatchException.then;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -45,7 +45,7 @@ public class BDDCatchExceptionTest {
         when(myList).get(1);
 
         // then we expect an IndexOutOfBoundsException
-        assertThat(caughtException()) //
+        then(caughtException()) //
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();

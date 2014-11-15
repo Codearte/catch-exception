@@ -24,7 +24,7 @@ import java.util.List;
 import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenThrown;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.then;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -34,6 +34,23 @@ import static org.junit.Assert.assertEquals;
  */
 @SuppressWarnings("javadoc")
 public class BDDCatchThrowableTest {
+
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void testAssertThat() {
+        // given an empty list
+        List myList = new ArrayList();
+
+        // when we try to get first element of the list
+        when(myList).get(1);
+
+        // then we expect an IndexOutOfBoundsException
+        then(caughtThrowable()) //
+            .isInstanceOf(IndexOutOfBoundsException.class) //
+            .hasMessage("Index: 1, Size: 0") //
+            .hasNoCause();
+
+    }
 
     @SuppressWarnings("rawtypes")
     @Test
