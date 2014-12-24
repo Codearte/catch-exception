@@ -36,7 +36,7 @@ import org.junit.Test;
 @SuppressWarnings("javadoc")
 public class CatchThrowableBddTest {
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "deprecation" })
     @Test
     public void testThen() {
         // given an empty list
@@ -87,7 +87,7 @@ public class CatchThrowableBddTest {
         }
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "deprecation" })
     @Test
     public void testThenThrown() {
 

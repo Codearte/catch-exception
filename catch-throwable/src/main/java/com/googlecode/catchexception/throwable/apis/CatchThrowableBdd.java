@@ -16,6 +16,7 @@
 package com.googlecode.catchexception.throwable.apis;
 
 import com.googlecode.catchexception.throwable.CatchThrowable;
+
 import org.fest.assertions.api.Assertions;
 import org.fest.assertions.api.ThrowableAssert;
 
@@ -80,6 +81,7 @@ public class CatchThrowableBdd {
    * @param actualThrowableClazz
    *            the expected type of the caught throwable.
    */
+  @SuppressWarnings("rawtypes")
   public static void thenThrown(Class actualThrowableClazz) {
     CatchThrowableUtils.thenThrown(actualThrowableClazz);
   }

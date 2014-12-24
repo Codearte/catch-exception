@@ -81,7 +81,7 @@ thenThrown(IndexOutOfBoundsThrowable.class);
      * @param actualThrowableClazz
      *            the expected type of the caught throwable.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("rawtypes")
     public static void thenThrown(Class actualThrowableClazz) {
       CatchThrowable.catchThrowable(actualThrowableClazz);    }
 
