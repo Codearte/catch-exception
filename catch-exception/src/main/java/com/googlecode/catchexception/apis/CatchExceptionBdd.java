@@ -19,7 +19,6 @@ import org.fest.assertions.api.Assertions;
 import org.fest.assertions.api.ThrowableAssert;
 
 import com.googlecode.catchexception.CatchException;
-import com.googlecode.catchexception.ExceptionNotThrownAssertionError;
 
 /**
  * Supports <a
