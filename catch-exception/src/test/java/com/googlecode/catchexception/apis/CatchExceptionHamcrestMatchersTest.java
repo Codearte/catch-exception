@@ -24,8 +24,12 @@ import java.util.List;
 
 import static com.googlecode.catchexception.CatchException.catchException;
 import static com.googlecode.catchexception.CatchException.caughtException;
-import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.*;
-import static org.hamcrest.CoreMatchers.*;
+import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.hasMessage;
+import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.hasMessageThat;
+import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.hasNoCause;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;

@@ -19,6 +19,7 @@ import com.googlecode.catchexception.CatchException;
 import com.googlecode.catchexception.ExceptionNotThrownAssertionError;
 
 class CatchExceptionUtils {
+  @SuppressWarnings({"rawtypes", "unchecked"})
   public static void thenThrown(Class actualExceptionClazz) {
     Exception e = CatchException.caughtException();
     if (e == null) {

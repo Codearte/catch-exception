@@ -19,7 +19,6 @@ import org.fest.assertions.api.Assertions;
 import org.fest.assertions.api.ThrowableAssert;
 
 import com.googlecode.catchexception.CatchException;
-import com.googlecode.catchexception.ExceptionNotThrownAssertionError;
 
 /**
  * Supports <a
@@ -84,7 +83,7 @@ public class CatchExceptionBdd {
    * @param actualExceptionClazz
    *            the expected type of the caught exception.
    */
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings("rawtypes")
   public static void thenThrown(Class actualExceptionClazz) {
     CatchExceptionUtils.thenThrown(actualExceptionClazz);
   }
