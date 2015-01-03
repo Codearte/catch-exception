@@ -28,11 +28,12 @@ import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.
 import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.hasMessageThat;
 import static com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers.hasNoCause;
 import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.isA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.containsString;
 
 /**
  * Tests {@link CatchExceptionHamcrestMatchers}.
@@ -64,7 +65,7 @@ public class CatchExceptionHamcrestMatchersTest {
     private void assertMessage(String foundMessage,
                                String expectedExpectedPart, String expectedGotPart) {
 
-        String[] foundParts = foundMessage.split("(?=got:)");
+        String[] foundParts = foundMessage.split("(?=but:)");
         assertEquals("split of foundMessage did not work: " + foundMessage, 2,
                 foundParts.length);
         String foundExpectedPart = foundParts[0].trim();
@@ -79,7 +80,7 @@ public class CatchExceptionHamcrestMatchersTest {
         assertThat(caughtException(),
                 instanceOf(IndexOutOfBoundsException.class));
 
-        assertThat(caughtException(), is(IndexOutOfBoundsException.class));
+        assertThat(caughtException(), isA(Exception.class));
 
         try {
             assertThat(caughtException(),
@@ -89,7 +90,7 @@ public class CatchExceptionHamcrestMatchersTest {
             assertMessage(
                     e.getMessage(),
                     "Expected: an instance of java.lang.IllegalArgumentException",
-                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    "but: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9> is a java.lang.IndexOutOfBoundsException");
         }
     }
 
@@ -123,7 +124,7 @@ public class CatchExceptionHamcrestMatchersTest {
         } catch (AssertionError e) {
             assertMessage(e.getMessage(),
                     "Expected: has a message that is \"something went wrong\"",
-                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    "but: was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
     }
 
@@ -139,7 +140,7 @@ public class CatchExceptionHamcrestMatchersTest {
         } catch (AssertionError e) {
             assertMessage(e.getMessage(),
                     "Expected: has a message that is \"something went wrong\"",
-                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    "but: was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
     }
 
@@ -157,7 +158,7 @@ public class CatchExceptionHamcrestMatchersTest {
             assertMessage(
                     e.getMessage(),
                     "Expected: has a message that is a string containing \"Index: 8\"",
-                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    "but: was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
     }
 
@@ -173,13 +174,12 @@ public class CatchExceptionHamcrestMatchersTest {
             assertMessage(
                     e.getMessage(), //
                     "Expected: has no cause",
-                    "got: <java.lang.RuntimeException: "
+                    "but: was <java.lang.RuntimeException: "
                             + "java.lang.IndexOutOfBoundsException:"
                             + " Index: 9, Size: 9>");
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testMatcher_allOf() {
 
@@ -201,7 +201,7 @@ public class CatchExceptionHamcrestMatchersTest {
                             + "(an instance of java.lang.IndexOutOfBoundsException" //
                             + " and has a message that is \"something went wrong\"" //
                             + " and has no cause)",
-                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    "but: has a message that is \"something went wrong\" was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
 
     }

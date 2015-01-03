@@ -28,11 +28,12 @@ import static com.googlecode.catchexception.throwable.apis.CatchThrowableHamcres
 import static com.googlecode.catchexception.throwable.apis.CatchThrowableHamcrestMatchers.hasMessageThat;
 import static com.googlecode.catchexception.throwable.apis.CatchThrowableHamcrestMatchers.hasNoCause;
 import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.isA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.containsString;
 
 /**
  * Tests {@link CatchThrowableHamcrestMatchers}.
@@ -63,7 +64,7 @@ public class CatchThrowableHamcrestMatchersTest {
 
     private void assertMessage(String foundMessage, String expectedExpectedPart, String expectedGotPart) {
 
-        String[] foundParts = foundMessage.split("(?=got:)");
+        String[] foundParts = foundMessage.split("(?=but:)");
         assertEquals("split of foundMessage did not work: " + foundMessage, 2, foundParts.length);
         String foundExpectedPart = foundParts[0].trim();
         String foundGotPart = foundParts[1].trim();
@@ -76,14 +77,14 @@ public class CatchThrowableHamcrestMatchersTest {
 
         assertThat(caughtThrowable(), instanceOf(IndexOutOfBoundsException.class));
 
-        assertThat(caughtThrowable(), is(IndexOutOfBoundsException.class));
+        assertThat(caughtThrowable(), isA(Throwable.class));
 
         try {
             assertThat(caughtThrowable(), instanceOf(IllegalArgumentException.class));
             throw new RuntimeException("AssertionError expected");
         } catch (AssertionError e) {
             assertMessage(e.getMessage(), "Expected: an instance of java.lang.IllegalArgumentException",
-                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    "but: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9> is a java.lang.IndexOutOfBoundsException");
         }
     }
 
@@ -114,7 +115,7 @@ public class CatchThrowableHamcrestMatchersTest {
             throw new RuntimeException("AssertionError expected");
         } catch (AssertionError e) {
             assertMessage(e.getMessage(), "Expected: has a message that is \"something went wrong\"",
-                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    "but: was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
     }
 
@@ -128,7 +129,7 @@ public class CatchThrowableHamcrestMatchersTest {
             throw new RuntimeException("AssertionError expected");
         } catch (AssertionError e) {
             assertMessage(e.getMessage(), "Expected: has a message that is \"something went wrong\"",
-                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    "but: was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
     }
 
@@ -142,7 +143,7 @@ public class CatchThrowableHamcrestMatchersTest {
             throw new RuntimeException("AssertionError expected");
         } catch (AssertionError e) {
             assertMessage(e.getMessage(), "Expected: has a message that is a string containing \"Index: 8\"",
-                    "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    "but: was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
     }
 
@@ -156,12 +157,11 @@ public class CatchThrowableHamcrestMatchersTest {
             throw new RuntimeException("AssertionError expected");
         } catch (AssertionError e) {
             assertMessage(e.getMessage(), //
-                    "Expected: has no cause", "got: <java.lang.RuntimeException: "
+                    "Expected: has no cause", "but: was <java.lang.RuntimeException: "
                             + "java.lang.IndexOutOfBoundsException:" + " Index: 9, Size: 9>");
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testMatcher_allOf() {
 
@@ -182,7 +182,7 @@ public class CatchThrowableHamcrestMatchersTest {
             assertMessage(e.getMessage(), "Expected: " //
                     + "(an instance of java.lang.IndexOutOfBoundsException" //
                     + " and has a message that is \"something went wrong\"" //
-                    + " and has no cause)", "got: <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+                    + " and has no cause)", "but: has a message that is \"something went wrong\" was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
         }
 
     }
