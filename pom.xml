@@ -18,13 +18,15 @@
   -->
 
   <prerequisites>
-    <maven>3.0.0</maven>
+    <maven>3.0.5</maven>
   </prerequisites>
 
   <properties>
     <!-- Maven defaults to java5, ensure we default to java 6 -->
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
+
+    <maven.min-version>3.0.5</maven.min-version>
 
     <!-- Prevents "[WARNING] Using platform encoding (Cp1252 actually) to copy filtered
       resources, i.e. build is platform dependent! See http://maven.apache.org/general.html#encoding-warning -->
@@ -91,14 +93,42 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.eluder.coveralls</groupId>
-        <artifactId>coveralls-maven-plugin</artifactId>
-        <version>3.0.1</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <configuration>
+          <rules>
+            <requireMavenVersion>
+              <version>[${maven.min-version},)</version>
+            </requireMavenVersion>
+          </rules>
+        </configuration>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>enforce-clean</id>
+            <phase>pre-clean</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>enforce-site</id>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
+
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.2.201409121644</version>
         <executions>
           <execution>
             <id>prepare-agent</id>
@@ -119,7 +149,26 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.2</version>
+        <configuration>
+            <!-- Slightly faster builds, see https://jira.codehaus.org/browse/MCOMPILER-209 -->
+            <useIncrementalCompilation>false</useIncrementalCompilation>
+        </configuration>
+      </plugin>
+
+      <!--
+        The phase "package" should create the test.jar as well
+        so that the artifact can be signed during the phase 'verify'.
+       -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
       <!-- http://maven.apache.org/plugins/maven-javadoc-plugin/usage.html
@@ -127,7 +176,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.1</version>
         <configuration>
           <show>private</show>
           <use>true</use>
@@ -234,10 +282,27 @@ else {
         </executions>
       </plugin>
 
+        <!--
+         mvn source:jar
+         The phase "package" should create the sources.jar and test-sources.jar as well
+         so that the artifact can be signed during the phase 'verify'.
+         -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+              <goal>test-jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
-      <!--
-        add headers if "maven verify" fails (due to license:check)
-       mvn license:format   -->
+      <!-- add headers if "maven verify" fails (due to license:check) mvn license:format   -->
       <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
@@ -271,15 +336,46 @@ else {
 
     </plugins>
 
-
     <pluginManagement>
 
       <plugins>
 
-        <!--
-          The phase "package" should create the test.jar as well
-          so that the artifact can be signed during the phase 'verify'.
-         -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>2.6.1</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>1.3.1</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.5.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.10.1</version>
+        </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
@@ -287,35 +383,12 @@ else {
           <configuration>
             <skipIfEmpty>true</skipIfEmpty>
           </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>test-jar</goal>
-              </goals>
-            </execution>
-          </executions>
         </plugin>
 
-
-        <!--
-         mvn source:jar
-         The phase "package" should create the sources.jar and test-sources.jar as well
-         so that the artifact can be signed during the phase 'verify'.
-         -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
           <version>2.4</version>
-          <executions>
-            <execution>
-              <id>attach-sources</id>
-              <phase>package</phase>
-              <goals>
-                <goal>jar-no-fork</goal>
-                <goal>test-jar-no-fork</goal>
-              </goals>
-            </execution>
-          </executions>
         </plugin>
 
         <plugin>
@@ -335,6 +408,12 @@ else {
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.7</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
           <version>1.5</version>
           <executions>
@@ -348,13 +427,29 @@ else {
           </executions>
         </plugin>
 
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.18.1</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.eluder.coveralls</groupId>
+          <artifactId>coveralls-maven-plugin</artifactId>
+          <version>3.0.1</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.7.2.201409121644</version>
+        </plugin>
+
       </plugins>
 
     </pluginManagement>
 
-
   </build>
-
 
   <licenses>
     <license>
@@ -394,7 +489,6 @@ else {
   </distributionManagement>
 
   <profiles>
-
     <profile>
       <id>release</id>
       <activation>

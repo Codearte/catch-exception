@@ -93,30 +93,4 @@
 
   </dependencies>
 
-  <build>
-    <plugins>
-        <plugin>
-            <groupId>org.eluder.coveralls</groupId>
-            <artifactId>coveralls-maven-plugin</artifactId>
-        </plugin>
-        <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-        </plugin>
-
-      <!-- phase "package" should create the test.jar as well  -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-      </plugin>
-
-      <!-- phase "package" should create the sources.jar and test-sources.jar as well  -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-      </plugin>
-
-    </plugins>
-  </build>
-
 </project>
