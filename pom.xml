@@ -444,6 +444,21 @@ else {
           <version>0.7.2.201409121644</version>
         </plugin>
 
+        <plugin>
+          <groupId>io.takari.maven.plugins</groupId>
+          <artifactId>takari-lifecycle-plugin</artifactId>
+          <version>1.10.2</version>
+          <extensions>true</extensions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.1</version>
+          <configuration>
+            <skip>true</skip>
+            <skipMain>true</skipMain>
+          </configuration>
+        </plugin>
       </plugins>
 
     </pluginManagement>
@@ -524,8 +539,8 @@ else {
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
+            <groupId>io.takari.maven.plugins</groupId>
+            <artifactId>takari-lifecycle-plugin</artifactId>
             <configuration>
               <source>1.6</source>
               <target>1.6</target>
@@ -542,8 +557,8 @@ else {
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
+            <groupId>io.takari.maven.plugins</groupId>
+            <artifactId>takari-lifecycle-plugin</artifactId>
             <configuration>
               <source>1.7</source>
               <target>1.7</target>
@@ -560,8 +575,8 @@ else {
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
+            <groupId>io.takari.maven.plugins</groupId>
+            <artifactId>takari-lifecycle-plugin</artifactId>
             <configuration>
               <source>1.8</source>
               <target>1.8</target>
