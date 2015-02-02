@@ -402,6 +402,7 @@ else {
             <autoVersionSubmodules>true</autoVersionSubmodules>
             <!-- To remove parent from a tag name -->
             <tagNameFormat>catch-exception-@{project.version}</tagNameFormat>
+            <releaseProfiles>java16</releaseProfiles>
           </configuration>
         </plugin>
 
