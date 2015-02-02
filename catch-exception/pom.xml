@@ -8,6 +8,7 @@
     <relativePath>..</relativePath>
   </parent>
   <artifactId>catch-exception</artifactId>
+  <packaging>takari-jar</packaging>
   <description>Catch and verify exceptions</description>
   <url>https://github.com/Codearte/catch-exception/</url>
 
@@ -93,5 +94,14 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>io.takari.maven.plugins</groupId>
+        <artifactId>takari-lifecycle-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

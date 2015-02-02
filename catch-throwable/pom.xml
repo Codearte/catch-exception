@@ -8,6 +8,7 @@
     <relativePath>..</relativePath>
   </parent>
   <artifactId>catch-throwable</artifactId>
+  <packaging>takari-jar</packaging>
   <description>Catch throwables (not only exceptions)</description>
   
   <properties>
@@ -15,6 +16,15 @@
     <catchException.parent>${project.parent.basedir}</catchException.parent>
   </properties>
   
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>io.takari.maven.plugins</groupId>
+        <artifactId>takari-lifecycle-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
   <dependencies>
 
     <!-- required runtime scope dependencies +++++++++++++++++++++++++++++++ -->
