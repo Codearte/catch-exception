@@ -15,7 +15,7 @@
  */
 package com.googlecode.catchexception.throwable.internal;
 
-import org.mockito.cglib.proxy.MethodInterceptor;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.MethodInterceptor;
 
 /**
  * Creates proxies.

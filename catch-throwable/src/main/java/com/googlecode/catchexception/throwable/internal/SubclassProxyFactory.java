@@ -17,9 +17,9 @@ package com.googlecode.catchexception.throwable.internal;
 
 import java.lang.reflect.Modifier;
 
-import org.mockito.cglib.proxy.MethodInterceptor;
-import org.mockito.exceptions.base.MockitoException;
-import org.mockito.internal.creation.jmock.ClassImposterizer;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.MethodInterceptor;
+import io.codearte.catchexception.shade.mockito.exceptions.base.MockitoException;
+import io.codearte.catchexception.shade.mockito.internal.creation.jmock.ClassImposterizer;
 
 /**
  * This {@link ProxyFactory} uses Mockito's jmock package to create proxies that subclass from the target's class.

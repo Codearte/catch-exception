@@ -18,8 +18,8 @@ package com.googlecode.catchexception.throwable.internal;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.mockito.cglib.proxy.Enhancer;
-import org.mockito.cglib.proxy.MethodInterceptor;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.Enhancer;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.MethodInterceptor;
 
 /**
  * This {@link ProxyFactory} create proxies that implements all interfaces of
@@ -57,7 +57,7 @@ public class InterfaceOnlyProxyFactory implements ProxyFactory {
         interfaces.add(InterfaceOnlyProxy.class);
 
         return (T) Enhancer.create(Object.class,
-                interfaces.toArray(new Class<?>[interfaces.size()]),
-                interceptor);
+            interfaces.toArray(new Class<?>[interfaces.size()]),
+            interceptor);
     }
 }

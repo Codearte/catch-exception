@@ -15,10 +15,10 @@
  */
 package com.googlecode.catchexception.throwable.internal;
 
-import java.lang.reflect.Method;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.MethodInterceptor;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.MethodProxy;
 
-import org.mockito.cglib.proxy.MethodInterceptor;
-import org.mockito.cglib.proxy.MethodProxy;
+import java.lang.reflect.Method;
 
 /**
  * This interceptor delegates the method call to the target object.

@@ -17,10 +17,10 @@ package com.googlecode.catchexception.throwable.internal;
 
 import java.lang.reflect.Method;
 
-import org.mockito.cglib.proxy.MethodInterceptor;
-import org.mockito.cglib.proxy.MethodProxy;
-import org.mockito.internal.creation.DelegatingMockitoMethodProxy;
-import org.mockito.internal.creation.cglib.CGLIBHacker;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.MethodInterceptor;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.MethodProxy;
+import io.codearte.catchexception.shade.mockito.internal.creation.DelegatingMockitoMethodProxy;
+import io.codearte.catchexception.shade.mockito.internal.creation.cglib.CGLIBHacker;
 
 /**
  * This {@link AbstractThrowableProcessingInvocationHandler} implements {@link MethodInterceptor} for Mockito's cglib
