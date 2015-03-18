@@ -4,7 +4,7 @@
   <parent>
     <artifactId>functional-tests</artifactId>
     <groupId>eu.codearte.catch-exception</groupId>
-    <version>1.4.1-beta-1</version>
+    <version>1.4.1-beta-2-SNAPSHOT</version>
   </parent>
 
   <artifactId>catch-exception-assertj16</artifactId>
