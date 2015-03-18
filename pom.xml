@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.codearte.catch-exception</groupId>
   <artifactId>catch-exception-parent</artifactId>
-  <version>1.4.0-beta</version>
+  <version>1.4.1-beta-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Catch and verify exceptions - parent module</description>
   <url>https://github.com/Codearte/catch-exception/</url>
@@ -473,7 +473,7 @@ else {
     <connection>scm:git:https://github.com/Codearte/catch-exception.git</connection>
     <developerConnection>scm:git:git@github.com:Codearte/catch-exception.git</developerConnection>
     <url>https://github.com/Codearte/catch-exception/</url>
-    <tag>catch-exception-1.4.0-beta</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
