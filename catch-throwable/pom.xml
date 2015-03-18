@@ -71,7 +71,36 @@
       <artifactId>powermock-api-mockito</artifactId>
       <scope>test</scope>
     </dependency>
-    
   </dependencies>
-
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <excludes>
+                  <exclude>org.objenesis:*</exclude>
+                  <exclude>org.hamcrest:*</exclude>
+                  <exclude>org.mockito:*</exclude>
+                  <exclude>org.easytesting:*</exclude>
+                  <exclude>org.assertj:*</exclude>
+                  <exclude>junit:*</exclude>
+                  <exclude>com.google.guava:*</exclude>
+                </excludes>
+              </artifactSet>
+              <minimizeJar>true</minimizeJar>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

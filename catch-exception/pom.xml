@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>eu.codearte.catch-exception</groupId>
@@ -30,14 +31,14 @@
 
     <!-- required runtime scope dependencies +++++++++++++++++++++++++++++++ -->
     <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <exclusions>
-            <exclusion>
-                <artifactId>hamcrest-core</artifactId>
-                <groupId>org.hamcrest</groupId>
-            </exclusion>
-        </exclusions>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>hamcrest-core</artifactId>
+          <groupId>org.hamcrest</groupId>
+        </exclusion>
+      </exclusions>
       <scope>test</scope>
     </dependency>
 
@@ -98,12 +99,41 @@
     </dependency>
 
     <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>18.0</version>
-        <scope>test</scope>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>18.0</version>
+      <scope>test</scope>
     </dependency>
-
   </dependencies>
-
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <excludes>
+                  <exclude>org.objenesis:*</exclude>
+                  <exclude>org.hamcrest:*</exclude>
+                  <exclude>org.mockito:*</exclude>
+                  <exclude>org.easytesting:*</exclude>
+                  <exclude>org.assertj:*</exclude>
+                  <exclude>junit:*</exclude>
+                  <exclude>com.google.guava:*</exclude>
+                </excludes>
+              </artifactSet>
+              <minimizeJar>true</minimizeJar>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
