@@ -20,11 +20,11 @@ import static com.googlecode.catchexception.CatchException.interfaces;
 import static com.googlecode.catchexception.apis.CatchExceptionBdd.thenThrown;
 import static com.googlecode.catchexception.apis.CatchExceptionBdd.when;
 
+import io.codearte.catchexception.shade.mockito.cglib.proxy.Enhancer;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.NoOp;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.cglib.proxy.Enhancer;
-import org.mockito.cglib.proxy.NoOp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

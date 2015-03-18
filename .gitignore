@@ -5,4 +5,4 @@
 .idea
 *.iml
 target
-
+mockito-shade/dependency-reduced-pom.xml 

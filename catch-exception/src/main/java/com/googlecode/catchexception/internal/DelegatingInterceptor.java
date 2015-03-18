@@ -17,8 +17,8 @@ package com.googlecode.catchexception.internal;
 
 import java.lang.reflect.Method;
 
-import org.mockito.cglib.proxy.MethodInterceptor;
-import org.mockito.cglib.proxy.MethodProxy;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.MethodInterceptor;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.MethodProxy;
 
 /**
  * This interceptor delegates the method call to the target object.

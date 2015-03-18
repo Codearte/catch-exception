@@ -15,7 +15,7 @@
  */
 package com.googlecode.catchexception;
 
-import org.mockito.cglib.proxy.MethodInterceptor;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.MethodInterceptor;
 
 import com.googlecode.catchexception.apis.CatchExceptionBdd;
 import com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers;

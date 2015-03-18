@@ -18,8 +18,8 @@ package com.googlecode.catchexception.internal;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.mockito.cglib.proxy.Enhancer;
-import org.mockito.cglib.proxy.MethodInterceptor;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.Enhancer;
+import io.codearte.catchexception.shade.mockito.cglib.proxy.MethodInterceptor;
 
 /**
  * This {@link ProxyFactory} create proxies that implements all interfaces of
