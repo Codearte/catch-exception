@@ -42,7 +42,7 @@ public class BDDCatchExceptionTest {
         List myList = new ArrayList();
 
         // when we try to get first element of the list
-        when(myList).get(1);
+        when(() -> myList.get(1));
 
         // then we expect an IndexOutOfBoundsException
         then(caughtException()) //
@@ -60,13 +60,13 @@ public class BDDCatchExceptionTest {
         List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
         // when we try to get the 500th element
-        when(myList).get(500);
+        when(() -> myList.get(500));
 
         // then we expect an IndexOutOfBoundsException
         thenThrown(IndexOutOfBoundsException.class);
 
         // test: caughtException() ==null
-        when(myList).get(0);
+        when(() -> myList.get(0));
         try {
             thenThrown(IndexOutOfBoundsException.class);
 
@@ -77,7 +77,7 @@ public class BDDCatchExceptionTest {
         }
 
         // test: caughtException() is not IllegalArgumentException
-        when(myList).get(500);
+        when(() -> myList.get(500));
         try {
             thenThrown(IllegalArgumentException.class);
 
