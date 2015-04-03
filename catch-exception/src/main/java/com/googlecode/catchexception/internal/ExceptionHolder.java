@@ -56,4 +56,8 @@ public class ExceptionHolder {
         return (E) caughtException.get();
     }
 
+    public static void rethrow() throws Exception {
+        throw caughtException.get();
+    }
+
 }

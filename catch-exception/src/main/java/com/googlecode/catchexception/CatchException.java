@@ -240,6 +240,15 @@ public class CatchException {
     }
 
     /**
+     * Rethrow recorded exception for verification
+     *
+     * @throws Exception
+     */
+    public static void rethrow() throws Exception {
+        ExceptionHolder.rethrow();
+    }
+
+    /**
      * Use it to verify that an exception is thrown and to get access to the
      * thrown exception (for further verifications).
      * <p>
