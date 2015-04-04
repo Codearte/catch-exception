@@ -38,7 +38,6 @@ More information about the usage you find in the [Javadoc documentation](http://
 If you prefer a BDD-like approach, you can use [BDDCatchException](http://codearte.github.io/catch-exception/apidocs/com/googlecode/catchexception/apis/CatchExceptionBdd.html) for another code style:
 
 ```java
-import static com.googlecode.catchexception.CatchException.*;
 import static com.googlecode.catchexception.apis.BDDCatchException.*;
 
 // given: an empty list
@@ -48,7 +47,7 @@ List myList = new ArrayList();
 when(() -> myList.get(1));
 
 // then: we expect an IndexOutOfBoundsException
-thenCaughtException()
+then(caughtException())
         .isInstanceOf(IndexOutOfBoundsException.class)
         .hasMessage("Index: 1, Size: 0")
         .hasNoCause();

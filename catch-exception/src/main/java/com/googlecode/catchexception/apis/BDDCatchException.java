@@ -15,11 +15,10 @@
  */
 package com.googlecode.catchexception.apis;
 
-import static com.googlecode.catchexception.CatchException.caughtException;
-
 import org.assertj.core.api.ThrowableAssert;
 
 import com.googlecode.catchexception.CatchException;
+import com.googlecode.catchexception.internal.ExceptionHolder;
 
 /**
  * Supports <a
@@ -90,8 +89,12 @@ thenThrown(IndexOutOfBoundsException.class);
       CatchExceptionUtils.thenThrown(actualExceptionClazz);
     }
 
-    public static CatchExceptionAssert thenCaughtException() {
-        return new CatchExceptionAssert(caughtException());
+    public static ExceptionBox caughtException() {
+        return new ExceptionBox(ExceptionHolder.get());
+    }
+
+    public static CatchExceptionAssert then(ExceptionBox actual) {
+        return new CatchExceptionAssert(actual.getException());
     }
 
 }
