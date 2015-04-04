@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.assertj.core.api.BDDAssertions;
 import org.junit.Test;
 
 /**
@@ -69,6 +70,52 @@ public class BDDCatchExceptionAssertJ16Test extends BDDCatchExceptionTest {
         // test: caughtException() has other unexpected message
         try {
             then(caughtException()) //
+                    .isInstanceOf(IndexOutOfBoundsException.class) //
+                    .hasMessage("Hi!");
+
+        } catch (AssertionError e) {
+            assertEquals("\nExpecting message:" //
+                    + "\n <\"Hi!\">" //
+                    + "\nbut was:" //
+                    + "\n <\"Index: 1, Size: 0\">", e.getMessage());
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void testThenWithBDDAssertions_then() {
+        // given an empty list
+        List myList = new ArrayList();
+
+        // when we try to get first element of the list
+        when(myList).get(1);
+
+        // then we expect an IndexOutOfBoundsException
+        BDDAssertions.then(caughtException()) //
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasMessageStartingWith("Index: 1") //
+                .hasMessageEndingWith("Size: 0") //
+                .hasMessageContaining("Size") //
+                .hasNoCause();
+
+        // test: caughtException() == new RuntimeException()
+        try {
+            BDDAssertions.then(new RuntimeException()).isInstanceOf(
+                    IndexOutOfBoundsException.class);
+
+        } catch (AssertionError e) {
+            assertEquals("\nExpecting:" //
+                    + "\n <java.lang.RuntimeException>" //
+                    + "\nto be an instance of:" //
+                    + "\n <java.lang.IndexOutOfBoundsException>" //
+                    + "\nbut was instance of:" //
+                    + "\n <java.lang.RuntimeException>", e.getMessage());
+        }
+
+        // test: caughtException() has other unexpected message
+        try {
+            BDDAssertions.then(caughtException()) //
                     .isInstanceOf(IndexOutOfBoundsException.class) //
                     .hasMessage("Hi!");
 
