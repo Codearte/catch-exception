@@ -1,194 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>eu.codearte.catch-exception</groupId>
-  <artifactId>catch-exception-parent</artifactId>
-  <version>1.4.3-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <description>Catch and verify exceptions - parent module</description>
-  <url>https://github.com/Codearte/catch-exception/</url>
-  <name>catch-exception-project</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>eu.codearte.catch-exception</groupId>
+    <artifactId>catch-exception-parent</artifactId>
+    <version>1.4.3-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <description>Catch and verify exceptions - parent module</description>
+    <url>https://github.com/Codearte/catch-exception/</url>
+    <name>catch-exception-project</name>
 
-  <!-- Disabled to workaround problem with old maven-gpg-plugin forced in release:prepare -->
-  <!--
     <parent>
-      <groupId>org.sonatype.oss</groupId>
-      <artifactId>oss-parent</artifactId>
-      <version>9</version>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>9</version>
     </parent>
-  -->
 
-  <prerequisites>
-    <maven>3.0.5</maven>
-  </prerequisites>
+    <prerequisites>
+        <maven>3.3.1</maven>
+    </prerequisites>
 
-  <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
-    <maven.min-version>3.2.5</maven.min-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <!-- Prevents "[WARNING] Using platform encoding (Cp1252 actually) to copy filtered
-      resources, i.e. build is platform dependent! See http://maven.apache.org/general.html#encoding-warning -->
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- used by maven-license-plugin -->
+        <project.inceptionYear>2011</project.inceptionYear>
 
-    <powermock.version>1.6.1</powermock.version>
+        <!-- needed for javadoc, license and so on -->
+        <catchException.parent>${project.basedir}</catchException.parent>
+    </properties>
 
-    <spring.version>4.1.4.RELEASE</spring.version>
+    <modules>
+        <module>catch-exception</module>
+        <module>catch-throwable</module>
+    </modules>
 
-    <!-- used by maven-license-plugin -->
-    <project.inceptionYear>2011</project.inceptionYear>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>2.0.0</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <optional>true</optional>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-    <!-- needed for javadoc, license and so on -->
-    <catchException.parent>${project.basedir}</catchException.parent>
-  </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-  <modules>
-    <module>catch-exception</module>
-    <module>catch-throwable</module>
-  </modules>
+            <!-- define the target JVM -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!-- Slightly faster builds, see https://jira.codehaus.org/browse/MCOMPILER-209 -->
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+                </configuration>
+            </plugin>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.assertj</groupId>
-        <artifactId>assertj-core</artifactId>
-        <version>2.0.0</version>
-        <optional>true</optional>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.12</version>
-        <optional>true</optional>
-      </dependency>
-      <dependency>
-        <groupId>org.powermock</groupId>
-        <artifactId>powermock-module-junit4</artifactId>
-        <version>${powermock.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.powermock</groupId>
-        <artifactId>powermock-api-mockito</artifactId>
-        <version>${powermock.version}</version>
-        <scope>test</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+            <!--
+              The phase "package" should create the test.jar as well
+              so that the artifact can be signed during the phase 'verify'.
+             -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <configuration>
-          <rules>
-            <requireMavenVersion>
-              <version>[${maven.min-version},)</version>
-            </requireMavenVersion>
-          </rules>
-        </configuration>
-        <executions>
-          <execution>
-            <id>enforce-maven</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>enforce-clean</id>
-            <phase>pre-clean</phase>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>enforce-site</id>
-            <phase>pre-site</phase>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>report</id>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- define the target JVM -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-            <!-- Slightly faster builds, see https://jira.codehaus.org/browse/MCOMPILER-209 -->
-            <useIncrementalCompilation>false</useIncrementalCompilation>
-        </configuration>
-      </plugin>
-
-      <!--
-        The phase "package" should create the test.jar as well
-        so that the artifact can be signed during the phase 'verify'.
-       -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- http://maven.apache.org/plugins/maven-javadoc-plugin/usage.html
-         mvn javadoc:jar -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <show>private</show>
-          <use>true</use>
-          <overview>${catchException.parent}/src/main/javadoc/overview/overview.html</overview>
-          <linksource>true</linksource>
-          <docfilessubdirs>true</docfilessubdirs>
-        </configuration>
-        <!--  http://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html#Using_The_aggregate_Goals
-          # generate the aggregated javadoc manually:
-          mvn site
-         -->
-        <executions>
-          <execution>
-            <id>aggregate</id>
-            <goals>
-              <goal>aggregate</goal>
-            </goals>
-            <phase>site</phase>
-            <!-- Specific configuration for the aggregate report -->
-            <configuration>
-              <show>private</show>
-              <use>true</use>
-              <overview>${basedir}/src/main/javadoc/overview/overview.html</overview>
-              <linksource>true</linksource>
-              <docfilessubdirs>true</docfilessubdirs>
-              <footer xml:space="preserve"><![CDATA[
+            <!-- http://maven.apache.org/plugins/maven-javadoc-plugin/usage.html
+               mvn javadoc:jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.2</version>
+                <configuration>
+                    <show>private</show>
+                    <use>true</use>
+                    <overview>${catchException.parent}/src/main/javadoc/overview/overview.html</overview>
+                    <linksource>true</linksource>
+                    <docfilessubdirs>true</docfilessubdirs>
+                </configuration>
+                <!--  http://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html#Using_The_aggregate_Goals
+                  # generate the aggregated javadoc manually:
+                  mvn site
+                 -->
+                <executions>
+                    <execution>
+                        <id>aggregate</id>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
+                        <phase>site</phase>
+                        <!-- Specific configuration for the aggregate report -->
+                        <configuration>
+                            <show>private</show>
+                            <use>true</use>
+                            <overview>${basedir}/src/main/javadoc/overview/overview.html</overview>
+                            <linksource>true</linksource>
+                            <docfilessubdirs>true</docfilessubdirs>
+                            <footer xml:space="preserve"><![CDATA[
      
 <script type='text/javascript'>
 /* TODO move this code to a property file or something similar */
@@ -263,248 +208,248 @@ else {
 </script>     
       ]]>
               </footer>
-              <!-- footer or bottom makes no difference for javascript -->
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+                            <!-- footer or bottom makes no difference for javascript -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
-        <!--
-         mvn source:jar
-         The phase "package" should create the sources.jar and test-sources.jar as well
-         so that the artifact can be signed during the phase 'verify'.
-         -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar-no-fork</goal>
-              <goal>test-jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+            <!--
+             mvn source:jar
+             The phase "package" should create the sources.jar and test-sources.jar as well
+             so that the artifact can be signed during the phase 'verify'.
+             -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                            <goal>test-jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-      <!-- add headers if "maven verify" fails (due to license:check) mvn license:format   -->
-      <plugin>
-        <groupId>com.mycila</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-        <version>2.7</version>
-        <configuration>
-          <header>${catchException.parent}/src/etc/header.txt</header>
-          <includes>
-            <include>src/**</include>
-          </includes>
-          <excludes>
-            <!-- exclude third party code -->
-            <exclude>src/main/javadoc/doc-files/google-code-prettify/**</exclude>
-            <!-- automatically excluded :-) <exclude>src/etc/header.txt</exclude>  -->
-          </excludes>
-          <useDefaultExcludes>true</useDefaultExcludes>
-          <useDefaultMapping>true</useDefaultMapping>
-          <properties>
-            <year>${project.inceptionYear}</year>
-            <email>rwoo@gmx.de</email>
-          </properties>
-          <encoding>UTF-8</encoding>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <!--<goal>check</goal>-->
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+            <!-- add headers if "maven verify" fails (due to license:check) mvn license:format   -->
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.10</version>
+                <configuration>
+                    <header>${catchException.parent}/src/etc/header.txt</header>
+                    <includes>
+                        <include>src/**</include>
+                    </includes>
+                    <excludes>
+                        <!-- exclude third party code -->
+                        <exclude>src/main/javadoc/doc-files/google-code-prettify/**</exclude>
+                        <!-- automatically excluded :-) <exclude>src/etc/header.txt</exclude>  -->
+                    </excludes>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <useDefaultMapping>true</useDefaultMapping>
+                    <properties>
+                        <year>${project.inceptionYear}</year>
+                        <email>rwoo@gmx.de</email>
+                    </properties>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <!--<goal>check</goal>-->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-    </plugins>
-
-    <pluginManagement>
-
-      <plugins>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>2.6.1</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.2</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>1.3.1</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.10.1</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>2.5</version>
-          <configuration>
-            <skipIfEmpty>true</skipIfEmpty>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>2.4</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>2.5.1</version>
-          <configuration>
-            <!-- Workaround for http://jira.codehaus.org/browse/MGPG-9 -->
-            <mavenExecutorId>forked-path</mavenExecutorId>
-            <pushChanges>false</pushChanges>
-            <localCheckout>true</localCheckout>
-            <autoVersionSubmodules>true</autoVersionSubmodules>
-            <!-- To remove parent from a tag name -->
-            <tagNameFormat>catch-exception-@{project.version}</tagNameFormat>
-            <releaseProfiles>java16</releaseProfiles>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>2.7</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.5</version>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.18.1</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.eluder.coveralls</groupId>
-          <artifactId>coveralls-maven-plugin</artifactId>
-          <version>3.0.1</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.jacoco</groupId>
-          <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.7.2.201409121644</version>
-        </plugin>
-
-      </plugins>
-
-    </pluginManagement>
-
-  </build>
-
-  <licenses>
-    <license>
-      <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-      <comments>A business-friendly OSS license</comments>
-    </license>
-  </licenses>
-
-  <developers>
-    <developer>
-      <id>rwoo</id>
-      <name>Rod Woo</name>
-      <email>rwoo@gmx.de</email>
-    </developer>
-  </developers>
-
-  <scm>
-    <connection>scm:git:https://github.com/Codearte/catch-exception.git</connection>
-    <developerConnection>scm:git:git@github.com:Codearte/catch-exception.git</developerConnection>
-    <url>https://github.com/Codearte/catch-exception/</url>
-    <tag>HEAD</tag>
-  </scm>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>sonatype-nexus-snapshots</id>
-      <name>Sonatype Nexus Snapshots</name>
-      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>sonatype-nexus-staging</id>
-      <name>Nexus Release Repository</name>
-      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
-
-  <profiles>
-    <profile>
-      <id>release</id>
-      <activation>
-        <property>
-          <name>performRelease</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <!-- Signing files using GPG -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.5</version>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
         </plugins>
-      </build>
-    </profile>
-  </profiles>
+
+        <pluginManagement>
+
+            <plugins>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.6.1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.3</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>1.4</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.5</version>
+                    <configuration>
+                        <skipIfEmpty>true</skipIfEmpty>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.6</version>
+                    <configuration>
+                        <!-- Workaround for http://jira.codehaus.org/browse/MGPG-9 -->
+                        <mavenExecutorId>forked-path</mavenExecutorId>
+                        <pushChanges>false</pushChanges>
+                        <localCheckout>true</localCheckout>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <!-- To remove parent from a tag name -->
+                        <tagNameFormat>catch-exception-@{project.version}</tagNameFormat>
+                        <releaseProfiles>java16</releaseProfiles>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.5</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.18.1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.eluder.coveralls</groupId>
+                    <artifactId>coveralls-maven-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.7.4.201502262128</version>
+                </plugin>
+
+            </plugins>
+
+        </pluginManagement>
+
+    </build>
+
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>rwoo</id>
+            <name>Rod Woo</name>
+            <email>rwoo@gmx.de</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/Codearte/catch-exception.git</connection>
+        <developerConnection>scm:git:git@github.com:Codearte/catch-exception.git</developerConnection>
+        <url>https://github.com/Codearte/catch-exception/</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Release Repository</name>
+            <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- Signing files using GPG -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
