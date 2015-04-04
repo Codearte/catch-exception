@@ -22,6 +22,8 @@ public interface Something {
 
     void doThrow();
 
+    void doThrowNoSuchMethodError();
+
     void doThrowAssertionError();
 
 }

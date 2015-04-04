@@ -15,9 +15,9 @@
  */
 package com.googlecode.catchexception.apis;
 
+import org.assertj.core.api.ThrowableAssert;
+
 import com.googlecode.catchexception.CatchException;
-import org.assertj.core.api.AbstractThrowableAssert;
-import org.assertj.core.api.CompatibilityAssertions;
 
 /**
  * Supports <a
@@ -61,8 +61,8 @@ public class BDDCatchException {
      *         called.
      * @see com.googlecode.catchexception.CatchException#catchException(Object)
      */
-    public static <T> T when(T obj) {
-        return CatchException.catchException(obj);
+    public static void when(ThrowableAssert.ThrowingCallable actor) {
+        CatchException.catchException(actor);
     }
 
     /**
@@ -86,39 +86,6 @@ thenThrown(IndexOutOfBoundsException.class);
     @SuppressWarnings("rawtypes")
     public static void thenThrown(Class actualExceptionClazz) {
       CatchExceptionUtils.thenThrown(actualExceptionClazz);
-    }
-
-  /**
-     * Enables <a
-     * href="https://github.com/joel-costigliola/assertj-core">AssertJ</a>
-     * assertions about the caught exception.
-     * <p>
-     * EXAMPLE:
-     * <code><pre class="prettyprint lang-java">// given an empty list
-     List myList = new ArrayList();
-
-     // when we try to get first element of the list
-     when(myList).get(1);
-
-     // then we expect an IndexOutOfBoundsException
-     then(caughtException())
-     .isInstanceOf(IndexOutOfBoundsException.class)
-     .hasMessage("Index: 1, Size: 0")
-     .hasMessageStartingWith("Index: 1")
-     .hasMessageEndingWith("Size: 0")
-     .hasMessageContaining("Size")
-     .hasNoCause();
-     </pre></code>
-     *
-     * @deprecated Use BDDAssertions#then instead
-     * @param actualException
-     *            the value to be the target of the assertions methods.
-     * @return Returns the created assertion object.
-     */
-    @Deprecated
-    public static AbstractThrowableAssert<?, ? extends Throwable> then(Exception actualException) {
-        // delegate to AssertJ assertions
-        return CompatibilityAssertions.assertThat(actualException);
     }
 
 }

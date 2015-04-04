@@ -15,9 +15,9 @@
  */
 package com.googlecode.catchexception.throwable.apis;
 
+import org.assertj.core.api.ThrowableAssert;
+
 import com.googlecode.catchexception.throwable.CatchThrowable;
-import org.assertj.core.api.AbstractThrowableAssert;
-import org.assertj.core.api.CompatibilityAssertions;
 
 /**
  * Supports <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>-like approach to catch and verify
@@ -59,8 +59,8 @@ public class BDDCatchThrowable {
      *         proxy is called.
      * @see com.googlecode.catchexception.throwable.CatchThrowable#catchThrowable(Object)
      */
-    public static <T> T when(T obj) {
-      return CatchThrowable.catchThrowable(obj);
+    public static void when(ThrowableAssert.ThrowingCallable actor) {
+      CatchThrowable.catchThrowable(actor);
     }
 
     /**
@@ -82,36 +82,7 @@ thenThrown(IndexOutOfBoundsThrowable.class);
      */
     @SuppressWarnings("rawtypes")
     public static void thenThrown(Class actualThrowableClazz) {
-      CatchThrowable.catchThrowable(actualThrowableClazz);    }
+        CatchThrowableUtils.thenThrown(actualThrowableClazz);
+    }
 
-  /**
-   * Enables <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a> assertions about the caught
-   * throwable.
-   * <p>
-   * EXAMPLE: <code><pre class="prettyprint lang-java">// given an empty list
-   List myList = new ArrayList();
-
-   // when we try to get first element of the list
-   when(myList).get(1);
-
-   // then we expect an IndexOutOfBoundsThrowable
-   then(caughtThrowable())
-   .isInstanceOf(IndexOutOfBoundsThrowable.class)
-   .hasMessage("Index: 1, Size: 0")
-   .hasMessageStartingWith("Index: 1")
-   .hasMessageEndingWith("Size: 0")
-   .hasMessageContaining("Size")
-   .hasNoCause();
-   </pre></code>
-   *
-   * @deprecated Use BDDAssertions#then instead
-   * @param actualThrowable
-   *            the value to be the target of the assertions methods.
-   * @return Returns the created assertion object.
-   */
-  @Deprecated
-  public static AbstractThrowableAssert<?, ? extends Throwable> then(Throwable actualThrowable) {
-    // delegate to AssertJ assertions
-    return CompatibilityAssertions.assertThat(actualThrowable);
-  }
 }

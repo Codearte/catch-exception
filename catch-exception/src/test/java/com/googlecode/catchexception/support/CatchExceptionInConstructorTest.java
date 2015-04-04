@@ -47,6 +47,6 @@ public class CatchExceptionInConstructorTest {
                 return new Thing("baddata");
             }
         };
-        verifyException(builder, IllegalArgumentException.class).get();
+        verifyException(builder::get, IllegalArgumentException.class);
     }
 }

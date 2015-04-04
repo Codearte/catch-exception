@@ -37,6 +37,11 @@ public class PublicSomethingImpl implements Something {
     }
 
     @Override
+    public void doThrowNoSuchMethodError() {
+        throw new NoSuchMethodError("==testCatchException==");
+    }
+
+    @Override
     public void doThrowAssertionError() {
         throw new AssertionError(123);
     }
@@ -44,4 +49,5 @@ public class PublicSomethingImpl implements Something {
     protected void dooo() {
         throw new MyException();
     }
+
 }

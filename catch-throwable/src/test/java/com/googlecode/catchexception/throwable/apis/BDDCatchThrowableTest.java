@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2011 rwoo@gmx.de
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,17 +15,17 @@
  */
 package com.googlecode.catchexception.throwable.apis;
 
-import org.junit.Test;
+import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenThrown;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenThrown;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.then;
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 /**
  * Tests {@link com.googlecode.catchexception.throwable.apis.BDDCatchThrowable}.
@@ -42,13 +42,13 @@ public class BDDCatchThrowableTest {
         List myList = new ArrayList();
 
         // when we try to get first element of the list
-        when(myList).get(1);
+        when(() -> myList.get(1));
 
         // then we expect an IndexOutOfBoundsException
         then(caughtThrowable()) //
-            .isInstanceOf(IndexOutOfBoundsException.class) //
-            .hasMessage("Index: 1, Size: 0") //
-            .hasNoCause();
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasNoCause();
 
     }
 
@@ -60,13 +60,13 @@ public class BDDCatchThrowableTest {
         List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
         // when we try to get the 500th element
-        when(myList).get(500);
+        when(() -> myList.get(500));
 
         // then we expect an IndexOutOfBoundsException
         thenThrown(IndexOutOfBoundsException.class);
 
         // test: caughtThrowable() ==null
-        when(myList).get(0);
+        when(() -> myList.get(0));
         try {
             thenThrown(IndexOutOfBoundsException.class);
 
@@ -76,14 +76,15 @@ public class BDDCatchThrowableTest {
         }
 
         // test: caughtThrowable() is not IllegalArgumentException
-        when(myList).get(500);
+        when(() -> myList.get(500));
         try {
             thenThrown(IllegalArgumentException.class);
 
         } catch (AssertionError e) {
             assertEquals("Throwable of type java.lang.IllegalArgumentException"
                             + " expected but was not thrown. Instead a throwable of"
-                            + " type class java.lang.ArrayIndexOutOfBoundsException" + " with message '500' was thrown.",
+                            + " type class java.lang.ArrayIndexOutOfBoundsException" + " with message '500' was " +
+                            "thrown.",
                     e.getMessage());
         }
 

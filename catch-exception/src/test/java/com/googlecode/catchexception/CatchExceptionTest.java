@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2011 rwoo@gmx.de
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,8 +17,6 @@ package com.googlecode.catchexception;
 
 import static com.googlecode.catchexception.CatchException.catchException;
 import static com.googlecode.catchexception.CatchException.caughtException;
-import static com.googlecode.catchexception.CatchException.interfaces;
-import static com.googlecode.catchexception.CatchException.resetCaughtException;
 import static com.googlecode.catchexception.CatchException.verifyException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -28,23 +26,20 @@ import static org.junit.Assert.fail;
 
 import java.net.HttpRetryException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.UnknownFormatConversionException;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.googlecode.catchexception.internal.ExceptionHolder;
-import com.googlecode.catchexception.internal.InterfaceOnlyProxy;
 
 /**
  * Tests {@link CatchException}.
- * 
+ *
  * @author rwoo
  * @since 16.09.2011
- * 
+ *
  */
 @SuppressWarnings("javadoc")
 public class CatchExceptionTest {
@@ -74,181 +69,10 @@ public class CatchExceptionTest {
     protected void onTeardown() {
     }
 
-    private static class NonVisible implements Something {
-
-        private NonVisible(String fsdfsdfd) {
-        }
-
-        @Override
-        public void doNothing() {
-            //
-        }
-
-        @Override
-        public void doThrow() {
-            throw new UnsupportedOperationException("siodsdnsgz");
-        }
-
-        public void doesNotBelongToTheInterface() {
-            //
-        }
-
-        @Override
-        public void doThrowAssertionError() {
-            //
-        }
-    }
-
-    @Test
-    public void testProxyFactory_CanProxyNonVisibleClass() throws Exception {
-        catchException(Collections.unmodifiableList(list)).size();
-        assertNull(caughtException());
-
-        catchException(Collections.unmodifiableList(list)).get(0);
-        assertTrue(caughtException() instanceof IndexOutOfBoundsException);
-
-        catchException(new NonVisible("sdfdfd")).doesNotBelongToTheInterface();
-        assertNull(caughtException());
-    }
-
-    @Test
-    public void testProxyFactory_AnynomousType() throws Exception {
-
-        Something obj = new PublicSomethingImpl() {
-
-            @Override
-            public void doThrow() {
-                throw new UnknownFormatConversionException("sdfd");
-            }
-        };
-
-        catchException(obj).doThrow();
-        assertTrue(caughtException() instanceof UnknownFormatConversionException);
-    }
-
-    @Test
-    public void testProxyFactory_AnynomousType_NotMappedAsInterface() throws Exception {
-
-        PublicSomethingImpl obj = new PublicSomethingImpl() {
-
-            @Override
-            public void doThrow() {
-                throw new UnknownFormatConversionException("sdfd");
-            }
-        };
-
-        catchException(obj).doThrow();
-        assertTrue(caughtException() instanceof UnknownFormatConversionException);
-    }
-
-    @Test
-    public void testProxyFactory_ProtectedConstructor() {
-
-        catchException((Something) new ProtectedSomethingImpl()).doThrow();
-        assertTrue(caughtException() instanceof UnsupportedOperationException);
-    }
-
-    @Test
-    public void testProxyFactory_KnownLimitation_CannotProxyFinalClass()
-            throws Exception {
-
-        try {
-            FinalSomethingImpl obj = new FinalSomethingImpl();
-            catchException(obj).doesNotBelongToAnyInterface();
-            fail("Exception expected as the class is final");
-        } catch (ClassCastException e) {
-            // OK. e.printStackTrace();
-            // return value of caughtException() is not defined now
-        }
-
-        try {
-            FinalSomethingImpl obj = new FinalSomethingImpl();
-            catchException(obj).doThrow();
-            fail("Exception expected as the class is final");
-        } catch (ClassCastException e) {
-            // OK. e.printStackTrace();
-            // return value of caughtException() is not defined now
-        }
-
-        try {
-            StringBuilder obj = new StringBuilder();
-            catchException(obj).charAt(-2);
-            fail("Exception expected as the class is final");
-        } catch (ClassCastException e) {
-            // OK. e.printStackTrace();
-            // return value of caughtException() is not defined now
-        }
-
-    }
-
-    @Test
-    public void testProxyFactory_KnownLimitation_CannotProxyFinalClass_theWorkaroundUsesInterface()
-            throws Exception {
-        Something obj = new FinalSomethingImpl();
-        catchException(obj).doThrow();
-        assertTrue(caughtException() instanceof UnsupportedOperationException);
-
-        resetCaughtException();
-        catchException((Something) new FinalSomethingImpl()).doThrow();
-        assertTrue(caughtException() instanceof UnsupportedOperationException);
-
-        {
-            resetCaughtException();
-            StringBuilder sb = new StringBuilder();
-            catchException((CharSequence) sb).charAt(-2);
-            assertTrue(caughtException() instanceof StringIndexOutOfBoundsException);
-        }
-
-        {
-            resetCaughtException();
-            CharSequence sb = new StringBuilder();
-            catchException(sb).charAt(-2);
-            assertTrue(caughtException() instanceof StringIndexOutOfBoundsException);
-        }
-    }
-
-    @Test
-    public void testProxyFactory_KnownLimitation_CannotInterceptFinalMethod()
-            throws Exception {
-        try {
-            FinalMethodSomethingImpl obj = new FinalMethodSomethingImpl();
-            catchException(obj).doThrow();
-            fail("UnsupportedOperationException is not expected to be caught");
-        } catch (UnsupportedOperationException e) {
-            // OK
-            // return value of caughtException() is not defined now
-        }
-    }
-
-    @Test
-    public void testProxyFactory_KnownLimitation_CannotInterceptFinalMethod_theWorkaroundUsesInterface()
-            throws Exception {
-
-        {
-            Something obj = new FinalMethodSomethingImpl();
-            catchException(interfaces(obj)).doThrow();
-            assertTrue(caughtException() instanceof UnsupportedOperationException);
-        }
-
-        {
-            FinalMethodSomethingImpl obj = new FinalMethodSomethingImpl();
-            catchException((Something) interfaces(obj)).doThrow();
-            assertTrue(caughtException() instanceof UnsupportedOperationException);
-        }
-    }
-
-    @Test
-    public void testProxyFactory_ProxyForClassNotInterface() throws Exception {
-        ArrayList<String> arrayList = new ArrayList<String>();
-        // must not fail due to a ClassCastException
-        catchException((List<String>) arrayList).get(0);
-        assertTrue(caughtException() instanceof IndexOutOfBoundsException);
-    }
-
     @Test
     public void testCatchException_ObjExc_noExceptionThrown() throws Exception {
 
-        catchException(list, IndexOutOfBoundsException.class).size();
+        catchException(list::size, IndexOutOfBoundsException.class);
         assertNull(caughtException());
     }
 
@@ -256,7 +80,7 @@ public class CatchExceptionTest {
     public void testCatchException_ObjExc_actualClassThrown() throws Exception {
 
         // test for actual class
-        catchException(list, IndexOutOfBoundsException.class).get(0);
+        catchException(() -> list.get(0), IndexOutOfBoundsException.class);
         assertEquals(expectedMessage, caughtException().getMessage());
     }
 
@@ -265,7 +89,7 @@ public class CatchExceptionTest {
             throws Exception {
 
         // test for super class
-        catchException(list, RuntimeException.class).get(0);
+        catchException(() -> list.get(0), RuntimeException.class);
         assertEquals(expectedMessage, caughtException().getMessage());
     }
 
@@ -274,7 +98,7 @@ public class CatchExceptionTest {
             throws Exception {
 
         try {
-            catchException(list, ArrayIndexOutOfBoundsException.class).get(0);
+            catchException(() -> list.get(0), ArrayIndexOutOfBoundsException.class);
             fail("IndexOutOfBoundsException is expected (shall not be caught)");
         } catch (IndexOutOfBoundsException e) {
             assertNull(caughtException());
@@ -286,7 +110,7 @@ public class CatchExceptionTest {
             throws Exception {
 
         try {
-            catchException(list, IllegalArgumentException.class).get(0);
+            catchException(() -> list.get(0), IllegalArgumentException.class);
             fail("IndexOutOfBoundsException is expected (shall not be caught)");
         } catch (IndexOutOfBoundsException e) {
             assertNull(caughtException());
@@ -299,7 +123,7 @@ public class CatchExceptionTest {
 
         // test validation of the arguments
         try {
-            catchException(list, null);
+            catchException(() -> list.get(0), null);
             fail("IllegalArgumentException is expected");
         } catch (IllegalArgumentException e) {
             assertEquals("exceptionClazz must not be null", e.getMessage());
@@ -322,7 +146,7 @@ public class CatchExceptionTest {
     public void testVerifyException_ObjExc_noExceptionThrown() throws Exception {
 
         try {
-            verifyException(list, IndexOutOfBoundsException.class).size();
+            verifyException(list::size, IndexOutOfBoundsException.class);
             fail("ExceptionNotThrownAssertionError is expected");
         } catch (ExceptionNotThrownAssertionError e) {
             assertNull(caughtException());
@@ -337,7 +161,7 @@ public class CatchExceptionTest {
     public void testVerifyException_ObjExc_actualClassThrown() throws Exception {
 
         // test for actual class
-        verifyException(list, IndexOutOfBoundsException.class).get(0);
+        verifyException(() -> list.get(0), IndexOutOfBoundsException.class);
         assertEquals(expectedMessage, caughtException().getMessage());
     }
 
@@ -346,7 +170,7 @@ public class CatchExceptionTest {
             throws Exception {
 
         // test for super class
-        verifyException(list, RuntimeException.class).get(0);
+        verifyException(() -> list.get(0), RuntimeException.class);
         assertEquals(expectedMessage, caughtException().getMessage());
     }
 
@@ -356,7 +180,7 @@ public class CatchExceptionTest {
 
         // test for sub class
         try {
-            verifyException(list, ArrayIndexOutOfBoundsException.class).get(0);
+            verifyException(() -> list.get(0), ArrayIndexOutOfBoundsException.class);
             fail("ExceptionNotThrownAssertionError is expected");
         } catch (ExceptionNotThrownAssertionError e) {
             assertNull(caughtException());
@@ -375,7 +199,7 @@ public class CatchExceptionTest {
 
         // test for other exception type
         try {
-            verifyException(list, IllegalArgumentException.class).get(0);
+            verifyException(() -> list.get(0), IllegalArgumentException.class);
             fail("ExceptionNotThrownAssertionError is expected");
         } catch (ExceptionNotThrownAssertionError e) {
             assertNull(caughtException());
@@ -391,13 +215,14 @@ public class CatchExceptionTest {
 
     }
 
+    //fixme
     @Test
     public void testVerifyException_ObjExc_missingArgument_Exception()
             throws Exception {
 
         // test validation of the arguments
         try {
-            verifyException(list, null);
+            verifyException(() -> list.get(0), null);
             fail("IllegalArgumentException is expected");
         } catch (IllegalArgumentException e) {
             assertEquals("exceptionClazz must not be null", e.getMessage());
@@ -419,11 +244,11 @@ public class CatchExceptionTest {
     @Test
     public void testVerifyException_Obj_noExceptionThrown() throws Exception {
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         // no exception thrown by size()
         try {
-            verifyException(list).size();
+            verifyException(list::size);
             fail("ExceptionNotThrownAssertionError is expected");
         } catch (ExceptionNotThrownAssertionError e) {
             assertNull(caughtException());
@@ -436,7 +261,7 @@ public class CatchExceptionTest {
 
         List<String> list = new ArrayList<String>();
 
-        verifyException(list).get(0);
+        verifyException(() -> list.get(0));
         assertEquals(expectedMessage, caughtException().getMessage());
     }
 
@@ -459,7 +284,7 @@ public class CatchExceptionTest {
         List<String> list = new ArrayList<String>();
 
         // no exception thrown by size()
-        catchException(list).size();
+        catchException(list::size);
         assertNull(caughtException());
     }
 
@@ -468,7 +293,7 @@ public class CatchExceptionTest {
 
         List<String> list = new ArrayList<String>();
 
-        catchException(list).get(0);
+        catchException(() -> list.get(0));
         assertEquals(expectedMessage, caughtException().getMessage());
     }
 
@@ -486,76 +311,10 @@ public class CatchExceptionTest {
     }
 
     @Test
-    public void testCatchException_TestedMethodThrowsError_CgLibProxy()
-            throws Exception {
-
-        PublicSomethingImpl obj = new PublicSomethingImpl();
-
-        try {
-            PublicSomethingImpl proxy = catchException(obj);
-            assertFalse(proxy instanceof InterfaceOnlyProxy);
-            proxy.doThrowAssertionError();
-            fail("AssertionError is expected");
-        } catch (AssertionError e) {
-            assertEquals("123", e.getMessage());
-        }
-    }
-
-    @Test
-    public void testCatchException_TestedMethodThrowsError_JdkProxy()
-            throws Exception {
-
-        Something obj = new FinalSomethingImpl();
-
-        try {
-            Something proxy = catchException(obj);
-            assertTrue(proxy instanceof InterfaceOnlyProxy);
-            proxy.doThrowAssertionError();
-            fail("AssertionError is expected");
-        } catch (AssertionError e) {
-            assertEquals("123", e.getMessage());
-        }
-    }
-
-    @Test
-    public void testInterfaces_MissingArgument() throws Exception {
-
-        try {
-            interfaces(null);
-            fail("IllegalArgumentException is expected");
-        } catch (IllegalArgumentException e) {
-            assertEquals("obj must not be null", e.getMessage());
-        }
-    }
-
-    @Test
-    public void testInterfaces_doesNotSubclass() throws Exception {
-
-        try {
-            @SuppressWarnings("unused")
-            PublicSomethingImpl obj = interfaces(new PublicSomethingImpl());
-            fail("ClassCastException is expected");
-        } catch (ClassCastException e) {
-            // OK
-        }
-    }
-
-    @Test
-    public void testInterfaces_delegates() throws Exception {
-
-        try {
-            Something obj = interfaces(new PublicSomethingImpl());
-            obj.doThrow();
-            fail("UnsupportedOperationException is expected");
-        } catch (UnsupportedOperationException e) {
-            // OK
-        }
-    }
-
-    @Test
     public void testProtected() throws Exception {
         PublicSomethingImpl obj = new PublicSomethingImpl();
-        catchException(obj).dooo();
+        catchException(obj::dooo);
         assertTrue(caughtException() instanceof MyException);
     }
+
 }

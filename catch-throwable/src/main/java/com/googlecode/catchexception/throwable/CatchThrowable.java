@@ -15,25 +15,23 @@
  */
 package com.googlecode.catchexception.throwable;
 
-import org.assertj.core.internal.cglib.proxy.MethodInterceptor;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import com.googlecode.catchexception.throwable.internal.DelegatingInterceptor;
-import com.googlecode.catchexception.throwable.internal.InterfaceOnlyProxyFactory;
-import com.googlecode.catchexception.throwable.internal.SubclassProxyFactory;
+import org.assertj.core.api.ThrowableAssert;
+
 import com.googlecode.catchexception.throwable.internal.ThrowableHolder;
-import com.googlecode.catchexception.throwable.internal.ThrowableProcessingInterceptor;
 
 /**
- * 
+ *
  * @author rwoo
  * @since 1.2.0
- * 
+ *
  */
 public class CatchThrowable {
 
     /**
      * Returns the throwable caught during the last call on the proxied object in the current thread.
-     * 
+     *
      * @param <E>
      *            This type parameter makes some type casts redundant.
      * @return Returns the throwable caught during the last call on the proxied object in the current thread - if the
@@ -58,16 +56,16 @@ assert "foobar".equals(caughtThrowable().getMessage()); // further analysis
      * If <code>doX()</code> does not throw a <code>Throwable</code>, then a {@link ThrowableNotThrownAssertionError} is
      * thrown. Otherwise the thrown throwable can be retrieved via {@link #caughtThrowable()}.
      * <p>
-     * 
+     *
      * @param <T>
      *            The type of the given <code>obj</code>.
-     * 
+     *
      * @param obj
      *            The instance that shall be proxied. Must not be <code>null</code>.
      * @return Returns an object that verifies that each invocation on the underlying object throws an throwable.
      */
-    public static <T> T verifyThrowable(T obj) {
-        return verifyThrowable(obj, Throwable.class);
+    public static void verifyThrowable(ThrowableAssert.ThrowingCallable actor) {
+        verifyThrowable(actor, Throwable.class);
     }
 
     /**
@@ -82,10 +80,10 @@ assert "foobar".equals(caughtThrowable().getMessage()); // further analysis
      * If <code>doX()</code> does not throw a <code>MyThrowable</code>, then a {@link ThrowableNotThrownAssertionError}
      * is thrown. Otherwise the thrown throwable can be retrieved via {@link #caughtThrowable()}.
      * <p>
-     * 
+     *
      * @param <T>
      *            The type of the given <code>obj</code>.
-     * 
+     *
      * @param <E>
      *            The type of the throwable that shall be caught.
      * @param obj
@@ -96,9 +94,12 @@ assert "foobar".equals(caughtThrowable().getMessage()); // further analysis
      * @return Returns an object that verifies that each invocation on the underlying object throws an throwable of the
      *         given type.
      */
-    public static <T, E extends Throwable> T verifyThrowable(T obj, Class<E> clazz) {
-
-        return processThrowable(obj, clazz, true);
+    public static void verifyThrowable(ThrowableAssert.ThrowingCallable actor, Class clazz) {
+        catchThrowable(actor, clazz, true);
+        if (caughtThrowable() == null) {
+            throw new ThrowableNotThrownAssertionError(clazz);
+        }
+        assertThat(caughtThrowable()).isInstanceOf(clazz);
     }
 
     /**
@@ -112,18 +113,17 @@ if (caughtThrowable() != null) {
      * throws a throwable, then {@link #caughtThrowable()} will return the caught throwable. If <code>doX()</code> does
      * not throw a throwable, then {@link #caughtThrowable()} will return <code>null</code>.
      * <p>
-     * 
+     *
      * @param <T>
      *            The type of the given <code>obj</code>.
-     * 
+     *
      * @param obj
      *            The instance that shall be proxied. Must not be <code>null</code>.
      * @return Returns a proxy for the given object. The proxy catches throwables of the given type when a method on the
      *         proxy is called.
      */
-    public static <T> T catchThrowable(T obj) {
-
-        return processThrowable(obj, Throwable.class, false);
+    public static void catchThrowable(ThrowableAssert.ThrowingCallable actor) {
+        catchThrowable(actor, Throwable.class, false);
     }
 
     /**
@@ -140,10 +140,10 @@ if (caughtThrowable() != null) {
      * <code>null</code>. If <code>doX()</code> throws an throwable of another type, i.e. not a subclass but another
      * class, then this throwable is not thrown and {@link #caughtThrowable()} will return <code>null</code>.
      * <p>
-     * 
+     *
      * @param <T>
      *            The type of the given <code>obj</code>.
-     * 
+     *
      * @param <E>
      *            The type of the throwable that shall be caught.
      * @param obj
@@ -153,46 +153,32 @@ if (caughtThrowable() != null) {
      * @return Returns a proxy for the given object. The proxy catches throwables of the given type when a method on the
      *         proxy is called.
      */
-    public static <T, E extends Throwable> T catchThrowable(T obj, Class<E> clazz) {
-
-        return processThrowable(obj, clazz, false);
+    public static void catchThrowable(ThrowableAssert.ThrowingCallable actor, Class clazz) {
+        catchThrowable(actor, clazz, false);
     }
 
-    /**
-     * Creates a proxy that processes throwables thrown by the underlying object.
-     * <p>
-     * Delegates to {@link SubclassProxyFactory#createProxy(Class, MethodInterceptor)} which itself might delegate to
-     * {@link InterfaceOnlyProxyFactory#createProxy(Class, MethodInterceptor)}.
-     */
-    @SuppressWarnings("javadoc")
-    private static <T, E extends Throwable> T processThrowable(T obj, Class<E> throwableClazz, boolean assertThrowable) {
+    private static void catchThrowable(ThrowableAssert.ThrowingCallable actor,
+                                       Class clazz, boolean assertException) throws RuntimeException {
 
-        if (obj == null) {
-            throw new IllegalArgumentException("obj must not be null");
-        }
+        if (actor == null) throw new IllegalArgumentException("obj must not be null");
+        if (clazz == null) throw new IllegalArgumentException("throwableClazz must not be null");
 
-        return new SubclassProxyFactory().<T> createProxy(obj.getClass(), new ThrowableProcessingInterceptor<E>(obj,
-                throwableClazz, assertThrowable));
-
-    }
-
-    /**
-     * Returns a proxy that implements all interfaces of the underlying object.
-     * 
-     * @param <T>
-     *            must be an interface the object implements
-     * @param obj
-     *            the object that created proxy will delegate all calls to
-     * @return Returns a proxy that implements all interfaces of the underlying object and delegates all calls to that
-     *         underlying object.
-     */
-    public static <T> T interfaces(T obj) {
-
-        if (obj == null) {
-            throw new IllegalArgumentException("obj must not be null");
-        }
-
-        return new InterfaceOnlyProxyFactory().<T> createProxy(obj.getClass(), new DelegatingInterceptor(obj));
+        resetCaughtThrowable();
+        try {
+            actor.call();
+        } catch (RuntimeException e) {
+            // is the thrown exception of the expected type?
+            if (!clazz.isAssignableFrom(e.getClass())) {
+                if (assertException) {
+                    throw new ThrowableNotThrownAssertionError(clazz, e);
+                } else {
+                    throw e;
+                }
+            }
+            if (clazz.isAssignableFrom(e.getClass())) {
+                ThrowableHolder.set(e);
+            }
+        } catch (Throwable throwable) { }
     }
 
     /**
