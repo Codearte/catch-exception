@@ -104,10 +104,12 @@ thenThrown(IndexOutOfBoundsThrowable.class);
    .hasNoCause();
    </pre></code>
    *
+   * @deprecated Use BDDAssertions#then instead
    * @param actualThrowable
    *            the value to be the target of the assertions methods.
    * @return Returns the created assertion object.
    */
+  @Deprecated
   public static AbstractThrowableAssert<?, ? extends Throwable> then(Throwable actualThrowable) {
     // delegate to AssertJ assertions
     return CompatibilityAssertions.assertThat(actualThrowable);

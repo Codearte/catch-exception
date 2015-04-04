@@ -36,9 +36,9 @@ when(myList).get(1);
 // then we expect an IndexOutOfBoundsException
 then(caughtException())
         .isInstanceOf(IndexOutOfBoundsException.class)
-        .hasMessage("Index: 1, Size: 0") 
+        .hasMessage("Index: 1, Size: 0")
         .hasNoCause();
-        
+
 // then we expect an IndexOutOfBoundsException (alternatively)
 thenThrown(IndexOutOfBoundsException.class);
 </pre></code>
@@ -110,10 +110,12 @@ thenThrown(IndexOutOfBoundsException.class);
      .hasNoCause();
      </pre></code>
      *
+     * @deprecated Use BDDAssertions#then instead
      * @param actualException
      *            the value to be the target of the assertions methods.
      * @return Returns the created assertion object.
      */
+    @Deprecated
     public static AbstractThrowableAssert<?, ? extends Throwable> then(Exception actualException) {
         // delegate to AssertJ assertions
         return CompatibilityAssertions.assertThat(actualException);
