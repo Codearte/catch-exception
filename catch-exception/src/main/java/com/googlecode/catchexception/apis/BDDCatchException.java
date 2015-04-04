@@ -51,10 +51,7 @@ thenThrown(IndexOutOfBoundsException.class);
 public class BDDCatchException {
 
     /**
-     * @param <T>
-     *            The type of the given <code>obj</code>.
-     *
-     * @param obj
+     * @param actor
      *            The instance that shall be proxied. Must not be
      *            <code>null</code>.
      * @return Returns a proxy for the given object. The proxy catches
@@ -89,12 +86,16 @@ thenThrown(IndexOutOfBoundsException.class);
       CatchExceptionUtils.thenThrown(actualExceptionClazz);
     }
 
-    public static ExceptionBox caughtException() {
-        return new ExceptionBox(ExceptionHolder.get());
+    public static CaughtException caughtException() {
+        return new CaughtException(ExceptionHolder.get());
     }
 
-    public static CatchExceptionAssert then(ExceptionBox actual) {
+    public static CatchExceptionAssert then(CaughtException actual) {
         return new CatchExceptionAssert(actual.getException());
+    }
+
+    public static CatchExceptionAssert thenCaughtException() {
+        return new CatchExceptionAssert(CatchException.caughtException());
     }
 
 }

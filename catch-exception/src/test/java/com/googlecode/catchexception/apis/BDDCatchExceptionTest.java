@@ -38,7 +38,7 @@ public class BDDCatchExceptionTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testAssertThen() {
+    public void testThen() {
         // given an empty list
         List myList = new ArrayList();
 

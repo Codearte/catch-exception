@@ -68,14 +68,14 @@ public class CatchThrowableTest {
     }
 
     @Test
-    public void testCatchException_ObjExc_noExceptionThrown() throws Exception {
+    public void testCatchException_ObjExc_noExceptionThrown() throws Throwable {
 
         catchThrowable(list::size, IndexOutOfBoundsException.class);
         assertNull(caughtThrowable());
     }
 
     @Test
-    public void testCatchException_ObjExc_actualClassThrown() throws Exception {
+    public void testCatchException_ObjExc_actualClassThrown() throws Throwable {
 
         // test for actual class
         catchThrowable(() -> list.get(0), IndexOutOfBoundsException.class);
@@ -83,7 +83,7 @@ public class CatchThrowableTest {
     }
 
     @Test
-    public void testCatchException_ObjExc_subClassOfExpectedThrown() throws Exception {
+    public void testCatchException_ObjExc_subClassOfExpectedThrown() throws Throwable {
 
         // test for super class
         catchThrowable(() -> list.get(0), RuntimeException.class);
@@ -91,7 +91,7 @@ public class CatchThrowableTest {
     }
 
     @Test
-    public void testCatchException_ObjExc_superClassOfExpectedThrown() throws Exception {
+    public void testCatchException_ObjExc_superClassOfExpectedThrown() throws Throwable {
 
         try {
             catchThrowable(() -> list.get(0), ArrayIndexOutOfBoundsException.class);
@@ -102,7 +102,7 @@ public class CatchThrowableTest {
     }
 
     @Test
-    public void testCatchException_ObjExc_otherClassThanExpectedThrown() throws Exception {
+    public void testCatchException_ObjExc_otherClassThanExpectedThrown() throws Throwable {
 
         try {
             catchThrowable(() -> list.get(0), IllegalArgumentException.class);
@@ -113,7 +113,7 @@ public class CatchThrowableTest {
     }
 
     @Test
-    public void testCatchException_ObjExc_missingArgument_Exception() throws Exception {
+    public void testCatchException_ObjExc_missingArgument_Exception() throws Throwable {
 
         // test validation of the arguments
         try {
@@ -125,7 +125,7 @@ public class CatchThrowableTest {
     }
 
     @Test
-    public void testCatchException_ObjExc_missingArgument_Object() throws Exception {
+    public void testCatchException_ObjExc_missingArgument_Object() throws Throwable {
 
         try {
             catchThrowable(null, IllegalArgumentException.class);

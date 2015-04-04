@@ -85,8 +85,7 @@ public class CatchExceptionTest {
     }
 
     @Test
-    public void testCatchException_ObjExc_subClassOfExpectedThrown()
-            throws Exception {
+    public void testCatchException_ObjExc_subClassOfExpectedThrown() throws Exception {
 
         // test for super class
         catchException(() -> list.get(0), RuntimeException.class);
@@ -94,8 +93,7 @@ public class CatchExceptionTest {
     }
 
     @Test
-    public void testCatchException_ObjExc_superClassOfExpectedThrown()
-            throws Exception {
+    public void testCatchException_ObjExc_superClassOfExpectedThrown() throws Exception {
 
         try {
             catchException(() -> list.get(0), ArrayIndexOutOfBoundsException.class);
@@ -106,8 +104,7 @@ public class CatchExceptionTest {
     }
 
     @Test
-    public void testCatchException_ObjExc_otherClassThanExpectedThrown()
-            throws Exception {
+    public void testCatchException_ObjExc_otherClassThanExpectedThrown() throws Exception {
 
         try {
             catchException(() -> list.get(0), IllegalArgumentException.class);
@@ -118,8 +115,7 @@ public class CatchExceptionTest {
     }
 
     @Test
-    public void testCatchException_ObjExc_missingArgument_Exception()
-            throws Exception {
+    public void testCatchException_ObjExc_missingArgument_Exception() throws Exception {
 
         // test validation of the arguments
         try {
@@ -131,8 +127,7 @@ public class CatchExceptionTest {
     }
 
     @Test
-    public void testCatchException_ObjExc_missingArgument_Object()
-            throws Exception {
+    public void testCatchException_ObjExc_missingArgument_Object() throws Exception {
 
         try {
             catchException(null, IllegalArgumentException.class);
@@ -143,7 +138,7 @@ public class CatchExceptionTest {
     }
 
     @Test
-    public void testVerifyException_ObjExc_noExceptionThrown() throws Exception {
+    public void testVerifyException_ObjExc_noExceptionThrown() {
 
         try {
             verifyException(list::size, IndexOutOfBoundsException.class);
@@ -158,7 +153,7 @@ public class CatchExceptionTest {
     }
 
     @Test
-    public void testVerifyException_ObjExc_actualClassThrown() throws Exception {
+    public void testVerifyException_ObjExc_actualClassThrown() {
 
         // test for actual class
         verifyException(() -> list.get(0), IndexOutOfBoundsException.class);
@@ -166,8 +161,7 @@ public class CatchExceptionTest {
     }
 
     @Test
-    public void testVerifyException_ObjExc_subClassOfExpectedThrown()
-            throws Exception {
+    public void testVerifyException_ObjExc_subClassOfExpectedThrown() {
 
         // test for super class
         verifyException(() -> list.get(0), RuntimeException.class);
@@ -175,8 +169,7 @@ public class CatchExceptionTest {
     }
 
     @Test
-    public void testVerifyException_ObjExc_superClassOfExpectedThrown()
-            throws Exception {
+    public void testVerifyException_ObjExc_superClassOfExpectedThrown() {
 
         // test for sub class
         try {
@@ -212,7 +205,6 @@ public class CatchExceptionTest {
                             + " with message '" + expectedMessage
                             + "' was thrown.", e.getMessage());
         }
-
     }
 
     //fixme

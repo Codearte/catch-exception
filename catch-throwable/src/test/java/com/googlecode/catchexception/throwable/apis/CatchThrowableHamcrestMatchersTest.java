@@ -34,6 +34,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.googlecode.catchexception.throwable.apis.matcher.Find;
+
 /**
  * Tests {@link CatchThrowableHamcrestMatchers}.
  *
@@ -88,22 +90,22 @@ public class CatchThrowableHamcrestMatchersTest {
         }
     }
 
-//    private static org.hamcrest.Matcher<String> containsPattern(String regex) {
-//        return new Find(regex);
-//    }
+    private static org.hamcrest.Matcher<String> containsPattern(String regex) {
+        return new Find(regex);
+    }
 
-//    @Test
-//    public void learningtestMatcher_hasMessage_findRegex() {
-//
-//        assertThat(caughtThrowable(), hasMessageThat(containsPattern("Index: \\d+")));
-//
-//        try {
-//            assertThat(caughtThrowable(), hasMessageThat(containsPattern("Index : \\d+")));
-//            throw new RuntimeException("AssertionError expected");
-//        } catch (AssertionError e) {
-//            // OK
-//        }
-//    }
+    @Test
+    public void learningtestMatcher_hasMessage_findRegex() {
+
+        assertThat(caughtThrowable(), hasMessageThat(containsPattern("Index: \\d+")));
+
+        try {
+            assertThat(caughtThrowable(), hasMessageThat(containsPattern("Index : \\d+")));
+            throw new RuntimeException("AssertionError expected");
+        } catch (AssertionError e) {
+            // OK
+        }
+    }
 
     @Test
     public void testMatcher_hasMessage_equalByString() {

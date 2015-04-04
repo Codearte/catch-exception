@@ -34,6 +34,8 @@ import static org.hamcrest.CoreMatchers.isA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
+import com.googlecode.catchexception.apis.mockito.Find;
+
 /**
  * Tests {@link CatchExceptionHamcrestMatchers}.
  *
@@ -44,7 +46,7 @@ public class CatchExceptionHamcrestMatchersTest {
 
     @Before
     public void setup() {
-        List<String> fellowshipOfTheRing = new ArrayList<String>();
+        List<String> fellowshipOfTheRing = new ArrayList<>();
         // let's do some team building :)
         fellowshipOfTheRing.add("frodo");
         fellowshipOfTheRing.add("sam");
@@ -93,39 +95,39 @@ public class CatchExceptionHamcrestMatchersTest {
         }
     }
 
-//    private static org.hamcrest.Matcher<String> containsPattern(String regex) {
-//        return new Find(regex);
-//    }
-//
-//    @Test
-//    public void learningtestMatcher_hasMessage_findRegex() {
-//
-//        assertThat(caughtException(),
-//                hasMessageThat(containsPattern("Index: \\d+")));
-//
-//        try {
-//            assertThat(caughtException(),
-//                    hasMessageThat(containsPattern("Index : \\d+")));
-//            throw new RuntimeException("AssertionError expected");
-//        } catch (AssertionError e) {
-//            // OK
-//        }
-//    }
-//
-//    @Test
-//    public void testMatcher_hasMessage_equalByString() {
-//
-//        assertThat(caughtException(), hasMessage("Index: 9, Size: 9"));
-//
-//        try {
-//            assertThat(caughtException(), hasMessage("something went wrong"));
-//            throw new RuntimeException("AssertionError expected");
-//        } catch (AssertionError e) {
-//            assertMessage(e.getMessage(),
-//                    "Expected: has a message that is \"something went wrong\"",
-//                    "but: was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
-//        }
-//    }
+    private static org.hamcrest.Matcher<String> containsPattern(String regex) {
+        return new Find(regex);
+    }
+
+    @Test
+    public void learningtestMatcher_hasMessage_findRegex() {
+
+        assertThat(caughtException(),
+                hasMessageThat(containsPattern("Index: \\d+")));
+
+        try {
+            assertThat(caughtException(),
+                    hasMessageThat(containsPattern("Index : \\d+")));
+            throw new RuntimeException("AssertionError expected");
+        } catch (AssertionError e) {
+            // OK
+        }
+    }
+
+    @Test
+    public void testMatcher_hasMessage_equalByString() {
+
+        assertThat(caughtException(), hasMessage("Index: 9, Size: 9"));
+
+        try {
+            assertThat(caughtException(), hasMessage("something went wrong"));
+            throw new RuntimeException("AssertionError expected");
+        } catch (AssertionError e) {
+            assertMessage(e.getMessage(),
+                    "Expected: has a message that is \"something went wrong\"",
+                    "but: was <java.lang.IndexOutOfBoundsException: Index: 9, Size: 9>");
+        }
+    }
 
     @Test
     public void testMatcher_hasMessage_equalByStringMatcher() {

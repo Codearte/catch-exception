@@ -18,6 +18,7 @@ package com.googlecode.catchexception.throwable.apis;
 import org.assertj.core.api.ThrowableAssert;
 
 import com.googlecode.catchexception.throwable.CatchThrowable;
+import com.googlecode.catchexception.throwable.internal.ThrowableHolder;
 
 /**
  * Supports <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>-like approach to catch and verify
@@ -83,6 +84,18 @@ thenThrown(IndexOutOfBoundsThrowable.class);
     @SuppressWarnings("rawtypes")
     public static void thenThrown(Class actualThrowableClazz) {
         CatchThrowableUtils.thenThrown(actualThrowableClazz);
+    }
+
+    public static CaughtThrowable caughtException() {
+        return new CaughtThrowable(ThrowableHolder.get());
+    }
+
+    public static CatchThrowableAssert then(CaughtThrowable actual) {
+        return new CatchThrowableAssert(actual.getThrowable());
+    }
+
+    public static CatchThrowableAssert thenCaughtException() {
+        return new CatchThrowableAssert(CatchThrowable.caughtThrowable());
     }
 
 }

@@ -399,6 +399,11 @@ else {
             <name>Rod Woo</name>
             <email>rwoo@gmx.de</email>
         </developer>
+        <developer>
+            <id>mariuszs</id>
+            <name>Mariusz Smykula</name>
+            <email>mariuszs@gmail.com</email>
+        </developer>
     </developers>
 
     <scm>

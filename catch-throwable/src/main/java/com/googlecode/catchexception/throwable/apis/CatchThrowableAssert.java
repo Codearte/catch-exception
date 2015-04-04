@@ -13,17 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.apis;
+package com.googlecode.catchexception.throwable.apis;
 
-public class ExceptionBox {
+import org.assertj.core.api.AbstractThrowableAssert;
 
-    private final Exception exception;
+public class CatchThrowableAssert extends AbstractThrowableAssert<CatchThrowableAssert, Throwable> {
 
-    public ExceptionBox(Exception exception) {
-        this.exception = exception;
+    protected CatchThrowableAssert(Throwable actual) {
+        super(actual, CatchThrowableAssert.class);
     }
 
-    public Exception getException() {
-        return exception;
-    }
 }

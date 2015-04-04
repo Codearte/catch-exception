@@ -17,8 +17,9 @@ package com.googlecode.catchexception;
 
 import static com.googlecode.catchexception.apis.CatchExceptionAssert.assertThat;
 
-import org.assertj.core.api.ThrowableAssert;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 
+import com.googlecode.catchexception.apis.BDDCatchException;
 import com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers;
 import com.googlecode.catchexception.internal.ExceptionHolder;
 
@@ -84,7 +85,7 @@ import com.googlecode.catchexception.internal.ExceptionHolder;
  * <p/>
  * Finally, there some alternative ways to catch and verify exceptions:
  * <ul>
- * <li>{@link CatchExceptionBdd} - a BDD-like approach,
+ * <li>{@link BDDCatchException} - a BDD-like approach,
  * <li> {@link CatchExceptionHamcrestMatchers} - Hamcrest assertions
  * </ul>
  * <h3 id="2">2. What is this stuff actually good for?</h3>
@@ -167,20 +168,7 @@ import com.googlecode.catchexception.internal.ExceptionHolder;
  * &#064;PrepareForTest({ MyFinalType.class })
  * public class MyTest {
  * </pre></code>
- * <h3 id="6">6. The exception is not caught. Why?</h3>
- * <p/>
- * Example:
- * <code><pre class="prettyprint lang-java">ServiceImpl impl = new ServiceImpl();
- * catchException(impl).do(); // do() is a final method that throws an exception</pre></code>
- * <p/>
- * Probably you have tested a final method. If that tested method belongs to an
- * interface you could use {@link #interfaces(Object)} to fix that problem. But
- * then the syntax starts to become ugly.
- * <code><pre class="prettyprint lang-java">Service api = new ServiceImpl();
- * catchException(interfaces(api)).do(); // works fine</pre></code> I recommend
- * to use try/catch blocks in such cases.
- * <p/>
- * <h3 id="7">7. Do I have to care about memory leaks?</h3>
+ * <h3 id="6">6. Do I have to care about memory leaks?</h3>
  * <p/>
  * This library uses a {@link ThreadLocal}. ThreadLocals are known to cause
  * memory leaks if they refer to a class the garbage collector would like to
@@ -188,16 +176,12 @@ import com.googlecode.catchexception.internal.ExceptionHolder;
  * worry you. If you use this library for other purposes than testing, you
  * should care.
  * <p/>
- * <h3 id="8">8. The caught exception is not available in another thread. Why?</h3>
+ * <h3 id="7">7. The caught exception is not available in another thread. Why?</h3>
  * <p/>
  * The caught exception is saved <a href="#threadlocal">at the thread</a> the
  * exception is thrown in. This is the reason the exception is not visible
  * within any other thread.
- * <h3 id="9">9. How do I catch an exception thrown by a static method?</h3>
- * <p/>
- * Unfortunately, catch-exception does not support this. Fall back on try/catch
- * blocks.
- * <h3 id="10">10. Is there a way to get rid of the throws clause in my test
+ * <h3 id="8">8. Is there a way to get rid of the throws clause in my test
  * method?</h3>
  * <p/>
  * Example:
@@ -218,18 +202,14 @@ import com.googlecode.catchexception.internal.ExceptionHolder;
 public class CatchException {
 
     /**
-     * Returns the exception caught during the last call on the proxied object
-     * in the current thread.
+     * Returns the exception caught during the last call in the current thread.
      *
      * @param <E> This type parameter makes some type casts redundant.
-     * @return Returns the exception caught during the last call on the proxied
-     * object in the current thread - if the call was made through a
-     * proxy that has been created via
-     * {@link #verifyException(Object, Class) verifyException()} or
-     * {@link #catchException(Object, Class) catchException()}. Returns
-     * null the proxy has not caught an exception. Returns null if the
-     * caught exception belongs to a class that is no longer
-     * {@link ClassLoader loaded}.
+     * @return Returns the exception caught during the last call in the current
+     * thread - if the call was made through a proxy that has been created via
+     * {@link #verifyException(ThrowingCallable, Class) verifyException()} or
+     * {@link #catchException(ThrowingCallable, Class) catchException()}. Returns
+     * null when no exception was caught.
      */
     public static <E extends Exception> E caughtException() {
         return ExceptionHolder.get();
@@ -249,13 +229,12 @@ public class CatchException {
      * exception can be retrieved via {@link #caughtException()}.
      * <p/>
      *
-     * @param <T> The type of the given <code>obj</code>.
-     * @param obj The instance that shall be proxied. Must not be
-     *            <code>null</code>.
+     * @param actor The instance that shall be proxied. Must not be
+     *              <code>null</code>.
      * @return Returns an object that verifies that each invocation on the
      * underlying object throws an exception.
      */
-    public static void verifyException(ThrowableAssert.ThrowingCallable actor) {
+    public static void verifyException(ThrowingCallable actor) throws Exception {
         verifyException(actor, Exception.class);
     }
 
@@ -273,23 +252,21 @@ public class CatchException {
      * exception can be retrieved via {@link #caughtException()}.
      * <p/>
      *
-     * @param <T>   The type of the given <code>obj</code>.
-     * @param <E>   The type of the exception that shall be caught.
-     * @param obj   The instance that shall be proxied. Must not be
+     * @param actor The instance that shall be proxied. Must not be
      *              <code>null</code>.
      * @param clazz The type of the exception that shall be thrown by the
      *              underlying object. Must not be <code>null</code>.
      * @return Returns an object that verifies that each invocation on the
      * underlying object throws an exception of the given type.
      */
-    public static void verifyException(ThrowableAssert.ThrowingCallable actor,
-                                       Class clazz) {
-
-        catchException(actor, clazz, true);
-        if (caughtException() == null) {
-            throw new ExceptionNotThrownAssertionError(clazz);
+    public static void verifyException(ThrowingCallable actor, Class<? extends Exception> clazz) {
+        validateArguments(actor, clazz);
+        try {
+            catchException(actor, clazz, true);
+        } catch (ExceptionNotThrownAssertionError e) {
+            throw e;
+        } catch (Exception e) {
         }
-        assertThat(caughtException()).isInstanceOf(clazz);
     }
 
     /**
@@ -307,15 +284,18 @@ public class CatchException {
      * exception, then {@link #caughtException()} will return <code>null</code>.
      * <p/>
      *
-     * @param <T>   The type of the given <code>obj</code>.
      * @param actor The instance that shall be proxied. Must not be
      *              <code>null</code>.
      * @return Returns a proxy for the given object. The proxy catches
      * exceptions of the given type when a method on the proxy is
      * called.
      */
-    public static void catchException(ThrowableAssert.ThrowingCallable actor) {
-        catchException(actor, RuntimeException.class, false);
+    public static void catchException(ThrowingCallable actor) {
+        validateArguments(actor, Exception.class);
+        try {
+            catchException(actor, Exception.class, false);
+        } catch (Exception e) {
+        }
     }
 
     /**
@@ -337,9 +317,7 @@ public class CatchException {
      * {@link #caughtException()} will return <code>null</code>.
      * <p/>
      *
-     * @param <T>   The type of the given <code>obj</code>.
-     * @param <E>   The type of the exception that shall be caught.
-     * @param obj   The instance that shall be proxied. Must not be
+     * @param actor The instance that shall be proxied. Must not be
      *              <code>null</code>.
      * @param clazz The type of the exception that shall be caught. Must not be
      *              <code>null</code>.
@@ -347,39 +325,37 @@ public class CatchException {
      * exceptions of the given type when a method on the proxy is
      * called.
      */
-    public static void catchException(ThrowableAssert.ThrowingCallable actor,
-                                      Class clazz) throws RuntimeException {
+    public static void catchException(ThrowingCallable actor, Class<? extends Exception> clazz) throws Exception {
+        validateArguments(actor, clazz);
         catchException(actor, clazz, false);
     }
 
-    private static void catchException(ThrowableAssert.ThrowingCallable actor,
-                                      Class clazz, boolean assertException) throws RuntimeException {
+    private static void catchException(ThrowingCallable actor, Class<? extends Exception> clazz,
+                                       boolean assertException) throws Exception {
+        resetCaughtException();
+        Exception e = ExceptionCaptor.captureThrowable(actor);
+        if (e == null) {
+            if (!assertException) {
+                return;
+            } else {
+                throw new ExceptionNotThrownAssertionError(clazz);
+            }
+        }
+        // is the thrown exception of the expected type?
+        if (clazz.isAssignableFrom(e.getClass())) {
+            ExceptionHolder.set(e);
+        } else {
+            if (assertException) {
+                throw new ExceptionNotThrownAssertionError(clazz, e);
+            } else {
+                throw e;
+            }
+        }
+    }
 
+    private static void validateArguments(ThrowingCallable actor, Class<? extends Exception> clazz) {
         if (actor == null) throw new IllegalArgumentException("obj must not be null");
         if (clazz == null) throw new IllegalArgumentException("exceptionClazz must not be null");
-
-        ExceptionHolder.set(null);
-        try {
-            actor.call();
-        } catch (RuntimeException e) {
-            // is the thrown exception of the expected type?
-            if (!clazz.isAssignableFrom(e.getClass())) {
-
-                if (assertException) {
-                    throw new ExceptionNotThrownAssertionError(clazz, e);
-                } else {
-                    throw (RuntimeException) e;
-                }
-
-            }
-            if (clazz.isAssignableFrom(e.getClass())) {
-                ExceptionHolder.set(e);
-
-            }
-
-        } catch (Throwable throwable) {
-        }
-
     }
 
     /**
