@@ -5,7 +5,7 @@ Catch and verify exceptions in a single line of code
 [![Build Status](https://travis-ci.org/Codearte/catch-exception.svg)](https://travis-ci.org/Codearte/catch-exception) [![Coverage Status](https://img.shields.io/coveralls/Codearte/catch-exception.svg)](https://coveralls.io/r/Codearte/catch-exception?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/eu.codearte.catch-exception/catch-exception/badge.svg)](https://maven-badges.herokuapp.com/maven-central/eu.codearte.catch-exception/catch-exception) [![Apache 2](http://img.shields.io/badge/license-Apache%202-red.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 
-*This is maintenance version of famous [catch-exception](https://code.google.com/p/catch-exception/) library created
+*This is continuation of famous [catch-exception](https://code.google.com/p/catch-exception/) library created
 by Rod Woo*.
 
 This library catches exceptions in a single line of code and makes them available for further analysis.
@@ -21,7 +21,7 @@ List myList = new ArrayList();
 
 // when: we try to get the first element of the list
 // then: catch the exception if any is thrown
-catchException(myList).get(1);
+catchException(() -> myList.get(1));
 
 // then: we expect an IndexOutOfBoundsException
 assert caughtException() instanceof IndexOutOfBoundsException;
@@ -45,7 +45,7 @@ import static com.googlecode.catchexception.apis.BDDCatchException.*;
 List myList = new ArrayList();
 
 // when: we try to get the first element of the list
-when(myList).get(1);
+when(() -> myList.get(1));
 
 // then: we expect an IndexOutOfBoundsException
 then(caughtException())
@@ -70,27 +70,19 @@ catchException(myList).get(1);
 
 // then: we expect an IndexOutOfBoundsException with message "Index: 1, Size: 0"
 assertThat(caughtException(),
-  allOf(
-    is(IndexOutOfBoundsException.class),
-    hasMessage("Index: 1, Size: 0"),
-    hasNoCause()
-  )
+    allOf(
+        instanceOf(equalTo(IndexOutOfBoundsException.class)),
+        CatchExceptionHamcrestMatchers.hasMessage("Index: 1, Size: 0"),
+        CatchExceptionHamcrestMatchers.hasNoCause()
+    )
 );
 ```
 
 # Catch constructor exceptions
-Catch-exception does not provide an API to to catch exceptions that are thrown by constructors. Use try-catch-blocks instead. Alternatively, you can use the builder pattern if this makes sense anyway for your application:
+Catch-exception supports exceptions that are thrown by constructors. 
 
 ```java
-import com.google.common.base.Supplier; // Google Guava
-
-Supplier<Thing> builder = new Supplier<Thing>() {
-   @Override
-    public Thing get() {
-       return new Thing("baddata");
-   }
-};
-verifyException(builder).get();
+verifyException(() -> new Thing("baddata"));
 ```
 
 Thanks to the community for the example.
@@ -119,8 +111,8 @@ public void testErrorCollectorWithExpectedException() {
     collector.checkThat("a", equalTo("b"));
 
     // collect second error
-    catchException(new ArrayList()).get(1);
-    collector.checkThat(caughtException(), is(IllegalArgumentException.class));
+    catchException(() -> new ArrayList().get(1));
+    collector.checkThat(caughtException(), instanceOf(IllegalArgumentException.class));
 
     // collect third error
     collector.checkThat(1, equalTo(2));
@@ -131,13 +123,6 @@ Sometimes you want to test for an [optional exception in a parameterized test](h
 
 # Download
 Go to the [Installation page](https://github.com/Codearte/catch-exception/wiki/Installation) to get the latest release. This page provides also the Maven coordinates, prerequisites, and information about dependencies to other libraries.
-
-# Future enhancements
-This is maintenance project only - new features are not planned.
-
-Read about catching exception with Java 8:
-* [Clean JUnit Throwable-Tests with Java 8 Lambdas](http://www.codeaffine.com/2014/07/28/clean-junit-throwable-tests-with-java-8-lambdas/)
-* [Java 8 Friday: Better Exceptions](http://blog.jooq.org/2014/05/23/java-8-friday-better-exceptions/)
 
 # Credits
 Thanks to Rod Woo, the former author of catch-exception for creating this awesome library.
