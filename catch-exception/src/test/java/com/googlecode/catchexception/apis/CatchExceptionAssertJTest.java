@@ -39,7 +39,7 @@ public class CatchExceptionAssertJTest {
         List myList = new ArrayList();
 
         // when we try to get first element of the list
-        when(myList).get(1);
+        when(() -> myList.get(1));
 
         // then we expect an IndexOutOfBoundsException
         then(caughtException()) //

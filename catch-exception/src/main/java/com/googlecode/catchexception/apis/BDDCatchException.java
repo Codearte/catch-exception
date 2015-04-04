@@ -16,8 +16,10 @@
 package com.googlecode.catchexception.apis;
 
 import com.googlecode.catchexception.CatchException;
+import com.googlecode.catchexception.internal.ExceptionHolder;
 import org.assertj.core.api.AbstractThrowableAssert;
 import org.assertj.core.api.CompatibilityAssertions;
+import org.assertj.core.api.ThrowableAssert;
 
 /**
  * Supports <a
@@ -48,22 +50,6 @@ thenThrown(IndexOutOfBoundsException.class);
  * @since 1.3.0
  */
 public class BDDCatchException {
-
-    /**
-     * @param <T>
-     *            The type of the given <code>obj</code>.
-     *
-     * @param obj
-     *            The instance that shall be proxied. Must not be
-     *            <code>null</code>.
-     * @return Returns a proxy for the given object. The proxy catches
-     *         exceptions of the given type when a method on the proxy is
-     *         called.
-     * @see com.googlecode.catchexception.CatchException#catchException(Object)
-     */
-    public static <T> T when(T obj) {
-        return CatchException.catchException(obj);
-    }
 
     /**
      * Throws an assertion if no exception is thrown or if an exception of an
@@ -118,5 +104,30 @@ thenThrown(IndexOutOfBoundsException.class);
         // delegate to AssertJ assertions
         return CompatibilityAssertions.assertThat(actualException);
     }
+
+  /**
+   * @param <T>
+   *            The type of the given <code>obj</code>.
+   *
+   * @param obj
+   *            The instance that shall be proxied. Must not be
+   *            <code>null</code>.
+   * @return Returns a proxy for the given object. The proxy catches
+   *         exceptions of the given type when a method on the proxy is
+   *         called.
+   * @see com.googlecode.catchexception.CatchException#catchException(Object)
+   */
+    public static void when(ThrowableAssert.ThrowingCallable actor) {
+      Exception result = null;
+      try {
+        actor.call();
+      } catch (Exception throwable) {
+        result = throwable;
+      } catch (Throwable throwable) {
+        throwable.printStackTrace();
+      }
+      ExceptionHolder.set(result);
+    }
+
 
 }
