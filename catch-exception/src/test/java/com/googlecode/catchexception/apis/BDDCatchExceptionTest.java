@@ -15,7 +15,7 @@
  */
 package com.googlecode.catchexception.apis;
 
-import static com.googlecode.catchexception.CatchException.caughtException;
+import static com.googlecode.catchexception.apis.BDDCatchException.thenCaughtException;
 import static com.googlecode.catchexception.apis.BDDCatchException.thenThrown;
 import static com.googlecode.catchexception.apis.BDDCatchException.when;
 import static org.assertj.core.api.BDDAssertions.then;
@@ -45,11 +45,14 @@ public class BDDCatchExceptionTest {
         when(() -> myList.get(1));
 
         // then we expect an IndexOutOfBoundsException
-        then(caughtException()) //
+        thenCaughtException()
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();
 
+        // and BDDAssertions....
+        then(new Integer(2)).isEqualTo(2);
+        then(new Exception()).hasMessage(null);
     }
 
     @SuppressWarnings("rawtypes")

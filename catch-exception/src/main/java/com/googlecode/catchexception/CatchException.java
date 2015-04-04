@@ -15,7 +15,8 @@
  */
 package com.googlecode.catchexception;
 
-import org.assertj.core.api.Assertions;
+import static com.googlecode.catchexception.apis.CatchExceptionAssert.assertThat;
+
 import org.assertj.core.api.ThrowableAssert;
 
 import com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers;
@@ -230,7 +231,7 @@ public class CatchException {
      * caught exception belongs to a class that is no longer
      * {@link ClassLoader loaded}.
      */
-    public static Exception caughtException() {
+    public static <E extends Exception> E caughtException() {
         return ExceptionHolder.get();
     }
 
@@ -288,7 +289,7 @@ public class CatchException {
         if (caughtException() == null) {
             throw new ExceptionNotThrownAssertionError(clazz);
         }
-        Assertions.assertThat(caughtException()).isInstanceOf(clazz);
+        assertThat(caughtException()).isInstanceOf(clazz);
     }
 
     /**

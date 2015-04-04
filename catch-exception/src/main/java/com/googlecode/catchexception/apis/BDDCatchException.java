@@ -15,6 +15,8 @@
  */
 package com.googlecode.catchexception.apis;
 
+import static com.googlecode.catchexception.CatchException.caughtException;
+
 import org.assertj.core.api.ThrowableAssert;
 
 import com.googlecode.catchexception.CatchException;
@@ -86,6 +88,10 @@ thenThrown(IndexOutOfBoundsException.class);
     @SuppressWarnings("rawtypes")
     public static void thenThrown(Class actualExceptionClazz) {
       CatchExceptionUtils.thenThrown(actualExceptionClazz);
+    }
+
+    public static CatchExceptionAssert thenCaughtException() {
+        return new CatchExceptionAssert(caughtException());
     }
 
 }

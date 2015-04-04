@@ -48,7 +48,7 @@ List myList = new ArrayList();
 when(() -> myList.get(1));
 
 // then: we expect an IndexOutOfBoundsException
-then(caughtException())
+thenCaughtException()
         .isInstanceOf(IndexOutOfBoundsException.class)
         .hasMessage("Index: 1, Size: 0")
         .hasNoCause();
