@@ -15,18 +15,18 @@
  */
 package com.googlecode.catchexception.throwable.apis;
 
-import org.junit.Test;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.caughtThrowable;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.then;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenThrown;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
+import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenCaughtThrowable;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenThrown;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.then;
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 /**
  * Tests {@link com.googlecode.catchexception.throwable.apis.BDDCatchThrowable}.
@@ -47,9 +47,9 @@ public class BDDCatchThrowableTest {
 
         // then we expect an IndexOutOfBoundsException
         then(caughtThrowable())
-            .isInstanceOf(IndexOutOfBoundsException.class) //
-            .hasMessage("Index: 1, Size: 0") //
-            .hasNoCause();
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasNoCause();
 
     }
 
@@ -63,10 +63,10 @@ public class BDDCatchThrowableTest {
         when(myList).get(1);
 
         // then we expect an IndexOutOfBoundsException
-        thenCaughtThrowable()
-            .isInstanceOf(IndexOutOfBoundsException.class) //
-            .hasMessage("Index: 1, Size: 0") //
-            .hasNoCause();
+        then(caughtThrowable())
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasNoCause();
 
     }
 
@@ -101,7 +101,8 @@ public class BDDCatchThrowableTest {
         } catch (AssertionError e) {
             assertEquals("Throwable of type java.lang.IllegalArgumentException"
                             + " expected but was not thrown. Instead a throwable of"
-                            + " type class java.lang.ArrayIndexOutOfBoundsException" + " with message '500' was thrown.",
+                            + " type class java.lang.ArrayIndexOutOfBoundsException" + " with message '500' was " +
+                            "thrown.",
                     e.getMessage());
         }
 

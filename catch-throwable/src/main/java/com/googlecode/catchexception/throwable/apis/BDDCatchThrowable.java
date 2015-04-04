@@ -15,33 +15,34 @@
  */
 package com.googlecode.catchexception.throwable.apis;
 
-import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
-
-import com.googlecode.catchexception.throwable.CatchThrowable;
 import org.assertj.core.api.AbstractThrowableAssert;
 import org.assertj.core.api.CompatibilityAssertions;
+
+import com.googlecode.catchexception.throwable.CatchThrowable;
+import com.googlecode.catchexception.throwable.internal.ThrowableHolder;
 
 /**
  * Supports <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>-like approach to catch and verify
  * throwables (<i>given/when/then</i>).
  * <p>
- * <code><pre class="prettyprint lang-java">import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.*;
+ * <code><pre class="prettyprint lang-java">import static com.googlecode.catchexception.throwable.apis
+ * .BDDCatchThrowable.*;
 
  // given an empty list
-List myList = new ArrayList();
+ List myList = new ArrayList();
 
-// when we try to get the first element of the list
-when(myList).get(1);
+ // when we try to get the first element of the list
+ when(myList).get(1);
 
-// then we expect an IndexOutOfBoundsThrowable
-then(caughtThrowable())
-        .isInstanceOf(IndexOutOfBoundsThrowable.class)
-        .hasMessage("Index: 1, Size: 0")
-        .hasNoCause();
+ // then we expect an IndexOutOfBoundsThrowable
+ then(caughtThrowable())
+ .isInstanceOf(IndexOutOfBoundsThrowable.class)
+ .hasMessage("Index: 1, Size: 0")
+ .hasNoCause();
 
-// then we expect an IndexOutOfBoundsThrowable (alternatively)
-thenThrown(IndexOutOfBoundsThrowable.class);
-</pre></code>
+ // then we expect an IndexOutOfBoundsThrowable (alternatively)
+ thenThrown(IndexOutOfBoundsThrowable.class);
+ </pre></code>
  *
  * @author rwoo
  * @author mariuszs
@@ -62,7 +63,7 @@ public class BDDCatchThrowable {
      * @see com.googlecode.catchexception.throwable.CatchThrowable#catchThrowable(Object)
      */
     public static <T> T when(T obj) {
-      return CatchThrowable.catchThrowable(obj);
+        return CatchThrowable.catchThrowable(obj);
     }
 
     /**
@@ -70,54 +71,84 @@ public class BDDCatchThrowable {
      * <p>
      * EXAMPLE:
      * <code><pre class="prettyprint lang-java">// given a list with nine members
-List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+     List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-// when we try to get the 500th member of the fellowship
-when(myList).get(500);
+     // when we try to get the 500th member of the fellowship
+     when(myList).get(500);
 
-// then we expect an IndexOutOfBoundsThrowable
-thenThrown(IndexOutOfBoundsThrowable.class);
-</pre></code>
+     // then we expect an IndexOutOfBoundsThrowable
+     thenThrown(IndexOutOfBoundsThrowable.class);
+     </pre></code>
      *
      * @param actualThrowableClazz
      *            the expected type of the caught throwable.
      */
     @SuppressWarnings("rawtypes")
     public static void thenThrown(Class actualThrowableClazz) {
-      CatchThrowable.catchThrowable(actualThrowableClazz);    }
+        CatchThrowable.catchThrowable(actualThrowableClazz);
+    }
 
-  /**
-   * Enables <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a> assertions about the caught
-   * throwable.
-   * <p>
-   * EXAMPLE: <code><pre class="prettyprint lang-java">// given an empty list
-   List myList = new ArrayList();
+    /**
+     * Enables <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a> assertions about the caught
+     * throwable.
+     * <p>
+     * EXAMPLE: <code><pre class="prettyprint lang-java">// given an empty list
+     List myList = new ArrayList();
 
-   // when we try to get first element of the list
-   when(myList).get(1);
+     // when we try to get first element of the list
+     when(myList).get(1);
 
-   // then we expect an IndexOutOfBoundsThrowable
-   then(caughtThrowable())
-   .isInstanceOf(IndexOutOfBoundsThrowable.class)
-   .hasMessage("Index: 1, Size: 0")
-   .hasMessageStartingWith("Index: 1")
-   .hasMessageEndingWith("Size: 0")
-   .hasMessageContaining("Size")
-   .hasNoCause();
-   </pre></code>
-   *
-   * @deprecated Use BDDAssertions#then instead
-   * @param actualThrowable
-   *            the value to be the target of the assertions methods.
-   * @return Returns the created assertion object.
-   */
-  @Deprecated
-  public static AbstractThrowableAssert<?, ? extends Throwable> then(Throwable actualThrowable) {
-    // delegate to AssertJ assertions
-    return CompatibilityAssertions.assertThat(actualThrowable);
-  }
+     // then we expect an IndexOutOfBoundsThrowable
+     then(caughtThrowable())
+     .isInstanceOf(IndexOutOfBoundsThrowable.class)
+     .hasMessage("Index: 1, Size: 0")
+     .hasMessageStartingWith("Index: 1")
+     .hasMessageEndingWith("Size: 0")
+     .hasMessageContaining("Size")
+     .hasNoCause();
+     </pre></code>
+     *
+     * @deprecated Use #then(ThrowableBox) instead
+     * @param actualThrowable
+     *            the value to be the target of the assertions methods.
+     * @return Returns the created assertion object.
+     */
+    @Deprecated
+    public static AbstractThrowableAssert<?, ? extends Throwable> then(Throwable actualThrowable) {
+        // delegate to AssertJ assertions
+        return CompatibilityAssertions.assertThat(actualThrowable);
+    }
 
-  public static CatchThrowableAssert thenCaughtThrowable() {
-    return new CatchThrowableAssert(caughtThrowable());
-  }
+    /**
+     * Enables <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a> assertions about the caught
+     * throwable.
+     * <p>
+     * EXAMPLE: <code><pre class="prettyprint lang-java">// given an empty list
+     List myList = new ArrayList();
+
+     // when we try to get first element of the list
+     when(myList).get(1);
+
+     // then we expect an IndexOutOfBoundsThrowable
+     then(caughtThrowable())
+     .isInstanceOf(IndexOutOfBoundsThrowable.class)
+     .hasMessage("Index: 1, Size: 0")
+     .hasMessageStartingWith("Index: 1")
+     .hasMessageEndingWith("Size: 0")
+     .hasMessageContaining("Size")
+     .hasNoCause();
+     </pre></code>
+     *
+     * @param actualThrowable
+     *            the value to be the target of the assertions methods.
+     * @return Returns the created assertion object.
+     */
+    public static CatchThrowableAssert then(ThrowableBox actualThrowable) {
+        return new CatchThrowableAssert(actualThrowable.getThrowable());
+    }
+
+    public static ThrowableBox caughtThrowable() {
+        return new ThrowableBox(ThrowableHolder.get());
+    }
+
 }

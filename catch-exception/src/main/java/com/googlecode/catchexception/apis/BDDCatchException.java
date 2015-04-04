@@ -15,11 +15,11 @@
  */
 package com.googlecode.catchexception.apis;
 
-import static com.googlecode.catchexception.CatchException.caughtException;
-
-import com.googlecode.catchexception.CatchException;
 import org.assertj.core.api.AbstractThrowableAssert;
 import org.assertj.core.api.CompatibilityAssertions;
+
+import com.googlecode.catchexception.CatchException;
+import com.googlecode.catchexception.internal.ExceptionHolder;
 
 /**
  * Supports <a
@@ -29,21 +29,21 @@ import org.assertj.core.api.CompatibilityAssertions;
  * EXAMPLE:
  * <code><pre class="prettyprint lang-java">import static org.assertj.core.api.BDDAssertions.then;
 
-// given an empty list
-List myList = new ArrayList();
+ // given an empty list
+ List myList = new ArrayList();
 
-// when we try to get the first element of the list
-when(myList).get(1);
+ // when we try to get the first element of the list
+ when(myList).get(1);
 
-// then we expect an IndexOutOfBoundsException
-then(caughtException())
-        .isInstanceOf(IndexOutOfBoundsException.class)
-        .hasMessage("Index: 1, Size: 0")
-        .hasNoCause();
+ // then we expect an IndexOutOfBoundsException
+ then(caughtException())
+ .isInstanceOf(IndexOutOfBoundsException.class)
+ .hasMessage("Index: 1, Size: 0")
+ .hasNoCause();
 
-// then we expect an IndexOutOfBoundsException (alternatively)
-thenThrown(IndexOutOfBoundsException.class);
-</pre></code>
+ // then we expect an IndexOutOfBoundsException (alternatively)
+ thenThrown(IndexOutOfBoundsException.class);
+ </pre></code>
  *
  * @author rwoo
  * @author mariuszs
@@ -73,24 +73,24 @@ public class BDDCatchException {
      * <p>
      * EXAMPLE:
      * <code><pre class="prettyprint lang-java">// given a list with nine members
-List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+     List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-// when we try to get the 500th member of the fellowship
-when(myList).get(500);
+     // when we try to get the 500th member of the fellowship
+     when(myList).get(500);
 
-// then we expect an IndexOutOfBoundsException
-thenThrown(IndexOutOfBoundsException.class);
-</pre></code>
+     // then we expect an IndexOutOfBoundsException
+     thenThrown(IndexOutOfBoundsException.class);
+     </pre></code>
      *
      * @param actualExceptionClazz
      *            the expected type of the caught exception.
      */
     @SuppressWarnings("rawtypes")
     public static void thenThrown(Class actualExceptionClazz) {
-      CatchExceptionUtils.thenThrown(actualExceptionClazz);
+        CatchExceptionUtils.thenThrown(actualExceptionClazz);
     }
 
-  /**
+    /**
      * Enables <a
      * href="https://github.com/joel-costigliola/assertj-core">AssertJ</a>
      * assertions about the caught exception.
@@ -112,7 +112,7 @@ thenThrown(IndexOutOfBoundsException.class);
      .hasNoCause();
      </pre></code>
      *
-     * @deprecated Use BDDAssertions#then instead
+     * @deprecated Use #then(ExceptionBox ) instead
      * @param actualException
      *            the value to be the target of the assertions methods.
      * @return Returns the created assertion object.
@@ -123,8 +123,38 @@ thenThrown(IndexOutOfBoundsException.class);
         return CompatibilityAssertions.assertThat(actualException);
     }
 
-    public static CatchExceptionAssert thenCaughtException() {
-        return new CatchExceptionAssert(caughtException());
+    /**
+     * Enables <a
+     * href="https://github.com/joel-costigliola/assertj-core">AssertJ</a>
+     * assertions about the caught exception.
+     * <p>
+     * EXAMPLE:
+     * <code><pre class="prettyprint lang-java">// given an empty list
+     List myList = new ArrayList();
+
+     // when we try to get first element of the list
+     when(myList).get(1);
+
+     // then we expect an IndexOutOfBoundsException
+     then(caughtException())
+     .isInstanceOf(IndexOutOfBoundsException.class)
+     .hasMessage("Index: 1, Size: 0")
+     .hasMessageStartingWith("Index: 1")
+     .hasMessageEndingWith("Size: 0")
+     .hasMessageContaining("Size")
+     .hasNoCause();
+     </pre></code>
+     *
+     * @param actualException
+     *            the value to be the target of the assertions methods.
+     * @return Returns the created assertion object.
+     */
+    public static CatchExceptionAssert then(ExceptionBox actualException) {
+        return new CatchExceptionAssert(actualException.getException());
+    }
+
+    public static ExceptionBox caughtException() {
+        return new ExceptionBox(ExceptionHolder.get());
     }
 
 }
