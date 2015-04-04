@@ -15,15 +15,16 @@
  */
 package com.googlecode.catchexception.throwable.apis;
 
-import org.junit.Test;
+import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.caughtThrowable;
+import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.then;
+import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.thenCaughtThrowable;
+import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.when;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
-import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.then;
-import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.when;
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 /**
  * Tests {@link CatchThrowableAssertJ}.
@@ -51,19 +52,13 @@ public class CatchThrowableAssertJ17Test {
                 .hasMessageEndingWith("Size: 0") //
                 .hasMessageContaining("Size") //
                 .hasNoCause();
-
-        // test: caughtThrowable() == new RuntimeException()
-        try {
-            then(new RuntimeException()).isInstanceOf(IndexOutOfBoundsException.class);
-
-        } catch (AssertionError e) {
-            assertEquals("\nExpecting:" //
-                    + "\n <java.lang.RuntimeException>" //
-                    + "\nto be an instance of:" //
-                    + "\n <java.lang.IndexOutOfBoundsException>" //
-                    + "\nbut was instance of:" //
-                    + "\n <java.lang.RuntimeException>", e.getMessage());
-        }
+        thenCaughtThrowable() //
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasMessageStartingWith("Index: 1") //
+                .hasMessageEndingWith("Size: 0") //
+                .hasMessageContaining("Size") //
+                .hasNoCause();
 
         // test: caughtThrowable() has other unexpected message
         try {

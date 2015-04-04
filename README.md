@@ -38,7 +38,6 @@ More information about the usage you find in the [Javadoc documentation](http://
 If you prefer a BDD-like approach, you can use [BDDCatchException](http://codearte.github.io/catch-exception/apidocs/com/googlecode/catchexception/apis/CatchExceptionBdd.html) for another code style:
 
 ```java
-import static com.googlecode.catchexception.CatchException.*;
 import static com.googlecode.catchexception.apis.BDDCatchException.*;
 
 // given: an empty list
@@ -133,11 +132,13 @@ Sometimes you want to test for an [optional exception in a parameterized test](h
 Go to the [Installation page](https://github.com/Codearte/catch-exception/wiki/Installation) to get the latest release. This page provides also the Maven coordinates, prerequisites, and information about dependencies to other libraries.
 
 # Future enhancements
-This is maintenance project only - new features are not planned.
+<del>This is maintenance project only - new features are not planned.</del>
 
 Read about catching exception with Java 8:
 * [Clean JUnit Throwable-Tests with Java 8 Lambdas](http://www.codeaffine.com/2014/07/28/clean-junit-throwable-tests-with-java-8-lambdas/)
 * [Java 8 Friday: Better Exceptions](http://blog.jooq.org/2014/05/23/java-8-friday-better-exceptions/)
+
+We have plan to release Catch-Exception 2 for Java 8 only with breaking API change.
 
 # Credits
 Thanks to Rod Woo, the former author of catch-exception for creating this awesome library.
