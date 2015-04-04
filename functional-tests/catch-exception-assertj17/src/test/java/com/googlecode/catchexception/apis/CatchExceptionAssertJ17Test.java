@@ -89,7 +89,7 @@ public class CatchExceptionAssertJ17Test {
         when(myList).get(1);
 
         // then we expect an IndexOutOfBoundsException
-        BDDAssertions.then(caughtException()) //
+        BDDCatchException.thenCaughtException() //
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasMessageStartingWith("Index: 1") //
@@ -113,7 +113,7 @@ public class CatchExceptionAssertJ17Test {
 
         // test: caughtException() has other unexpected message
         try {
-            BDDAssertions.then(caughtException()) //
+            BDDCatchException.thenCaughtException() //
                     .isInstanceOf(IndexOutOfBoundsException.class) //
                     .hasMessage("Hi!");
 

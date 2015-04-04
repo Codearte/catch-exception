@@ -15,6 +15,8 @@
  */
 package com.googlecode.catchexception.throwable.apis;
 
+import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
+
 import com.googlecode.catchexception.throwable.CatchThrowable;
 import org.assertj.core.api.AbstractThrowableAssert;
 import org.assertj.core.api.CompatibilityAssertions;
@@ -113,5 +115,9 @@ thenThrown(IndexOutOfBoundsThrowable.class);
   public static AbstractThrowableAssert<?, ? extends Throwable> then(Throwable actualThrowable) {
     // delegate to AssertJ assertions
     return CompatibilityAssertions.assertThat(actualThrowable);
+  }
+
+  public static CatchThrowableAssert thenCaughtThrowable() {
+    return new CatchThrowableAssert(caughtThrowable());
   }
 }
