@@ -20,9 +20,9 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.then;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
+import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.caughtThrowable;
+import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.then;
+import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.when;
 import static org.junit.Assert.assertEquals;
 
 /**

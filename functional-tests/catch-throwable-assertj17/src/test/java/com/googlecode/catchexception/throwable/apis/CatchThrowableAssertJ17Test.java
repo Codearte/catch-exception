@@ -20,7 +20,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
+import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.caughtThrowable;
 import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.then;
 import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.when;
 import static org.junit.Assert.assertEquals;
@@ -51,19 +51,6 @@ public class CatchThrowableAssertJ17Test {
                 .hasMessageEndingWith("Size: 0") //
                 .hasMessageContaining("Size") //
                 .hasNoCause();
-
-        // test: caughtThrowable() == new RuntimeException()
-        try {
-            then(new RuntimeException()).isInstanceOf(IndexOutOfBoundsException.class);
-
-        } catch (AssertionError e) {
-            assertEquals("\nExpecting:" //
-                    + "\n <java.lang.RuntimeException>" //
-                    + "\nto be an instance of:" //
-                    + "\n <java.lang.IndexOutOfBoundsException>" //
-                    + "\nbut was instance of:" //
-                    + "\n <java.lang.RuntimeException>", e.getMessage());
-        }
 
         // test: caughtThrowable() has other unexpected message
         try {
