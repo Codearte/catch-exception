@@ -23,8 +23,4 @@ public class CatchExceptionAssert extends AbstractThrowableAssert<CatchException
         super(actual, CatchExceptionAssert.class);
     }
 
-    public static CatchExceptionAssert assertThat(Exception actual) {
-        return new CatchExceptionAssert(actual);
-    }
-
 }

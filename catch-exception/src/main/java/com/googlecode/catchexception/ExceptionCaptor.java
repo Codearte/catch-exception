@@ -15,7 +15,7 @@
  */
 package com.googlecode.catchexception;
 
-public class ExceptionCaptor {
+class ExceptionCaptor {
 
     public static Exception captureThrowable(ThrowingCallable exceptionThrower) {
         try {

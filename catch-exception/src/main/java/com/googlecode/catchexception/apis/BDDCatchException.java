@@ -15,8 +15,6 @@
  */
 package com.googlecode.catchexception.apis;
 
-import org.assertj.core.api.ThrowableAssert;
-
 import com.googlecode.catchexception.CatchException;
 import com.googlecode.catchexception.ThrowingCallable;
 import com.googlecode.catchexception.internal.ExceptionHolder;
@@ -58,7 +56,7 @@ public class BDDCatchException {
      * @return Returns a proxy for the given object. The proxy catches
      *         exceptions of the given type when a method on the proxy is
      *         called.
-     * @see com.googlecode.catchexception.CatchException#catchException(Object)
+     * @see com.googlecode.catchexception.CatchException#catchException(ThrowingCallable)
      */
     public static void when(ThrowingCallable actor) {
         CatchException.catchException(actor);

@@ -28,7 +28,6 @@ import java.net.HttpRetryException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -53,20 +52,8 @@ public class CatchExceptionTest {
 
     @Before
     public void setUp() {
-        onSetup();
-    }
-
-    @After
-    public void tearDown() {
-        onTeardown();
-    }
-
-    protected void onSetup() {
         // set any exception so that we have clear state before the test
         ExceptionHolder.set(new HttpRetryException("detail", 0));
-    }
-
-    protected void onTeardown() {
     }
 
     @Test

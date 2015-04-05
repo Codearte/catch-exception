@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.throwable.apis.matcher;
+package com.googlecode.catchexception.matcher;
 
 import java.io.Serializable;
 import java.util.regex.Pattern;

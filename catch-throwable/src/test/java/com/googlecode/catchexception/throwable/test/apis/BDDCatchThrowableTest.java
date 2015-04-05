@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.throwable.apis;
+package com.googlecode.catchexception.throwable.test.apis;
 
-import static com.googlecode.catchexception.throwable.CatchThrowable.caughtThrowable;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.caughtException;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenCaughtThrowable;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenThrown;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.then;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.Assert.assertEquals;
 
@@ -26,6 +28,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.googlecode.catchexception.throwable.CatchThrowable;
 
 /**
  * Tests {@link com.googlecode.catchexception.throwable.apis.BDDCatchThrowable}.
@@ -37,7 +41,7 @@ public class BDDCatchThrowableTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testAssertThat() {
+    public void testThen() {
         // given an empty list
         List myList = new ArrayList();
 
@@ -45,7 +49,41 @@ public class BDDCatchThrowableTest {
         when(() -> myList.get(1));
 
         // then we expect an IndexOutOfBoundsException
-        then(caughtThrowable()) //
+        then(caughtException()) //
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasNoCause();
+
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void testThenCaughtThrowable() {
+        // given an empty list
+        List myList = new ArrayList();
+
+        // when we try to get first element of the list
+        when(() -> myList.get(1));
+
+        // then we expect an IndexOutOfBoundsException
+        thenCaughtThrowable()
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasNoCause();
+
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void testAssertJThen() {
+        // given an empty list
+        List myList = new ArrayList();
+
+        // when we try to get first element of the list
+        when(() -> myList.get(1));
+
+        // then we expect an IndexOutOfBoundsException
+        then(CatchThrowable.caughtThrowable())
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();

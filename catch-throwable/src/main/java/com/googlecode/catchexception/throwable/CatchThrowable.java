@@ -26,10 +26,9 @@ public class CatchThrowable {
     /**
      * Returns the throwable caught during the last call on the proxied object in the current thread.
      *
-     * @param <E> This type parameter makes some type casts redundant.
      * @return Returns the throwable caught during the last call on the proxied object in the current thread - if the
-     * call was made through a proxy that has been created via {@link #verifyThrowable(Object, Class)
-     * verifyThrowable()} or {@link #catchThrowable(Object, Class) catchThrowable()}. Returns null the proxy has
+     * call was made through a proxy that has been created via {@link #verifyThrowable(ThrowingCallable, Class)}
+     * verifyThrowable()} or {@link #catchThrowable(ThrowingCallable)}. Returns null the proxy has
      * not caught an throwable. Returns null if the caught throwable belongs to a class that is no longer
      * {@link ClassLoader loaded}.
      */
@@ -50,8 +49,7 @@ public class CatchThrowable {
      * thrown. Otherwise the thrown throwable can be retrieved via {@link #caughtThrowable()}.
      * <p/>
      *
-     * @param <T> The type of the given <code>obj</code>.
-     * @param obj The instance that shall be proxied. Must not be <code>null</code>.
+     * @param actor The instance that shall be proxied. Must not be <code>null</code>.
      * @return Returns an object that verifies that each invocation on the underlying object throws an throwable.
      */
     public static void verifyThrowable(ThrowingCallable actor) {
@@ -71,9 +69,7 @@ public class CatchThrowable {
      * is thrown. Otherwise the thrown throwable can be retrieved via {@link #caughtThrowable()}.
      * <p/>
      *
-     * @param <T>   The type of the given <code>obj</code>.
-     * @param <E>   The type of the throwable that shall be caught.
-     * @param obj   The instance that shall be proxied. Must not be <code>null</code>.
+     * @param actor   The instance that shall be proxied. Must not be <code>null</code>.
      * @param clazz The type of the throwable that shall be thrown by the underlying object. Must not be
      *              <code>null</code>
      *              .

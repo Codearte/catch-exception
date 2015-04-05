@@ -189,7 +189,7 @@ import com.googlecode.catchexception.internal.ExceptionHolder;
  * <h3 id="11">11. Can I catch errors instead of exceptions?</h3>
  * <p/>
  * Yes, have a look at
- * {@link com.googlecode.catchexception.throwable.CatchThrowable} (in module
+ * {@code com.googlecode.catchexception.throwable.CatchThrowable} (in module
  * catch-throwable).
  *
  * @author rwoo

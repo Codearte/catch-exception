@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.apis;
+package com.googlecode.catchexception.test.apis;
 
 import static com.googlecode.catchexception.apis.BDDCatchException.caughtException;
 import static com.googlecode.catchexception.apis.BDDCatchException.then;
+import static com.googlecode.catchexception.apis.BDDCatchException.thenCaughtException;
 import static com.googlecode.catchexception.apis.BDDCatchException.thenThrown;
 import static com.googlecode.catchexception.apis.BDDCatchException.when;
 import static org.assertj.core.api.BDDAssertions.then;
@@ -27,6 +28,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.googlecode.catchexception.CatchException;
+import com.googlecode.catchexception.apis.BDDCatchException;
 
 /**
  * Tests {@link com.googlecode.catchexception.apis.BDDCatchException}.
@@ -47,6 +51,46 @@ public class BDDCatchExceptionTest {
 
         // then we expect an IndexOutOfBoundsException
         then(caughtException())
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasNoCause();
+
+        // and BDDAssertions....
+        then(new Integer(2)).isEqualTo(2);
+        then(new Exception()).hasMessage(null);
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void testThenCaughtException() {
+        // given an empty list
+        List myList = new ArrayList();
+
+        // when we try to get first element of the list
+        when(() -> myList.get(1));
+
+        // then we expect an IndexOutOfBoundsException
+        thenCaughtException()
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasNoCause();
+
+        // and BDDAssertions....
+        then(new Integer(2)).isEqualTo(2);
+        then(new Exception()).hasMessage(null);
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void testAssertJThen() {
+        // given an empty list
+        List myList = new ArrayList();
+
+        // when we try to get first element of the list
+        when(() -> myList.get(1));
+
+        // then we expect an IndexOutOfBoundsException
+        then((Throwable) CatchException.caughtException())
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();
