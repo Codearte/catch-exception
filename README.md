@@ -71,7 +71,7 @@ catchException(myList).get(1);
 // then: we expect an IndexOutOfBoundsException with message "Index: 1, Size: 0"
 assertThat(caughtException(),
   allOf(
-    is(IndexOutOfBoundsException.class),
+    instanceOf(IndexOutOfBoundsException.class),
     hasMessage("Index: 1, Size: 0"),
     hasNoCause()
   )
