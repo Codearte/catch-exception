@@ -1,7 +1,5 @@
 project(modelVersion: '4.0.0') {
 
-    parent(groupId: 'org.sonatype.oss', artifactId: 'oss-parent', version: 9)
-
     groupId 'eu.codearte.catch-exception'
     artifactId 'catch-exception-parent'
     version '2.0.0-SNAPSHOT'
@@ -42,8 +40,8 @@ project(modelVersion: '4.0.0') {
     properties {
         'project.inceptionYear' 2011
         'project.build.sourceEncoding' 'UTF-8'
-        'maven.compiler.source' 1.8
-        'maven.compiler.target' 1.8
+        'maven.compiler.source' '1.8'
+        'maven.compiler.target' '1.8'
     }
     dependencyManagement {
         dependencies {
@@ -134,15 +132,6 @@ project(modelVersion: '4.0.0') {
                     useIncrementalCompilation 'false'
                 }
             }
-            plugin(artifactId: 'maven-jar-plugin') {
-                executions {
-                    execution {
-                        goals {
-                            goal 'test-jar'
-                        }
-                    }
-                }
-            }
             plugin(artifactId: 'maven-javadoc-plugin', version: '2.10.2') {
                 executions {
                     execution(id: 'aggregate', phase: 'site') {
@@ -174,10 +163,7 @@ project(modelVersion: '4.0.0') {
     profiles {
         profile(id: 'release') {
             activation {
-                property {
-                    name 'performRelease'
-                    value 'true'
-                }
+                property(name: 'performRelease', value: true)
             }
             build {
                 plugins {

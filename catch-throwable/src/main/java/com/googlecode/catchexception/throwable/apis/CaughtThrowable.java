@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 rwoo@gmx.de
+ * Copyright (C) ${year} rwoo@gmx.de
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,33 +17,7 @@ package com.googlecode.catchexception.throwable.apis;
 
 class CaughtThrowable extends Throwable {
 
-    private final Throwable throwable;
-
-    public CaughtThrowable(Throwable exthrowableeption) {
-        this.throwable = exthrowableeption;
-    }
-
-    public Throwable getThrowable() {
-        return throwable;
-    }
-
-    @Override
-    public String getMessage() {
-        return super.getMessage();
-    }
-
-    @Override
-    public StackTraceElement[] getStackTrace() {
-        return super.getStackTrace();
-    }
-
-    @Override
-    public String getLocalizedMessage() {
-        return super.getLocalizedMessage();
-    }
-
-    @Override
-    public synchronized Throwable getCause() {
-        return super.getCause();
+    public CaughtThrowable(Throwable cause) {
+        super(cause);
     }
 }

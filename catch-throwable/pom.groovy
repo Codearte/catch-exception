@@ -1,8 +1,11 @@
 project(modelVersion: '4.0.0') {
+
     parent(groupId: 'eu.codearte.catch-exception', artifactId: 'catch-exception-parent', version: '2.0.0-SNAPSHOT') {
         relativePath '..'
     }
+
     artifactId 'catch-throwable'
+    packaging 'takari-jar'
 
     description 'Catch throwables (not only exceptions)'
 
@@ -13,6 +16,9 @@ project(modelVersion: '4.0.0') {
                     header '${maven.multiModuleProjectDirectory}/src/etc/header.txt'
                 }
             }
+            plugin(groupId: 'io.takari.maven.plugins', artifactId: 'takari-lifecycle-plugin',
+                    version: '1.11.3', extensions: true)
+
         }
     }
 

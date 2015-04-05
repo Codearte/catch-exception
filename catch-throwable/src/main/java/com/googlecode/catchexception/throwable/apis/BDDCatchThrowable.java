@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 rwoo@gmx.de
+ * Copyright (C) ${year} rwoo@gmx.de
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,10 +91,10 @@ thenThrown(IndexOutOfBoundsThrowable.class);
     }
 
     public static CatchThrowableAssert then(CaughtThrowable actual) {
-        return new CatchThrowableAssert(actual.getThrowable());
+        return new CatchThrowableAssert(actual.getCause());
     }
 
-    public static CatchThrowableAssert thenCaughtException() {
+    public static CatchThrowableAssert thenCaughtThrowable() {
         return new CatchThrowableAssert(CatchThrowable.caughtThrowable());
     }
 

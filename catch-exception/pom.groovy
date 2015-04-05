@@ -5,6 +5,7 @@ project(modelVersion: '4.0.0') {
     }
 
     artifactId 'catch-exception'
+    packaging 'takari-jar'
 
     description 'Catch and verify exceptions'
 
@@ -15,6 +16,8 @@ project(modelVersion: '4.0.0') {
                     header '${maven.multiModuleProjectDirectory}/src/etc/header.txt'
                 }
             }
+            plugin(groupId: 'io.takari.maven.plugins', artifactId: 'takari-lifecycle-plugin',
+                    version: '1.11.3', extensions: true)
         }
     }
 
