@@ -15,11 +15,9 @@
  */
 package com.googlecode.catchexception;
 
-import org.assertj.core.api.ThrowableAssert;
-
 public class ExceptionCaptor {
 
-    public static Exception captureThrowable(ThrowableAssert.ThrowingCallable exceptionThrower) {
+    public static Exception captureThrowable(ThrowingCallable exceptionThrower) {
         try {
             exceptionThrower.call();
             // not exception was thrown

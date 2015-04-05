@@ -18,6 +18,7 @@ package com.googlecode.catchexception.throwable.apis;
 import org.assertj.core.api.ThrowableAssert;
 
 import com.googlecode.catchexception.throwable.CatchThrowable;
+import com.googlecode.catchexception.throwable.ThrowingCallable;
 import com.googlecode.catchexception.throwable.internal.ThrowableHolder;
 
 /**
@@ -53,9 +54,9 @@ public class BDDCatchThrowable {
      *
      * @param actor
      *            The instance that shall be proxied. Must not be <code>null</code>.
-     * @see com.googlecode.catchexception.throwable.CatchThrowable#catchThrowable(ThrowableAssert.ThrowingCallable)
+     * @see com.googlecode.catchexception.throwable.CatchThrowable#catchThrowable(ThrowingCallable)
      */
-    public static void when(ThrowableAssert.ThrowingCallable actor) {
+    public static void when(ThrowingCallable actor) {
       CatchThrowable.catchThrowable(actor);
     }
 

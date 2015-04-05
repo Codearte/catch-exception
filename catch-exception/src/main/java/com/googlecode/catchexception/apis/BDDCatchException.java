@@ -18,6 +18,7 @@ package com.googlecode.catchexception.apis;
 import org.assertj.core.api.ThrowableAssert;
 
 import com.googlecode.catchexception.CatchException;
+import com.googlecode.catchexception.ThrowingCallable;
 import com.googlecode.catchexception.internal.ExceptionHolder;
 
 /**
@@ -59,7 +60,7 @@ public class BDDCatchException {
      *         called.
      * @see com.googlecode.catchexception.CatchException#catchException(Object)
      */
-    public static void when(ThrowableAssert.ThrowingCallable actor) {
+    public static void when(ThrowingCallable actor) {
         CatchException.catchException(actor);
     }
 

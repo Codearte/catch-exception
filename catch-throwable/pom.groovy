@@ -12,6 +12,7 @@ project(modelVersion: '4.0.0') {
     build {
         plugins {
             plugin(groupId: 'io.takari.maven.plugins', artifactId: 'takari-lifecycle-plugin')
+            plugin(groupId: 'com.mycila', artifactId: 'license-maven-plugin')
         }
     }
 

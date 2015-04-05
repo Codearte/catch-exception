@@ -15,15 +15,9 @@
  */
 package com.googlecode.catchexception.throwable;
 
-public class ThrowableCaptor {
+@FunctionalInterface
+public interface ThrowingCallable {
 
-    public static Throwable captureThrowable(ThrowingCallable throwableThrower) {
-        try {
-            throwableThrower.call();
-            // not exception was thrown
-            return null;
-        } catch (Throwable caught) {
-            return caught;
-        }
-    }
+    void call() throws Throwable;
+
 }

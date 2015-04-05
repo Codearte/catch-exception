@@ -15,10 +15,6 @@
  */
 package com.googlecode.catchexception;
 
-import static com.googlecode.catchexception.apis.CatchExceptionAssert.assertThat;
-
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-
 import com.googlecode.catchexception.apis.BDDCatchException;
 import com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers;
 import com.googlecode.catchexception.internal.ExceptionHolder;
@@ -290,7 +286,7 @@ public class CatchException {
      * exceptions of the given type when a method on the proxy is
      * called.
      */
-    public static void catchException(ThrowingCallable actor) {
+    public static void catchException(com.googlecode.catchexception.ThrowingCallable actor) {
         validateArguments(actor, Exception.class);
         try {
             catchException(actor, Exception.class, false);

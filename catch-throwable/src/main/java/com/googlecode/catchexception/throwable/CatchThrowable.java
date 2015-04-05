@@ -15,8 +15,6 @@
  */
 package com.googlecode.catchexception.throwable;
 
-import org.assertj.core.api.ThrowableAssert;
-
 import com.googlecode.catchexception.throwable.internal.ThrowableHolder;
 
 /**
@@ -56,7 +54,7 @@ public class CatchThrowable {
      * @param obj The instance that shall be proxied. Must not be <code>null</code>.
      * @return Returns an object that verifies that each invocation on the underlying object throws an throwable.
      */
-    public static void verifyThrowable(ThrowableAssert.ThrowingCallable actor) {
+    public static void verifyThrowable(ThrowingCallable actor) {
         verifyThrowable(actor, Throwable.class);
     }
 
@@ -82,7 +80,7 @@ public class CatchThrowable {
      * @return Returns an object that verifies that each invocation on the underlying object throws an throwable of the
      * given type.
      */
-    public static void verifyThrowable(ThrowableAssert.ThrowingCallable actor, Class<? extends Throwable> clazz) {
+    public static void verifyThrowable(ThrowingCallable actor, Class<? extends Throwable> clazz) {
         validateArguments(actor, clazz);
         try {
             catchThrowable(actor, clazz, true);
@@ -104,12 +102,11 @@ public class CatchThrowable {
      * not throw a throwable, then {@link #caughtThrowable()} will return <code>null</code>.
      * <p/>
      *
-     * @param <T> The type of the given <code>obj</code>.
-     * @param obj The instance that shall be proxied. Must not be <code>null</code>.
+     * @param actor The instance that shall be proxied. Must not be <code>null</code>.
      * @return Returns a proxy for the given object. The proxy catches throwables of the given type when a method on the
      * proxy is called.
      */
-    public static void catchThrowable(ThrowableAssert.ThrowingCallable actor) {
+    public static void catchThrowable(ThrowingCallable actor) {
         validateArguments(actor, Throwable.class);
         try {
             catchThrowable(actor, Throwable.class, false);
@@ -132,20 +129,18 @@ public class CatchThrowable {
      * class, then this throwable is not thrown and {@link #caughtThrowable()} will return <code>null</code>.
      * <p/>
      *
-     * @param <T>   The type of the given <code>obj</code>.
-     * @param <E>   The type of the throwable that shall be caught.
-     * @param obj   The instance that shall be proxied. Must not be <code>null</code>.
+     * @param actor   The instance that shall be proxied. Must not be <code>null</code>.
      * @param clazz The type of the throwable that shall be caught. Must not be <code>null</code>.
      * @return Returns a proxy for the given object. The proxy catches throwables of the given type when a method on the
      * proxy is called.
      */
-    public static void catchThrowable(ThrowableAssert.ThrowingCallable actor,
+    public static void catchThrowable(ThrowingCallable actor,
                                       Class<? extends Throwable> clazz) throws Throwable {
         validateArguments(actor, clazz);
         catchThrowable(actor, clazz, false);
     }
 
-    private static void catchThrowable(ThrowableAssert.ThrowingCallable actor,
+    private static void catchThrowable(ThrowingCallable actor,
                                        Class<? extends Throwable> clazz, boolean assertException) throws Throwable {
         resetCaughtThrowable();
         Throwable e = ThrowableCaptor.captureThrowable(actor);
@@ -168,7 +163,7 @@ public class CatchThrowable {
         }
     }
 
-    private static void validateArguments(ThrowableAssert.ThrowingCallable actor, Class<? extends Throwable> clazz) {
+    private static void validateArguments(ThrowingCallable actor, Class<? extends Throwable> clazz) {
         if (actor == null) throw new IllegalArgumentException("obj must not be null");
         if (clazz == null) throw new IllegalArgumentException("throwableClazz must not be null");
     }

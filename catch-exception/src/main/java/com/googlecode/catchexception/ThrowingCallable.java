@@ -13,17 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.throwable;
+package com.googlecode.catchexception;
 
-public class ThrowableCaptor {
+@FunctionalInterface
+public interface ThrowingCallable {
 
-    public static Throwable captureThrowable(ThrowingCallable throwableThrower) {
-        try {
-            throwableThrower.call();
-            // not exception was thrown
-            return null;
-        } catch (Throwable caught) {
-            return caught;
-        }
-    }
+    void call() throws Exception;
+
 }
