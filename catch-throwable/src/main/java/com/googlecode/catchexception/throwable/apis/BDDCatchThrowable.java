@@ -82,7 +82,7 @@ thenThrown(IndexOutOfBoundsThrowable.class);
      */
     @SuppressWarnings("rawtypes")
     public static void thenThrown(Class actualThrowableClazz) {
-      CatchThrowable.catchThrowable(actualThrowableClazz);    }
+      CatchThrowableUtils.thenThrown(actualThrowableClazz);    }
 
   /**
    * Enables <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a> assertions about the caught
