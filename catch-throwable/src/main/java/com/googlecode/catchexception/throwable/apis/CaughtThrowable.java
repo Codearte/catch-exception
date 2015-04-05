@@ -17,7 +17,8 @@ package com.googlecode.catchexception.throwable.apis;
 
 class CaughtThrowable extends Throwable {
 
-    public CaughtThrowable(Throwable throwable) {
-        initCause(throwable);
+    public CaughtThrowable(Throwable cause) {
+        super(cause);
     }
+
 }
