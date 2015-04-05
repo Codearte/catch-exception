@@ -30,7 +30,6 @@ import java.util.List;
 import org.junit.Test;
 
 import com.googlecode.catchexception.CatchException;
-import com.googlecode.catchexception.apis.BDDCatchException;
 
 /**
  * Tests {@link com.googlecode.catchexception.apis.BDDCatchException}.

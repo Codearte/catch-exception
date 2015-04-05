@@ -227,8 +227,6 @@ public class CatchException {
      *
      * @param actor The instance that shall be proxied. Must not be
      *              <code>null</code>.
-     * @return Returns an object that verifies that each invocation on the
-     * underlying object throws an exception.
      */
     public static void verifyException(ThrowingCallable actor) throws Exception {
         verifyException(actor, Exception.class);
@@ -252,8 +250,6 @@ public class CatchException {
      *              <code>null</code>.
      * @param clazz The type of the exception that shall be thrown by the
      *              underlying object. Must not be <code>null</code>.
-     * @return Returns an object that verifies that each invocation on the
-     * underlying object throws an exception of the given type.
      */
     public static void verifyException(ThrowingCallable actor, Class<? extends Exception> clazz) {
         validateArguments(actor, clazz);
@@ -282,9 +278,6 @@ public class CatchException {
      *
      * @param actor The instance that shall be proxied. Must not be
      *              <code>null</code>.
-     * @return Returns a proxy for the given object. The proxy catches
-     * exceptions of the given type when a method on the proxy is
-     * called.
      */
     public static void catchException(com.googlecode.catchexception.ThrowingCallable actor) {
         validateArguments(actor, Exception.class);
@@ -317,9 +310,6 @@ public class CatchException {
      *              <code>null</code>.
      * @param clazz The type of the exception that shall be caught. Must not be
      *              <code>null</code>.
-     * @return Returns a proxy for the given object. The proxy catches
-     * exceptions of the given type when a method on the proxy is
-     * called.
      */
     public static void catchException(ThrowingCallable actor, Class<? extends Exception> clazz) throws Exception {
         validateArguments(actor, clazz);

@@ -41,7 +41,7 @@ import com.googlecode.catchexception.throwable.internal.ThrowableHolder;
 @SuppressWarnings("javadoc")
 public class CatchThrowableTest {
 
-    private final List<String> list = new ArrayList<String>();
+    private final List<String> list = new ArrayList<>();
 
     /**
      * The message of the exception thrown by new ArrayList<String>().get(0).
@@ -211,7 +211,7 @@ public class CatchThrowableTest {
     @Test
     public void testverifyThrowable_Obj_noExceptionThrown() throws Exception {
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         // no exception thrown by size()
         try {
@@ -226,7 +226,7 @@ public class CatchThrowableTest {
     @Test
     public void testverifyThrowable_Obj_exceptionThrown() throws Exception {
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         verifyThrowable(() -> list.get(0));
         assertEquals(expectedMessage, caughtThrowable().getMessage());
@@ -247,7 +247,7 @@ public class CatchThrowableTest {
     @Test
     public void testCatchException_Obj_noExceptionThrown() throws Exception {
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         // no exception thrown by size()
         catchThrowable(list::size);
@@ -257,7 +257,7 @@ public class CatchThrowableTest {
     @Test
     public void testCatchException_Obj_exceptionThrown() throws Exception {
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         catchThrowable(() -> list.get(0));
         assertEquals(expectedMessage, caughtThrowable().getMessage());

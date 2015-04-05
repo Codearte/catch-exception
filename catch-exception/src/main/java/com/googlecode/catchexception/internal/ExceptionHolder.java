@@ -31,7 +31,7 @@ public class ExceptionHolder {
      * There is no need to use {@link WeakReference weak references} here as all
      * the code is for testing so that we don't have to care about memory leaks.
      */
-    private static final ThreadLocal<Exception> caughtException = new ThreadLocal<Exception>();
+    private static final ThreadLocal<Exception> caughtException = new ThreadLocal<>();
 
     /**
      * Saves the given exception in {@link #caughtException}.

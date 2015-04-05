@@ -53,9 +53,6 @@ public class BDDCatchException {
      * @param actor
      *            The instance that shall be proxied. Must not be
      *            <code>null</code>.
-     * @return Returns a proxy for the given object. The proxy catches
-     *         exceptions of the given type when a method on the proxy is
-     *         called.
      * @see com.googlecode.catchexception.CatchException#catchException(ThrowingCallable)
      */
     public static void when(ThrowingCallable actor) {

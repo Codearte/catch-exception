@@ -47,7 +47,7 @@ public class CatchThrowableHamcrestMatchersTest {
 
     @Before
     public void setup() {
-        List<String> fellowshipOfTheRing = new ArrayList<String>();
+        List<String> fellowshipOfTheRing = new ArrayList<>();
         // let's do some team building :)
         fellowshipOfTheRing.add("frodo");
         fellowshipOfTheRing.add("sam");

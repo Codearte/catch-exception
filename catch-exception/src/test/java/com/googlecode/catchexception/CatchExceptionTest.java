@@ -19,7 +19,6 @@ import static com.googlecode.catchexception.CatchException.catchException;
 import static com.googlecode.catchexception.CatchException.caughtException;
 import static com.googlecode.catchexception.CatchException.verifyException;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -43,7 +42,7 @@ import com.googlecode.catchexception.internal.ExceptionHolder;
 @SuppressWarnings("javadoc")
 public class CatchExceptionTest {
 
-    private final List<String> list = new ArrayList<String>();
+    private final List<String> list = new ArrayList<>();
 
     /**
      * The message of the exception thrown by new ArrayList<String>().get(0).
@@ -238,7 +237,7 @@ public class CatchExceptionTest {
     @Test
     public void testVerifyException_Obj_exceptionThrown() throws Exception {
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         verifyException(() -> list.get(0));
         assertEquals(expectedMessage, caughtException().getMessage());
@@ -260,7 +259,7 @@ public class CatchExceptionTest {
     @Test
     public void testCatchException_Obj_noExceptionThrown() throws Exception {
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         // no exception thrown by size()
         catchException(list::size);
@@ -270,7 +269,7 @@ public class CatchExceptionTest {
     @Test
     public void testCatchException_Obj_exceptionThrown() throws Exception {
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         catchException(() -> list.get(0));
         assertEquals(expectedMessage, caughtException().getMessage());

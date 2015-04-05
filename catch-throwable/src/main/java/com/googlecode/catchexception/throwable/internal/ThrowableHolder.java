@@ -31,7 +31,7 @@ public class ThrowableHolder {
      * There is no need to use {@link WeakReference weak references} here as all
      * the code is for testing so that we don't have to care about memory leaks.
      */
-    private static final ThreadLocal<Throwable> caughtThrowable = new ThreadLocal<Throwable>();
+    private static final ThreadLocal<Throwable> caughtThrowable = new ThreadLocal<>();
 
     /**
      * Saves the given throwable in {@link #caughtThrowable}.

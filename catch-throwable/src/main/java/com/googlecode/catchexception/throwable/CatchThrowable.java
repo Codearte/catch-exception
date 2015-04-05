@@ -50,7 +50,6 @@ public class CatchThrowable {
      * <p/>
      *
      * @param actor The instance that shall be proxied. Must not be <code>null</code>.
-     * @return Returns an object that verifies that each invocation on the underlying object throws an throwable.
      */
     public static void verifyThrowable(ThrowingCallable actor) {
         verifyThrowable(actor, Throwable.class);
@@ -72,9 +71,6 @@ public class CatchThrowable {
      * @param actor   The instance that shall be proxied. Must not be <code>null</code>.
      * @param clazz The type of the throwable that shall be thrown by the underlying object. Must not be
      *              <code>null</code>
-     *              .
-     * @return Returns an object that verifies that each invocation on the underlying object throws an throwable of the
-     * given type.
      */
     public static void verifyThrowable(ThrowingCallable actor, Class<? extends Throwable> clazz) {
         validateArguments(actor, clazz);
@@ -99,8 +95,6 @@ public class CatchThrowable {
      * <p/>
      *
      * @param actor The instance that shall be proxied. Must not be <code>null</code>.
-     * @return Returns a proxy for the given object. The proxy catches throwables of the given type when a method on the
-     * proxy is called.
      */
     public static void catchThrowable(ThrowingCallable actor) {
         validateArguments(actor, Throwable.class);
@@ -127,8 +121,6 @@ public class CatchThrowable {
      *
      * @param actor   The instance that shall be proxied. Must not be <code>null</code>.
      * @param clazz The type of the throwable that shall be caught. Must not be <code>null</code>.
-     * @return Returns a proxy for the given object. The proxy catches throwables of the given type when a method on the
-     * proxy is called.
      */
     public static void catchThrowable(ThrowingCallable actor,
                                       Class<? extends Throwable> clazz) throws Throwable {

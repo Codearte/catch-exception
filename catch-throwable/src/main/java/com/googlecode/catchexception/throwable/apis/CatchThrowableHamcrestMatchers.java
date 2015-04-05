@@ -62,7 +62,7 @@ public class CatchThrowableHamcrestMatchers {
      * @return Returns a matcher that matches an throwable if it has the given message.
      */
     public static <T extends Throwable> org.hamcrest.Matcher<T> hasMessage(String expectedMessage) {
-        return new ThrowableMessageMatcher<T>(expectedMessage);
+        return new ThrowableMessageMatcher<>(expectedMessage);
     }
 
     /**
@@ -78,7 +78,7 @@ assertThat(caughtThrowable(), hasMessageThat(containsPattern("Index: \\d+"))); /
      * @return Returns a matcher that matches an throwable if the given string matcher matches the throwable message.
      */
     public static <T extends Throwable> org.hamcrest.Matcher<T> hasMessageThat(Matcher<String> stringMatcher) {
-        return new ThrowableMessageMatcher<T>(stringMatcher);
+        return new ThrowableMessageMatcher<>(stringMatcher);
     }
 
     /**
@@ -89,7 +89,7 @@ assertThat(caughtThrowable(), hasMessageThat(containsPattern("Index: \\d+"))); /
      * @return Returns a matcher that matches the throwable if it does not have a {@link Throwable#getCause() cause}.
      */
     public static <T extends Throwable> org.hamcrest.Matcher<T> hasNoCause() {
-        return new ThrowableNoCauseMatcher<T>();
+        return new ThrowableNoCauseMatcher<>();
     }
 
 }

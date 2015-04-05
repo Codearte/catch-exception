@@ -15,8 +15,6 @@
  */
 package com.googlecode.catchexception.throwable.apis;
 
-import org.assertj.core.api.ThrowableAssert;
-
 import com.googlecode.catchexception.throwable.CatchThrowable;
 import com.googlecode.catchexception.throwable.ThrowingCallable;
 import com.googlecode.catchexception.throwable.internal.ThrowableHolder;

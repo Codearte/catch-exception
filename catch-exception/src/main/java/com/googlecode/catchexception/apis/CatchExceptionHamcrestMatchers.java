@@ -69,7 +69,7 @@ public class CatchExceptionHamcrestMatchers {
      */
     public static <T extends Exception> org.hamcrest.Matcher<T> hasMessage(
             String expectedMessage) {
-        return new ExceptionMessageMatcher<T>(expectedMessage);
+        return new ExceptionMessageMatcher<>(expectedMessage);
     }
 
     /**
@@ -87,7 +87,7 @@ assertThat(caughtException(), hasMessageThat(containsPattern("Index: \\d+"))); /
      */
     public static <T extends Exception> org.hamcrest.Matcher<T> hasMessageThat(
             Matcher<String> stringMatcher) {
-        return new ExceptionMessageMatcher<T>(stringMatcher);
+        return new ExceptionMessageMatcher<>(stringMatcher);
     }
 
     /**
@@ -100,7 +100,7 @@ assertThat(caughtException(), hasMessageThat(containsPattern("Index: \\d+"))); /
      *         a {@link Throwable#getCause() cause}.
      */
     public static <T extends Exception> org.hamcrest.Matcher<T> hasNoCause() {
-        return new ExceptionNoCauseMatcher<T>();
+        return new ExceptionNoCauseMatcher<>();
     }
 
 }
