@@ -17,9 +17,10 @@ package com.googlecode.catchexception.support;
 
 import static com.googlecode.catchexception.CatchException.verifyException;
 
+import java.util.function.Supplier;
+
 import org.junit.Test;
 
-import com.google.common.base.Supplier;
 
 /**
  * Demonstrates how to catch exceptions that are thrown by constructors using
@@ -41,12 +42,7 @@ public class CatchExceptionInConstructorTest {
     @Test
     public void testExceptionThrownInConstructor() throws Exception {
 
-        Supplier<Thing> builder = new Supplier<Thing>() {
-            @Override
-            public Thing get() {
-                return new Thing("baddata");
-            }
-        };
+        Supplier<Thing> builder = () -> new Thing("baddata");
         verifyException(builder::get, IllegalArgumentException.class);
     }
 }
