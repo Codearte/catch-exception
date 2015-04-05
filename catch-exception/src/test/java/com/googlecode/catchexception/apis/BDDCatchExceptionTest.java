@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.googlecode.catchexception.CatchException.caughtException;
+import static com.googlecode.catchexception.apis.BDDCatchException.thenCaughtException;
 import static com.googlecode.catchexception.apis.BDDCatchException.thenThrown;
 import static com.googlecode.catchexception.apis.BDDCatchException.when;
 import static com.googlecode.catchexception.apis.BDDCatchException.then;
@@ -37,7 +38,7 @@ public class BDDCatchExceptionTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testAssertThat() {
+    public void testThen() {
         // given an empty list
         List myList = new ArrayList();
 
@@ -46,6 +47,22 @@ public class BDDCatchExceptionTest {
 
         // then we expect an IndexOutOfBoundsException
         then(caughtException()) //
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasNoCause();
+
+    }
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void testThenCaughtException() {
+        // given an empty list
+        List myList = new ArrayList();
+
+        // when we try to get first element of the list
+        when(myList).get(1);
+
+        // then we expect an IndexOutOfBoundsException
+        thenCaughtException()
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();
