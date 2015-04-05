@@ -235,7 +235,7 @@ public class CatchException {
      *         caught exception belongs to a class that is no longer
      *         {@link ClassLoader loaded}.
      */
-    public static Exception caughtException() {
+    public static <E extends Exception> E caughtException() {
         return ExceptionHolder.get();
     }
 
