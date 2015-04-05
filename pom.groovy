@@ -2,7 +2,7 @@ project(modelVersion: '4.0.0') {
 
     groupId 'eu.codearte.catch-exception'
     artifactId 'catch-exception-parent'
-    version '2.0.0-SNAPSHOT'
+    version '2.0.0-ALPHA-1'
     packaging 'pom'
 
     name 'catch-exception-project'
