@@ -36,7 +36,6 @@ project(modelVersion: '4.0.0') {
         repository(id: 'sonatype-nexus-staging', url: 'http://oss.sonatype.org/service/local/staging/deploy/maven2/')
         snapshotRepository(id: 'sonatype-nexus-snapshots', url: 'http://oss.sonatype.org/content/repositories/snapshots')
     }
-
     properties {
         'project.inceptionYear' 2011
         'project.build.sourceEncoding' 'UTF-8'
@@ -53,14 +52,16 @@ project(modelVersion: '4.0.0') {
     build {
         pluginManagement {
             plugins {
+                plugin(groupId: 'io.takari.maven.plugins', artifactId: 'takari-lifecycle-plugin', version: '1.11.3', extensions: true) {
+                    configuration {
+                        sourceJar 'true'
+                        testJar 'true'
+                    }
+                }
                 plugin(artifactId: 'maven-clean-plugin', version: '2.6.1')
-                plugin(artifactId: 'maven-compiler-plugin', version: 3.3)
-                plugin(artifactId: 'maven-deploy-plugin', version: '2.8.2')
                 plugin(artifactId: 'maven-enforcer-plugin', version: 1.4)
-                plugin(artifactId: 'maven-install-plugin', version: '2.5.2')
-                plugin(artifactId: 'maven-javadoc-plugin', version: '2.10.1')
-                plugin(artifactId: 'maven-jar-plugin', version: 2.5)
-                plugin(artifactId: 'maven-source-plugin', version: 2.4)
+                plugin(artifactId: 'maven-javadoc-plugin', version: '2.10.2')
+                plugin(artifactId: 'maven-site-plugin', version: '3.4')
                 plugin(artifactId: 'maven-release-plugin', version: 2.6) {
                     configuration {
                         mavenExecutorId 'forked-path'
@@ -71,12 +72,9 @@ project(modelVersion: '4.0.0') {
                         releaseProfiles 'java16'
                     }
                 }
-                plugin(artifactId: 'maven-resources-plugin', version: 2.7)
-                plugin(artifactId: 'maven-gpg-plugin', version: 1.5) {
+                plugin(artifactId: 'maven-gpg-plugin', version: 1.6) {
                     executions {
-                        execution {
-                            id 'sign-artifacts'
-                            phase 'verify'
+                        execution(id: 'sign-artifacts', phase: 'verify') {
                             goals {
                                 goal 'sign'
                             }
@@ -84,7 +82,7 @@ project(modelVersion: '4.0.0') {
                     }
                 }
                 plugin(artifactId: 'maven-surefire-plugin', version: '2.18.1')
-                plugin(groupId: 'org.eluder.coveralls', artifactId: 'coveralls-maven-plugin', version: '2.18.1')
+                plugin(groupId: 'org.eluder.coveralls', artifactId: 'coveralls-maven-plugin', version: '3.1.0')
                 plugin(groupId: 'org.jacoco', artifactId: 'jacoco-maven-plugin', version: '0.7.4.201502262128')
                 plugin(groupId: 'com.mycila', artifactId: 'license-maven-plugin', version: '2.10') {
                     executions {
@@ -95,14 +93,15 @@ project(modelVersion: '4.0.0') {
                         }
                     }
                     configuration {
+                        header '${maven.multiModuleProjectDirectory}/src/etc/header.txt'
                         includes {
                             include 'src/**'
                         }
                         excludes {
                             exclude 'src/main/javadoc/doc-files/google-code-prettify/**'
                         }
-                        useDefaultExcludes true
-                        useDefaultMapping true
+                        useDefaultExcludes 'true'
+                        useDefaultMapping 'true'
                         properties {
                             year '${project.inceptionYear}'
                             email 'rwoo@gmx.de'
@@ -127,12 +126,7 @@ project(modelVersion: '4.0.0') {
                     }
                 }
             }
-            plugin(artifactId: 'maven-compiler-plugin') {
-                configuration {
-                    useIncrementalCompilation 'false'
-                }
-            }
-            plugin(artifactId: 'maven-javadoc-plugin', version: '2.10.2') {
+            plugin(artifactId: 'maven-javadoc-plugin') {
                 executions {
                     execution(id: 'aggregate', phase: 'site') {
                         goals {
@@ -144,18 +138,8 @@ project(modelVersion: '4.0.0') {
                     show 'private'
                     // use true
                     overview '${catchException.parent}/src/main/javadoc/overview/overview.html'
-                    linksource true
-                    docfilessubdirs true
-                }
-            }
-            plugin(artifactId: 'maven-source-plugin') {
-                executions {
-                    execution(id: 'attach-sources', phase: 'package') {
-                        goals {
-                            goal 'jar-no-fork'
-                            goal 'test-jar-no-fork'
-                        }
-                    }
+                    linksource 'true'
+                    docfilessubdirs 'true'
                 }
             }
         }
@@ -163,7 +147,7 @@ project(modelVersion: '4.0.0') {
     profiles {
         profile(id: 'release') {
             activation {
-                property(name: 'performRelease', value: true)
+                property(name: 'performRelease', value: 'true')
             }
             build {
                 plugins {

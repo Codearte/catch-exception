@@ -51,14 +51,9 @@ public class BDDCatchThrowable {
 
     /**
      *
-     * @param <T>
-     *            The type of the given <code>obj</code>.
-     *
-     * @param obj
+     * @param actor
      *            The instance that shall be proxied. Must not be <code>null</code>.
-     * @return Returns a proxy for the given object. The proxy catches throwables of the given type when a method on the
-     *         proxy is called.
-     * @see com.googlecode.catchexception.throwable.CatchThrowable#catchThrowable(Object)
+     * @see com.googlecode.catchexception.throwable.CatchThrowable#catchThrowable(ThrowableAssert.ThrowingCallable)
      */
     public static void when(ThrowableAssert.ThrowingCallable actor) {
       CatchThrowable.catchThrowable(actor);

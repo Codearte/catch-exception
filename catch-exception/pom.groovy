@@ -11,13 +11,7 @@ project(modelVersion: '4.0.0') {
 
     build {
         plugins {
-            plugin(groupId: 'com.mycila', artifactId: 'license-maven-plugin') {
-                configuration {
-                    header '${maven.multiModuleProjectDirectory}/src/etc/header.txt'
-                }
-            }
-            plugin(groupId: 'io.takari.maven.plugins', artifactId: 'takari-lifecycle-plugin',
-                    version: '1.11.3', extensions: true)
+            plugin(groupId: 'io.takari.maven.plugins', artifactId: 'takari-lifecycle-plugin')
         }
     }
 
