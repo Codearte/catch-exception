@@ -44,7 +44,7 @@ project(modelVersion: '4.0.0') {
     }
     dependencyManagement {
         dependencies {
-            dependency(groupId: 'org.assertj', artifactId: 'assertj-core', version: '2.0.0', optional: true)
+            dependency(groupId: 'org.assertj', artifactId: 'assertj-core', version: '3.0.0', optional: true)
             dependency(groupId: 'junit', artifactId: 'junit', version: 4.12, optional: true)
         }
     }
