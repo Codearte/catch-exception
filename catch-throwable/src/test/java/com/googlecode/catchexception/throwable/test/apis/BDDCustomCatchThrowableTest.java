@@ -13,33 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.test.apis;
+package com.googlecode.catchexception.throwable.test.apis;
 
-import static com.googlecode.catchexception.test.apis.MyExceptionCustomAssertions.caughtException;
-import static com.googlecode.catchexception.test.apis.MyExceptionCustomAssertions.then;
-import static com.googlecode.catchexception.test.apis.MyExceptionCustomAssertions.when;
+import static com.googlecode.catchexception.throwable.test.apis.MyThrowableCustomAssertions.caughtThrowable;
+import static com.googlecode.catchexception.throwable.test.apis.MyThrowableCustomAssertions.then;
+import static com.googlecode.catchexception.throwable.test.apis.MyThrowableCustomAssertions.when;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import org.junit.Test;
 
-import com.googlecode.catchexception.MyException;
+import com.googlecode.catchexception.throwable.MyThrowable;
 
 /**
- * Tests custom exception assertions.
+ * Tests custom throwable assertions.
  *
  * @author rwoo
  */
 @SuppressWarnings("javadoc")
-public class BDDCustomCatchExceptionTest {
+public class BDDCustomCatchThrowableTest {
 
     @Test
     public void testCustomException() throws Exception {
 
         when(() -> {
-            throw new MyException(500);
+            throw new MyThrowable(500);
         });
 
-        then(caughtException()).hasErrorCode(500);
+        then(caughtThrowable()).hasErrorCode(500);
 
         // and verify that BDDAssertions works too
         then(new RuntimeException("dd")).hasMessage("dd");

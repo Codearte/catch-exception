@@ -32,10 +32,6 @@ public class PublicSomethingImpl implements Something {
         throw new UnsupportedOperationException();
     }
 
-    public void doesNotBelongToAnyInterface() {
-        //
-    }
-
     @Override
     public void doThrowNoSuchMethodError() {
         throw new NoSuchMethodError("==testCatchException==");
@@ -47,7 +43,7 @@ public class PublicSomethingImpl implements Something {
     }
 
     protected void dooo() {
-        throw new MyThrowable();
+        throw new MyThrowable(500);
     }
 
 }

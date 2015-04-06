@@ -23,8 +23,7 @@ import org.junit.Test;
 
 
 /**
- * Demonstrates how to catch exceptions that are thrown by constructors using
- * Google Guava.
+ * Demonstrates how to catch exceptions that are thrown by constructors.
  * 
  * @author rwoo
  * 

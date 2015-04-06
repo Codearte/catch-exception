@@ -15,7 +15,7 @@
  */
 package com.googlecode.catchexception.throwable.test.apis;
 
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.caughtException;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.caughtThrowable;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenCaughtThrowable;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenThrown;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
@@ -49,7 +49,7 @@ public class BDDCatchThrowableTest {
         when(() -> myList.get(1));
 
         // then we expect an IndexOutOfBoundsException
-        then(caughtException()) //
+        then(caughtThrowable()) //
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();

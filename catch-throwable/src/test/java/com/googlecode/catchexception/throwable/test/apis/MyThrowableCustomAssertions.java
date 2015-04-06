@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.throwable.apis;
+package com.googlecode.catchexception.throwable.test.apis;
 
-import org.assertj.core.api.AbstractThrowableAssert;
+import com.googlecode.catchexception.throwable.apis.BDDCatchThrowable;
+import com.googlecode.catchexception.throwable.apis.CaughtThrowable;
 
-public class CatchThrowableAssert extends AbstractThrowableAssert<CatchThrowableAssert, Throwable> {
+public class MyThrowableCustomAssertions extends BDDCatchThrowable {
 
-    protected CatchThrowableAssert(Throwable actual) {
-        super(actual.getCause(), CatchThrowableAssert.class);
+    public static MyThrowableCustomAssert then(CaughtThrowable actual) {
+        return new MyThrowableCustomAssert(actual);
     }
 
 }

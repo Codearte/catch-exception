@@ -23,23 +23,24 @@ import com.googlecode.catchexception.throwable.internal.ThrowableHolder;
  * Supports <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>-like approach to catch and verify
  * throwables (<i>given/when/then</i>).
  * <p>
- * <code><pre class="prettyprint lang-java">import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.*;
+ * <code><pre class="prettyprint lang-java">import static com.googlecode.catchexception.throwable.apis
+ * .BDDCatchThrowable.*;
 
  // given an empty list
-List myList = new ArrayList();
+ List myList = new ArrayList();
 
-// when we try to get the first element of the list
-when(myList).get(1);
+ // when we try to get the first element of the list
+ when(myList).get(1);
 
-// then we expect an IndexOutOfBoundsThrowable
-then(caughtThrowable())
-        .isInstanceOf(IndexOutOfBoundsThrowable.class)
-        .hasMessage("Index: 1, Size: 0")
-        .hasNoCause();
+ // then we expect an IndexOutOfBoundsThrowable
+ then(caughtThrowable())
+ .isInstanceOf(IndexOutOfBoundsThrowable.class)
+ .hasMessage("Index: 1, Size: 0")
+ .hasNoCause();
 
-// then we expect an IndexOutOfBoundsThrowable (alternatively)
-thenThrown(IndexOutOfBoundsThrowable.class);
-</pre></code>
+ // then we expect an IndexOutOfBoundsThrowable (alternatively)
+ thenThrown(IndexOutOfBoundsThrowable.class);
+ </pre></code>
  *
  * @author rwoo
  * @author mariuszs
@@ -55,7 +56,7 @@ public class BDDCatchThrowable {
      * @see com.googlecode.catchexception.throwable.CatchThrowable#catchThrowable(ThrowingCallable)
      */
     public static void when(ThrowingCallable actor) {
-      CatchThrowable.catchThrowable(actor);
+        CatchThrowable.catchThrowable(actor);
     }
 
     /**
@@ -63,14 +64,14 @@ public class BDDCatchThrowable {
      * <p>
      * EXAMPLE:
      * <code><pre class="prettyprint lang-java">// given a list with nine members
-List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+     List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-// when we try to get the 500th member of the fellowship
-when(myList).get(500);
+     // when we try to get the 500th member of the fellowship
+     when(myList).get(500);
 
-// then we expect an IndexOutOfBoundsThrowable
-thenThrown(IndexOutOfBoundsThrowable.class);
-</pre></code>
+     // then we expect an IndexOutOfBoundsThrowable
+     thenThrown(IndexOutOfBoundsThrowable.class);
+     </pre></code>
      *
      * @param actualThrowableClazz
      *            the expected type of the caught throwable.
@@ -80,16 +81,16 @@ thenThrown(IndexOutOfBoundsThrowable.class);
         CatchThrowableUtils.thenThrown(actualThrowableClazz);
     }
 
-    public static CaughtThrowable caughtException() {
+    public static CaughtThrowable caughtThrowable() {
         return new CaughtThrowable(ThrowableHolder.get());
     }
 
     public static CatchThrowableAssert then(CaughtThrowable actual) {
-        return new CatchThrowableAssert(actual.getCause());
+        return new CatchThrowableAssert(actual);
     }
 
     public static CatchThrowableAssert thenCaughtThrowable() {
-        return new CatchThrowableAssert(CatchThrowable.caughtThrowable());
+        return new CatchThrowableAssert(caughtThrowable());
     }
 
 }
