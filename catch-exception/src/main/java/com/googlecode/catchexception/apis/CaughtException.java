@@ -15,7 +15,7 @@
  */
 package com.googlecode.catchexception.apis;
 
-class CaughtException extends Exception {
+public class CaughtException extends Exception {
 
     public CaughtException(Throwable cause) {
         super(cause);
