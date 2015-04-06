@@ -23,11 +23,6 @@ public class PublicSomethingImpl implements Something {
     }
 
     @Override
-    public void doNothing() {
-        //
-    }
-
-    @Override
     public void doThrow() {
         throw new UnsupportedOperationException();
     }

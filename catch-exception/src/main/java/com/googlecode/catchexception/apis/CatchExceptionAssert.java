@@ -19,8 +19,8 @@ import org.assertj.core.api.AbstractThrowableAssert;
 
 public class CatchExceptionAssert extends AbstractThrowableAssert<CatchExceptionAssert, Exception> {
 
-    protected CatchExceptionAssert(Exception actual) {
-        super(actual, CatchExceptionAssert.class);
+    protected CatchExceptionAssert(CaughtException actual) {
+        super((Exception) actual.getCause(), CatchExceptionAssert.class);
     }
 
 }

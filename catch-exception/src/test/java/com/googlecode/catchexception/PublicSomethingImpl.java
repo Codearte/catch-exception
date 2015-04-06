@@ -23,11 +23,6 @@ public class PublicSomethingImpl implements Something {
     }
 
     @Override
-    public void doNothing() {
-        //
-    }
-
-    @Override
     public void doThrow() {
         throw new UnsupportedOperationException();
     }
@@ -42,6 +37,10 @@ public class PublicSomethingImpl implements Something {
     }
 
     protected void dooo() {
-        throw new MyException();
+        throw new MyException(404);
+    }
+
+    public void doThrowCustomException(){
+        throw new MyException(500);
     }
 }

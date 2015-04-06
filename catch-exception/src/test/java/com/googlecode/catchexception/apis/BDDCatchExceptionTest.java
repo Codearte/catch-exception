@@ -16,9 +16,9 @@
 package com.googlecode.catchexception.apis;
 
 import static com.googlecode.catchexception.apis.BDDCatchException.caughtException;
-import static com.googlecode.catchexception.apis.BDDCatchException.then;
 import static com.googlecode.catchexception.apis.BDDCatchException.thenThrown;
 import static com.googlecode.catchexception.apis.BDDCatchException.when;
+import static com.googlecode.catchexception.apis.BDDCatchException.then;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;

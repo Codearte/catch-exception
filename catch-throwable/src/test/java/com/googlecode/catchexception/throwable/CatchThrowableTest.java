@@ -80,11 +80,6 @@ public class CatchThrowableTest {
         }
 
         @Override
-        public void doNothing() {
-            //
-        }
-
-        @Override
         public void doThrow() {
             throw new UnsupportedOperationException("siodsdnsgz");
         }

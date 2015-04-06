@@ -13,11 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.apis;
+package com.googlecode.catchexception.test.apis;
 
-public class CaughtException extends Exception {
+import com.googlecode.catchexception.apis.BDDCatchException;
+import com.googlecode.catchexception.apis.CaughtException;
 
-    public CaughtException(Throwable cause) {
-        super(cause);
+public class MyExceptionCustomAssertions extends BDDCatchException {
+
+    public static MyExceptionCustomAssert then(CaughtException actual) {
+        return new MyExceptionCustomAssert(actual);
     }
+
 }

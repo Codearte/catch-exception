@@ -25,25 +25,44 @@ import com.googlecode.catchexception.internal.ExceptionHolder;
  * Supports <a
  * href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>-like
  * approach to catch and verify exceptions (<i>given/when/then</i>).
- * <p>
+ * <p/>
  * EXAMPLE:
- * <code><pre class="prettyprint lang-java">import static com.googlecode.catchexception.api.BDDCatchException.*;
+ * <code><pre class="prettyprint lang-java">import static org.assertj.core.api.BDDAssertions.then;
 
- // given an empty list
- List myList = new ArrayList();
+// given an empty list
+List myList = new ArrayList();
 
- // when we try to get the first element of the list
- when(myList).get(1);
+// when we try to get the first element of the list
+when(myList).get(1);
 
- // then we expect an IndexOutOfBoundsException
- then(caughtException())
- .isInstanceOf(IndexOutOfBoundsException.class)
- .hasMessage("Index: 1, Size: 0")
- .hasNoCause();
+// then we expect an IndexOutOfBoundsException
+then(caughtException())
+        .isInstanceOf(IndexOutOfBoundsException.class)
+        .hasMessage("Index: 1, Size: 0")
+        .hasNoCause();
 
- // then we expect an IndexOutOfBoundsException (alternatively)
- thenThrown(IndexOutOfBoundsException.class);
- </pre></code>
+// then we expect an IndexOutOfBoundsException (alternatively)
+thenThrown(IndexOutOfBoundsException.class);
+</pre></code>
+ *
+ * import static org.assertj.core.api.BDDAssertions.then;
+ *
+ * // given an empty list
+ * List myList = new ArrayList();
+ *
+ * // when we try to get the first element of the list
+ * when(myList).get(1);
+ *
+ * // then we expect an IndexOutOfBoundsException
+ * then(caughtException())
+ *     .isInstanceOf(IndexOutOfBoundsException.class)
+ *     .hasMessage("Index: 1, Size: 0")
+ *     .hasNoCause();
+ *
+ * // then we expect an IndexOutOfBoundsException (alternatively)
+ * thenThrown(IndexOutOfBoundsException.class);
+ * }
+ * </pre>
  *
  * @author rwoo
  * @author mariuszs
@@ -70,20 +89,30 @@ public class BDDCatchException {
     /**
      * Throws an assertion if no exception is thrown or if an exception of an
      * unexpected type is thrown.
-     * <p>
+     * <p/>
      * EXAMPLE:
      * <code><pre class="prettyprint lang-java">// given a list with nine members
-     List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-     // when we try to get the 500th member of the fellowship
-     when(myList).get(500);
+// when we try to get the 500th member of the fellowship
+when(myList).get(500);
 
-     // then we expect an IndexOutOfBoundsException
-     thenThrown(IndexOutOfBoundsException.class);
-     </pre></code>
+// then we expect an IndexOutOfBoundsException
+thenThrown(IndexOutOfBoundsException.class);
+</pre></code>
      *
-     * @param actualExceptionClazz
-     *            the expected type of the caught exception.
+     * // given a list with nine members
+     * List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+     *
+     * // when we try to get the 500th member of the fellowship
+     * when(myList).get(500);
+     *
+     * // then we expect an IndexOutOfBoundsException
+     * thenThrown(IndexOutOfBoundsException.class);
+     * }
+     * </pre>
+     *
+     * @param actualExceptionClazz the expected type of the caught exception.
      */
     @SuppressWarnings("rawtypes")
     public static void thenThrown(Class actualExceptionClazz) {
@@ -137,20 +166,20 @@ public class BDDCatchException {
 
      // then we expect an IndexOutOfBoundsException
      then(caughtException())
-     .isInstanceOf(IndexOutOfBoundsException.class)
-     .hasMessage("Index: 1, Size: 0")
-     .hasMessageStartingWith("Index: 1")
-     .hasMessageEndingWith("Size: 0")
-     .hasMessageContaining("Size")
-     .hasNoCause();
+         .isInstanceOf(IndexOutOfBoundsException.class)
+         .hasMessage("Index: 1, Size: 0")
+         .hasMessageStartingWith("Index: 1")
+         .hasMessageEndingWith("Size: 0")
+         .hasMessageContaining("Size")
+         .hasNoCause();
      </pre></code>
      *
      * @param actualException
      *            the value to be the target of the assertions methods.
      * @return Returns the created assertion object.
      */
-    public static CatchExceptionAssert then(CaughtException actualException) {
-        return new CatchExceptionAssert((Exception) actualException.getCause());
+    public static CatchExceptionAssert then(CaughtException actual) {
+        return new CatchExceptionAssert(actual);
     }
 
     /**
@@ -169,6 +198,6 @@ public class BDDCatchException {
     }
 
     public static CatchExceptionAssert thenCaughtException() {
-        return new CatchExceptionAssert(CatchException.caughtException());
+        return new CatchExceptionAssert(caughtException());
     }
 }

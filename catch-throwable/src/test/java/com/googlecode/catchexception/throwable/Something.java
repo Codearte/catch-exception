@@ -18,12 +18,10 @@ package com.googlecode.catchexception.throwable;
 @SuppressWarnings("javadoc")
 public interface Something {
 
-    public void doNothing();
+    void doThrow();
 
-    public void doThrow();
+    void doThrowNoSuchMethodError();
 
-    public void doThrowNoSuchMethodError();
-
-    public void doThrowAssertionError();
+    void doThrowAssertionError();
 
 }
