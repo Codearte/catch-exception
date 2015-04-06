@@ -15,26 +15,23 @@
  */
 package com.googlecode.catchexception.throwable.test.apis;
 
+import org.assertj.core.api.AbstractThrowableAssert;
+
 import com.googlecode.catchexception.throwable.MyThrowable;
-import com.googlecode.catchexception.throwable.apis.CatchThrowableAssert;
-import com.googlecode.catchexception.throwable.apis.CaughtThrowable;
 
-public class MyThrowableCustomAssert extends CatchThrowableAssert {
+public class MyThrowableCustomAssert extends AbstractThrowableAssert<MyThrowableCustomAssert, MyThrowable> {
 
-    protected MyThrowableCustomAssert(CaughtThrowable actual) {
-        super(actual);
+    protected MyThrowableCustomAssert(MyThrowable actual) {
+        super(actual, MyThrowableCustomAssert.class);
     }
 
     public MyThrowableCustomAssert hasErrorCode(int errorCode) {
         isNotNull();
-        if (getMyThrowable().getErrorCode() != errorCode) {
+        if (actual.getErrorCode() != errorCode) {
             failWithMessage("Expected myThrowable's errorCode to be <%s> but was <%s>", errorCode,
-                    getMyThrowable().getErrorCode());
+                    actual.getErrorCode());
         }
         return this;
     }
 
-    private MyThrowable getMyThrowable() {
-        return (MyThrowable) actual;
-    }
 }

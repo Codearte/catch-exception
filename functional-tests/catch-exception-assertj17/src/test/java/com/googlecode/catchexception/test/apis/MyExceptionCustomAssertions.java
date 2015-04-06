@@ -15,13 +15,18 @@
  */
 package com.googlecode.catchexception.test.apis;
 
-import com.googlecode.catchexception.apis.BDDCatchException;
-import com.googlecode.catchexception.apis.CaughtException;
+import com.googlecode.catchexception.CatchException;
+import com.googlecode.catchexception.MyException;
 
-public class MyExceptionCustomAssertions extends BDDCatchException {
+public class MyExceptionCustomAssertions {
 
-    public static MyExceptionCustomAssert then(CaughtException actual) {
+    public static MyExceptionCustomAssert then(MyException actual) {
         return new MyExceptionCustomAssert(actual);
     }
+
+    public static MyException caughtException() {
+        return CatchException.caughtException();
+    }
+
 
 }

@@ -15,26 +15,23 @@
  */
 package com.googlecode.catchexception.test.apis;
 
+import org.assertj.core.api.AbstractThrowableAssert;
+
 import com.googlecode.catchexception.MyException;
-import com.googlecode.catchexception.apis.CatchExceptionAssert;
-import com.googlecode.catchexception.apis.CaughtException;
 
-public class MyExceptionCustomAssert extends CatchExceptionAssert {
+public class MyExceptionCustomAssert extends AbstractThrowableAssert<MyExceptionCustomAssert, MyException> {
 
-    protected MyExceptionCustomAssert(CaughtException actual) {
-        super(actual);
+    protected MyExceptionCustomAssert(MyException actual) {
+        super(actual, MyExceptionCustomAssert.class);
     }
 
     public MyExceptionCustomAssert hasErrorCode(int errorCode) {
         isNotNull();
-        if (getMyException().getErrorCode() != errorCode) {
+        if (actual.getErrorCode() != errorCode) {
             failWithMessage("Expected myException's errorCode to be <%s> but was <%s>", errorCode,
-                    getMyException().getErrorCode());
+                    actual.getErrorCode());
         }
         return this;
     }
 
-    private MyException getMyException() {
-        return (MyException) actual;
-    }
 }

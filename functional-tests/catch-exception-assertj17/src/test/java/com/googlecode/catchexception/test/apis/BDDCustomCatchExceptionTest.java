@@ -15,8 +15,8 @@
  */
 package com.googlecode.catchexception.test.apis;
 
+import static com.googlecode.catchexception.apis.BDDCatchException.when;
 import static com.googlecode.catchexception.test.apis.MyExceptionCustomAssertions.then;
-import static com.googlecode.catchexception.test.apis.MyExceptionCustomAssertions.when;
 import static com.googlecode.catchexception.test.apis.MyExceptionCustomAssertions.caughtException;
 import static org.assertj.core.api.BDDAssertions.then;
 
