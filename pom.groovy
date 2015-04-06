@@ -110,8 +110,7 @@ project(modelVersion: '4.0.0') {
                 }
                 configuration {
                     show 'private'
-                    // use true
-                    overview '${catchException.parent}/src/main/javadoc/overview/overview.html'
+                    overview '${maven.multiModuleProjectDirectory}/src/main/javadoc/overview/overview.html'
                     linksource 'true'
                     docfilessubdirs 'true'
                 }
@@ -148,15 +147,7 @@ project(modelVersion: '4.0.0') {
             }
             build {
                 plugins {
-                    plugin(artifactId: 'maven-gpg-plugin') {
-                        executions {
-                            execution(id: 'sign-artifacts', phase: 'verify') {
-                                goals {
-                                    goal 'sign'
-                                }
-                            }
-                        }
-                    }
+                    plugin(artifactId: 'maven-gpg-plugin')
                 }
             }
         }
