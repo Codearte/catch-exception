@@ -12,6 +12,17 @@ project(modelVersion: '4.0.0') {
     build {
         plugins {
             plugin(groupId: 'io.takari.maven.plugins', artifactId: 'takari-lifecycle-plugin')
+            plugin(groupId: 'org.pitest', artifactId: 'pitest-maven', version: '1.1.5') {
+                configuration {
+                    mutationThreshold '90'
+                    targetClasses{
+                        param 'com.googlecode.catchexception.*'
+                    }
+                    targetTests{
+                        param 'com.googlecode.catchexception.*'
+                    }
+                }
+            }
         }
     }
 
