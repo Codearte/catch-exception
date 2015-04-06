@@ -2,7 +2,7 @@ project(modelVersion: '4.0.0') {
 
     groupId 'eu.codearte.catch-exception'
     artifactId 'catch-exception-parent'
-    version '2.0.0-SNAPSHOT'
+    version '2.0.0-SNAPSHOT '
     packaging 'pom'
 
     name 'catch-exception-project'
@@ -69,7 +69,6 @@ project(modelVersion: '4.0.0') {
                         localCheckout 'true'
                         autoVersionSubmodules 'true'
                         tagNameFormat 'catch-exception-@{project.version}'
-                        releaseProfiles 'java16'
                     }
                 }
                 plugin(artifactId: 'maven-gpg-plugin', version: 1.6) {
@@ -84,31 +83,6 @@ project(modelVersion: '4.0.0') {
                 plugin(artifactId: 'maven-surefire-plugin', version: '2.18.1')
                 plugin(groupId: 'org.eluder.coveralls', artifactId: 'coveralls-maven-plugin', version: '3.1.0')
                 plugin(groupId: 'org.jacoco', artifactId: 'jacoco-maven-plugin', version: '0.7.4.201502262128')
-                plugin(groupId: 'com.mycila', artifactId: 'license-maven-plugin', version: '2.10') {
-                    executions {
-                        execution {
-                            goals {
-                                goal 'check'
-                            }
-                        }
-                    }
-                    configuration {
-                        header '${maven.multiModuleProjectDirectory}/src/etc/header.txt'
-                        includes {
-                            include 'src/**'
-                        }
-                        excludes {
-                            exclude 'src/main/javadoc/doc-files/google-code-prettify/**'
-                        }
-                        useDefaultExcludes 'true'
-                        useDefaultMapping 'true'
-                        properties {
-                            year '${project.inceptionYear}'
-                            email 'rwoo@gmx.de'
-                        }
-                        encoding 'UTF-8'
-                    }
-                }
             }
         }
         plugins {
@@ -140,6 +114,29 @@ project(modelVersion: '4.0.0') {
                     overview '${catchException.parent}/src/main/javadoc/overview/overview.html'
                     linksource 'true'
                     docfilessubdirs 'true'
+                }
+            }
+            plugin(groupId: 'com.mycila', artifactId: 'license-maven-plugin', version: '2.10') {
+                executions {
+                    execution {
+                        goals {
+                            goal 'check'
+                        }
+                    }
+                }
+                configuration {
+                    header 'src/etc/header.txt'
+                    includes {
+                        include '**/src/**'
+                    }
+                    excludes {
+                        exclude 'src/main/javadoc/doc-files/google-code-prettify/**'
+                    }
+                    aggregate 'true'
+                    properties {
+                        year '${project.inceptionYear}'
+                        email 'rwoo@gmx.de'
+                    }
                 }
             }
         }
