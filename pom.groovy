@@ -59,7 +59,6 @@ project(modelVersion: '4.0.0') {
                     }
                 }
                 plugin(artifactId: 'maven-clean-plugin', version: '2.6.1')
-                plugin(artifactId: 'maven-enforcer-plugin', version: 1.4)
                 plugin(artifactId: 'maven-javadoc-plugin', version: '2.10.2')
                 plugin(artifactId: 'maven-site-plugin', version: '3.4')
                 plugin(artifactId: 'maven-release-plugin', version: '2.5.1') {
