@@ -15,6 +15,7 @@ project(modelVersion: '4.0.0') {
             plugin(groupId: 'org.pitest', artifactId: 'pitest-maven', version: '1.1.5') {
                 configuration {
                     mutationThreshold '90'
+                    coverageThreshold '85'
                     targetClasses{
                         param 'com.googlecode.catchexception.*'
                     }
