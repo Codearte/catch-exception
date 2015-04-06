@@ -1,4 +1,4 @@
-# catch-exception
+# catch-exception 2
 
 Catch and verify exceptions in a single line of code
 
