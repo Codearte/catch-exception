@@ -124,7 +124,7 @@ public void testErrorCollectorWithExpectedException() {
 
     // collect second error
     catchException(new ArrayList()).get(1);
-    collector.checkThat(caughtException(), is(IllegalArgumentException.class));
+    collector.checkThat(caughtException(), instanceOf(IllegalArgumentException.class));
 
     // collect third error
     collector.checkThat(1, equalTo(2));
