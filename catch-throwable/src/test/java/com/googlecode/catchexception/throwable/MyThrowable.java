@@ -17,4 +17,14 @@ package com.googlecode.catchexception.throwable;
 
 public class MyThrowable extends RuntimeException {
     private static final long serialVersionUID = 1L;
+
+    private final int errorCode;
+
+    public MyThrowable(int errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public int getErrorCode() {
+        return errorCode;
+    }
 }

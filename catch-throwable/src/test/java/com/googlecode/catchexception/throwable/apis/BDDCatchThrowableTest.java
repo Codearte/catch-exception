@@ -16,10 +16,10 @@
 package com.googlecode.catchexception.throwable.apis;
 
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.caughtThrowable;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.then;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenCaughtThrowable;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenThrown;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.then;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class BDDCatchThrowableTest {
         when(myList).get(1);
 
         // then we expect an IndexOutOfBoundsException
-        then(caughtThrowable())
+        then(caughtThrowable()) //
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();

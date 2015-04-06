@@ -22,13 +22,13 @@ public class PublicSomethingImpl implements Something {
         super();
     }
 
+    public void doesNotBelongToAnyInterface() {
+        //
+    }
+
     @Override
     public void doThrow() {
         throw new UnsupportedOperationException();
-    }
-
-    public void doesNotBelongToAnyInterface() {
-        //
     }
 
     @Override
@@ -40,7 +40,7 @@ public class PublicSomethingImpl implements Something {
         throw new MyException(404);
     }
 
-    public void doThrowCustomException(){
+    public void throwMyException() {
         throw new MyException(500);
     }
 }

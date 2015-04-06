@@ -16,7 +16,6 @@
 package com.googlecode.catchexception.throwable.apis;
 
 import org.assertj.core.api.AbstractThrowableAssert;
-import org.assertj.core.api.CompatibilityAssertions;
 
 import com.googlecode.catchexception.throwable.CatchThrowable;
 import com.googlecode.catchexception.throwable.internal.ThrowableHolder;
@@ -89,6 +88,18 @@ public class BDDCatchThrowable {
     }
 
     /**
+     * Returns the throwable caught during the last call on the proxied object in the current thread boxed inside
+     * {@link CaughtThrowable}.
+     *
+     * @return Returns the boxed throwable caught during the last call on the proxied object in the current thread - if
+     * the call was made through a proxy that has been created via {@link #when(Object)}. Returns null if the proxy
+     * has not caught an throwable. Returns null if the caught throwable belongs to a class that is no longer
+     * {@link ClassLoader loaded}.
+     */
+    public static CaughtThrowable caughtThrowable() {
+        return new CaughtThrowable(ThrowableHolder.get());
+    }
+    /**
      * Enables <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a> assertions about the caught
      * throwable.
      * <p>
@@ -116,7 +127,7 @@ public class BDDCatchThrowable {
     @Deprecated
     public static AbstractThrowableAssert<?, ? extends Throwable> then(Throwable actualThrowable) {
         // delegate to AssertJ assertions
-        return CompatibilityAssertions.assertThat(actualThrowable);
+        return new CatchThrowableAssert(actualThrowable);
     }
 
     /**
@@ -131,12 +142,12 @@ public class BDDCatchThrowable {
 
      // then we expect an IndexOutOfBoundsThrowable
      then(caughtThrowable())
-     .isInstanceOf(IndexOutOfBoundsThrowable.class)
-     .hasMessage("Index: 1, Size: 0")
-     .hasMessageStartingWith("Index: 1")
-     .hasMessageEndingWith("Size: 0")
-     .hasMessageContaining("Size")
-     .hasNoCause();
+         .isInstanceOf(IndexOutOfBoundsThrowable.class)
+         .hasMessage("Index: 1, Size: 0")
+         .hasMessageStartingWith("Index: 1")
+         .hasMessageEndingWith("Size: 0")
+         .hasMessageContaining("Size")
+         .hasNoCause();
      </pre></code>
      *
      * @param actualThrowable
@@ -144,24 +155,11 @@ public class BDDCatchThrowable {
      * @return Returns the created assertion object.
      */
     public static CatchThrowableAssert then(CaughtThrowable actualThrowable) {
-        return new CatchThrowableAssert(actualThrowable.getCause());
-    }
-
-    /**
-     * Returns the throwable caught during the last call on the proxied object in the current thread boxed inside
-     * {@link CaughtThrowable}.
-     *
-     * @return Returns the boxed throwable caught during the last call on the proxied object in the current thread - if
-     * the call was made through a proxy that has been created via {@link #when(Object)}. Returns null if the proxy
-     * has not caught an throwable. Returns null if the caught throwable belongs to a class that is no longer
-     * {@link ClassLoader loaded}.
-     */
-    public static CaughtThrowable caughtThrowable() {
-        return new CaughtThrowable(ThrowableHolder.get());
+        return new CatchThrowableAssert(actualThrowable);
     }
 
     public static CatchThrowableAssert thenCaughtThrowable() {
-        return new CatchThrowableAssert(CatchThrowable.caughtThrowable());
+        return new CatchThrowableAssert(caughtThrowable());
     }
 
 }

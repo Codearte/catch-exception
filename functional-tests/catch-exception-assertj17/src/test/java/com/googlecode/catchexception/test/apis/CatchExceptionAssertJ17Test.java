@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.apis;
+package com.googlecode.catchexception.test.apis;
 
 import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.caughtException;
 import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.then;
@@ -26,6 +26,8 @@ import java.util.List;
 
 import org.assertj.core.api.BDDAssertions;
 import org.junit.Test;
+
+import com.googlecode.catchexception.apis.CatchExceptionAssertJ;
 
 /**
  * Tests {@link CatchExceptionAssertJ}.

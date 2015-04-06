@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.assertj.core.api;
+package com.googlecode.catchexception.throwable.test.apis;
 
-public class CompatibilityAssertions {
+import com.googlecode.catchexception.throwable.apis.CaughtThrowable;
 
-    public static ThrowableAssert assertThat(Throwable actual) {
-        return new ThrowableAssert(actual);
+public class MyThrowableCustomAssertions {
+
+    public static MyThrowableCustomAssert then(CaughtThrowable actual) {
+        return new MyThrowableCustomAssert(actual);
     }
 
 }

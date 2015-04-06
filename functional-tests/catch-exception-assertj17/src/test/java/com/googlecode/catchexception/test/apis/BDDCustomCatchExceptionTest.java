@@ -15,16 +15,17 @@
  */
 package com.googlecode.catchexception.test.apis;
 
-import static com.googlecode.catchexception.test.apis.MyExceptionCustomAssertions.caughtException;
 import static com.googlecode.catchexception.test.apis.MyExceptionCustomAssertions.then;
 import static com.googlecode.catchexception.test.apis.MyExceptionCustomAssertions.when;
+import static com.googlecode.catchexception.test.apis.MyExceptionCustomAssertions.caughtException;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import org.junit.Test;
 
 import com.googlecode.catchexception.PublicSomethingImpl;
 
 /**
- * Tests {@link com.googlecode.catchexception.apis.BDDCatchException}.
+ * Tests custom exception assertions.
  *
  * @author rwoo
  */
@@ -34,9 +35,12 @@ public class BDDCustomCatchExceptionTest {
     @Test
     public void testCustomException() throws Exception {
 
-        when(new PublicSomethingImpl()).doThrowCustomException();
+        when(new PublicSomethingImpl()).throwMyException();
 
         then(caughtException()).hasErrorCode(500);
-    }
 
+        // and verify that BDDAssertions works too
+        then(new RuntimeException("dd")).hasMessage("dd");
+        then(new Integer("100")).isEqualTo(100);
+    }
 }

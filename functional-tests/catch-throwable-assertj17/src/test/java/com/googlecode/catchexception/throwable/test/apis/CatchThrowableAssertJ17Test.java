@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.throwable.apis;
+package com.googlecode.catchexception.throwable.test.apis;
 
 import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.caughtThrowable;
 import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.then;
@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ;
 
 /**
  * Tests {@link CatchThrowableAssertJ}.

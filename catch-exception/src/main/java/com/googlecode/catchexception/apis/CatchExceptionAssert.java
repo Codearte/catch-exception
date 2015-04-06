@@ -23,4 +23,8 @@ public class CatchExceptionAssert extends AbstractThrowableAssert<CatchException
         super((Exception) actual.getCause(), CatchExceptionAssert.class);
     }
 
+    protected CatchExceptionAssert(Exception actual) {
+        super(actual, CatchExceptionAssert.class);
+    }
+
 }

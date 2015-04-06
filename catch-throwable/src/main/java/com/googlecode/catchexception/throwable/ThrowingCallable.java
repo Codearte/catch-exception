@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.assertj.core.api;
+package com.googlecode.catchexception.throwable;
 
-public class CompatibilityAssertions {
+public interface ThrowingCallable {
 
-    public static ThrowableAssert assertThat(Throwable actual) {
-        return new ThrowableAssert(actual);
-    }
-
+    void call() throws Exception;
 }

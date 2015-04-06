@@ -22,8 +22,7 @@ import org.junit.Test;
 import com.google.common.base.Supplier;
 
 /**
- * Demonstrates how to catch exceptions that are thrown by constructors using
- * Google Guava.
+ * Demonstrates how to catch exceptions that are thrown by constructors.
  * 
  * @author rwoo
  * 

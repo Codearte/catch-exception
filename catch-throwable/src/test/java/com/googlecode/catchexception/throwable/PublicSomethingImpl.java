@@ -42,7 +42,11 @@ public class PublicSomethingImpl implements Something {
     }
 
     protected void dooo() {
-        throw new MyThrowable();
+        throw new MyThrowable(500);
+    }
+
+    public void throwMyThrowable(){
+        throw new MyThrowable(500);
     }
 
 }

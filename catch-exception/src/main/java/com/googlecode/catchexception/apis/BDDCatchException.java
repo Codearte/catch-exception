@@ -16,7 +16,6 @@
 package com.googlecode.catchexception.apis;
 
 import org.assertj.core.api.AbstractThrowableAssert;
-import org.assertj.core.api.CompatibilityAssertions;
 
 import com.googlecode.catchexception.CatchException;
 import com.googlecode.catchexception.internal.ExceptionHolder;
@@ -147,9 +146,9 @@ thenThrown(IndexOutOfBoundsException.class);
      * @return Returns the created assertion object.
      */
     @Deprecated
-    public static AbstractThrowableAssert<?, ? extends Throwable> then(Exception actualException) {
+    public static AbstractThrowableAssert<?, ? extends Exception> then(Exception actualException) {
         // delegate to AssertJ assertions
-        return CompatibilityAssertions.assertThat(actualException);
+        return new CatchExceptionAssert(actualException);
     }
 
     /**
@@ -178,8 +177,8 @@ thenThrown(IndexOutOfBoundsException.class);
      *            the value to be the target of the assertions methods.
      * @return Returns the created assertion object.
      */
-    public static CatchExceptionAssert then(CaughtException actual) {
-        return new CatchExceptionAssert(actual);
+    public static CatchExceptionAssert then(CaughtException actualException) {
+        return new CatchExceptionAssert(actualException);
     }
 
     /**
