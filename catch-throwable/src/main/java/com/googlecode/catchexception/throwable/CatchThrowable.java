@@ -32,7 +32,7 @@ public class CatchThrowable {
      * not caught an throwable. Returns null if the caught throwable belongs to a class that is no longer
      * {@link ClassLoader loaded}.
      */
-    public static Throwable caughtThrowable() {
+    public static <E extends Throwable> E caughtThrowable() {
         return ThrowableHolder.get();
     }
 

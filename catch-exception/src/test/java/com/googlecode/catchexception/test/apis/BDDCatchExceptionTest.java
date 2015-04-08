@@ -16,10 +16,8 @@
 package com.googlecode.catchexception.test.apis;
 
 import static com.googlecode.catchexception.apis.BDDCatchException.caughtException;
-import static com.googlecode.catchexception.apis.BDDCatchException.thenCaughtException;
 import static com.googlecode.catchexception.apis.BDDCatchException.thenThrown;
 import static com.googlecode.catchexception.apis.BDDCatchException.when;
-import static com.googlecode.catchexception.apis.BDDCatchException.then;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.Assert.assertEquals;
 
@@ -57,28 +55,7 @@ public class BDDCatchExceptionTest {
         // and BDDAssertions....
         then(new Integer(2)).isEqualTo(2);
         then(new Exception()).hasMessage(null);
-//        then(new MyException(4)).hasErrorCode(4);
 
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Test
-    public void testThenCaughtException() {
-        // given an empty list
-        List myList = new ArrayList();
-
-        // when we try to get first element of the list
-        when(() -> myList.get(1));
-
-        // then we expect an IndexOutOfBoundsException
-        thenCaughtException()
-                .isInstanceOf(IndexOutOfBoundsException.class) //
-                .hasMessage("Index: 1, Size: 0") //
-                .hasNoCause();
-
-        // and BDDAssertions....
-        then(new Integer(2)).isEqualTo(2);
-        then(new Exception()).hasMessage(null);
     }
 
     @SuppressWarnings("rawtypes")
@@ -136,7 +113,5 @@ public class BDDCatchExceptionTest {
                     + " type class java.lang.ArrayIndexOutOfBoundsException"
                     + " with message '500' was thrown.", e.getMessage());
         }
-
     }
-
 }

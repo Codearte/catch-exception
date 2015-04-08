@@ -63,6 +63,17 @@ public class BDDCatchException {
     }
 
     /**
+     * Returns the exception caught during the last call in the current thread.
+     *
+     * @return Returns the exception caught during the last call in the current
+     * thread - if the call was made through a proxy that has been created via
+     * {@link #when(ThrowingCallable)} . Returns null when no exception was caught.
+     */
+    public static Exception caughtException() {
+        return ExceptionHolder.get();
+    }
+
+    /**
      * Throws an assertion if no exception is thrown or if an exception of an
      * unexpected type is thrown.
      * <p/>
@@ -86,18 +97,6 @@ public class BDDCatchException {
     @SuppressWarnings("rawtypes")
     public static void thenThrown(Class actualExceptionClazz) {
         CatchExceptionUtils.thenThrown(actualExceptionClazz);
-    }
-
-    public static CaughtException caughtException() {
-        return new CaughtException(ExceptionHolder.get());
-    }
-
-    public static CatchExceptionAssert then(CaughtException actual) {
-        return new CatchExceptionAssert(actual);
-    }
-
-    public static CatchExceptionAssert thenCaughtException() {
-        return new CatchExceptionAssert(caughtException());
     }
 
 }

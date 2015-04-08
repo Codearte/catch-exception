@@ -39,7 +39,7 @@ public class BDDCustomCatchExceptionTest {
             throw new MyException(500);
         });
 
-        then(caughtException()).hasErrorCode(500);
+        then((MyException) caughtException()).hasErrorCode(500);
 
         // and verify that BDDAssertions works too
         then(new RuntimeException("dd")).hasMessage("dd");

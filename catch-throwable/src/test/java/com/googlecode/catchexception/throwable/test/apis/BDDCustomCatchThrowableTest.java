@@ -39,7 +39,7 @@ public class BDDCustomCatchThrowableTest {
             throw new MyThrowable(500);
         });
 
-        then(caughtThrowable()).hasErrorCode(500);
+        then((MyThrowable) caughtThrowable()).hasErrorCode(500);
 
         // and verify that BDDAssertions works too
         then(new RuntimeException("dd")).hasMessage("dd");

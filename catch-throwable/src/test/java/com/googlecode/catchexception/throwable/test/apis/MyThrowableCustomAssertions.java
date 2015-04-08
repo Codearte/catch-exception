@@ -15,12 +15,12 @@
  */
 package com.googlecode.catchexception.throwable.test.apis;
 
+import com.googlecode.catchexception.throwable.MyThrowable;
 import com.googlecode.catchexception.throwable.apis.BDDCatchThrowable;
-import com.googlecode.catchexception.throwable.apis.CaughtThrowable;
 
 public class MyThrowableCustomAssertions extends BDDCatchThrowable {
 
-    public static MyThrowableCustomAssert then(CaughtThrowable actual) {
+    public static MyThrowableCustomAssert then(MyThrowable actual) {
         return new MyThrowableCustomAssert(actual);
     }
 

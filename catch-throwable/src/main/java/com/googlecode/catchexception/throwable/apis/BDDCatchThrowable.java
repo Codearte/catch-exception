@@ -59,6 +59,20 @@ public class BDDCatchThrowable {
         CatchThrowable.catchThrowable(actor);
     }
 
+
+    /**
+     * Returns the throwable caught during the last call on the proxied object in the current thread.
+     *
+     * @return Returns the throwable caught during the last call on the proxied object in the current thread - if the
+     * call was made through a proxy that has been created via {@link #when(ThrowingCallable)}. Returns null the proxy
+     * has not caught an throwable. Returns null if the caught throwable belongs to a class that is no longer
+     * {@link ClassLoader loaded}.
+     */
+    public static Throwable caughtThrowable() {
+        return ThrowableHolder.get();
+    }
+
+
     /**
      * Throws an assertion if no throwable is thrown or if an throwable of an unexpected type is thrown.
      * <p>
@@ -79,18 +93,6 @@ public class BDDCatchThrowable {
     @SuppressWarnings("rawtypes")
     public static void thenThrown(Class actualThrowableClazz) {
         CatchThrowableUtils.thenThrown(actualThrowableClazz);
-    }
-
-    public static CaughtThrowable caughtThrowable() {
-        return new CaughtThrowable(ThrowableHolder.get());
-    }
-
-    public static CatchThrowableAssert then(CaughtThrowable actual) {
-        return new CatchThrowableAssert(actual);
-    }
-
-    public static CatchThrowableAssert thenCaughtThrowable() {
-        return new CatchThrowableAssert(caughtThrowable());
     }
 
 }
