@@ -88,17 +88,17 @@ public class BDDCatchThrowable {
     }
 
     /**
-     * Returns the throwable caught during the last call on the proxied object in the current thread boxed inside
-     * {@link CaughtThrowable}.
+     * Returns the throwable caught during the last call on the proxied object in the current thread.
      *
      * @return Returns the boxed throwable caught during the last call on the proxied object in the current thread - if
      * the call was made through a proxy that has been created via {@link #when(Object)}. Returns null if the proxy
      * has not caught an throwable. Returns null if the caught throwable belongs to a class that is no longer
      * {@link ClassLoader loaded}.
      */
-    public static CaughtThrowable caughtThrowable() {
-        return new CaughtThrowable(ThrowableHolder.get());
+    public static Throwable caughtThrowable() {
+        return CatchThrowable.caughtThrowable();
     }
+
     /**
      * Enables <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a> assertions about the caught
      * throwable.
@@ -119,7 +119,7 @@ public class BDDCatchThrowable {
      .hasNoCause();
      </pre></code>
      *
-     * @deprecated Use {@link #then(CaughtThrowable)} instead
+     * @deprecated Use {@link BDDAssertions#then(Throwable)} instead
      * @param actualThrowable
      *            the value to be the target of the assertions methods.
      * @return Returns the created assertion object.
@@ -128,38 +128,6 @@ public class BDDCatchThrowable {
     public static AbstractThrowableAssert<?, ? extends Throwable> then(Throwable actualThrowable) {
         // delegate to AssertJ assertions
         return new CatchThrowableAssert(actualThrowable);
-    }
-
-    /**
-     * Enables <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a> assertions about the caught
-     * throwable.
-     * <p>
-     * EXAMPLE: <code><pre class="prettyprint lang-java">// given an empty list
-     List myList = new ArrayList();
-
-     // when we try to get first element of the list
-     when(myList).get(1);
-
-     // then we expect an IndexOutOfBoundsThrowable
-     then(caughtThrowable())
-         .isInstanceOf(IndexOutOfBoundsThrowable.class)
-         .hasMessage("Index: 1, Size: 0")
-         .hasMessageStartingWith("Index: 1")
-         .hasMessageEndingWith("Size: 0")
-         .hasMessageContaining("Size")
-         .hasNoCause();
-     </pre></code>
-     *
-     * @param actualThrowable
-     *            the value to be the target of the assertions methods.
-     * @return Returns the created assertion object.
-     */
-    public static CatchThrowableAssert then(CaughtThrowable actualThrowable) {
-        return new CatchThrowableAssert(actualThrowable);
-    }
-
-    public static CatchThrowableAssert thenCaughtThrowable() {
-        return new CatchThrowableAssert(caughtThrowable());
     }
 
 }

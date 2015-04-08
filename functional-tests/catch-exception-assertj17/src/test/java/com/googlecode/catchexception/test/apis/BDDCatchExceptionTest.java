@@ -15,34 +15,36 @@
  */
 package com.googlecode.catchexception.test.apis;
 
+import static com.googlecode.catchexception.apis.BDDCatchException.caughtException;
 import static com.googlecode.catchexception.apis.BDDCatchException.when;
-import static com.googlecode.catchexception.test.apis.MyExceptionCustomAssertions.then;
-import static com.googlecode.catchexception.test.apis.MyExceptionCustomAssertions.caughtException;
 import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
-import com.googlecode.catchexception.CatchException;
-import com.googlecode.catchexception.PublicSomethingImpl;
-import com.googlecode.catchexception.apis.BDDCatchException;
-
 /**
- * Tests custom exception assertions.
+ * Tests {@link com.googlecode.catchexception.apis.BDDCatchException}.
  *
  * @author rwoo
  */
 @SuppressWarnings("javadoc")
-public class BDDCustomCatchExceptionTest {
+public class BDDCatchExceptionTest {
 
+    @SuppressWarnings("rawtypes")
     @Test
-    public void testCustomException() throws Exception {
+    public void testThen() {
+        // given an empty list
+        List myList = new ArrayList();
 
-        when(new PublicSomethingImpl()).throwMyException();
+        // when we try to get first element of the list
+        when(myList).get(1);
 
-        then(caughtException()).hasErrorCode(500);
-
-        // and verify that BDDAssertions works too
-        then(new RuntimeException("dd")).hasMessage("dd");
-        then(new Integer("100")).isEqualTo(100);
+        // then we expect an IndexOutOfBoundsException
+        then(caughtException()) //
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasNoCause();
     }
 }

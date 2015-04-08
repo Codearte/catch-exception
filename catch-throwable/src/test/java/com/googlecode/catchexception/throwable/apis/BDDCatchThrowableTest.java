@@ -16,7 +16,6 @@
 package com.googlecode.catchexception.throwable.apis;
 
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.caughtThrowable;
-import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenCaughtThrowable;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.thenThrown;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
 import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.then;
@@ -27,6 +26,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.googlecode.catchexception.throwable.CatchThrowable;
 
 /**
  * Tests {@link com.googlecode.catchexception.throwable.apis.BDDCatchThrowable}.
@@ -50,10 +51,6 @@ public class BDDCatchThrowableTest {
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();
-        thenCaughtThrowable()
-                .isInstanceOf(IndexOutOfBoundsException.class) //
-                .hasMessage("Index: 1, Size: 0") //
-                .hasNoCause();
     }
 
     @SuppressWarnings("rawtypes")
@@ -66,7 +63,7 @@ public class BDDCatchThrowableTest {
         when(myList).get(1);
 
         // then we expect an IndexOutOfBoundsException
-        then(caughtThrowable())
+        then(CatchThrowable.caughtThrowable())
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();
@@ -110,5 +107,4 @@ public class BDDCatchThrowableTest {
         }
 
     }
-
 }

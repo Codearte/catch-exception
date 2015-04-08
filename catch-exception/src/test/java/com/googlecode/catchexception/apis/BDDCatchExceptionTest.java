@@ -25,7 +25,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
+
+import com.googlecode.catchexception.CatchException;
 
 /**
  * Tests {@link com.googlecode.catchexception.apis.BDDCatchException}.
@@ -45,11 +48,26 @@ public class BDDCatchExceptionTest {
         when(myList).get(1);
 
         // then we expect an IndexOutOfBoundsException
-        then(caughtException()) //
+        then(CatchException.caughtException()) //
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();
+    }
 
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void testThenFromAssertJ() {
+        // given an empty list
+        List myList = new ArrayList();
+
+        // when we try to get first element of the list
+        when(myList).get(1);
+
+        // then we expect an IndexOutOfBoundsException
+        Assertions.assertThat(caughtException()) //
+                .isInstanceOf(IndexOutOfBoundsException.class) //
+                .hasMessage("Index: 1, Size: 0") //
+                .hasNoCause();
     }
 
     @SuppressWarnings("rawtypes")

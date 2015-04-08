@@ -17,14 +17,17 @@ package com.googlecode.catchexception.apis;
 
 import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.caughtException;
 import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.then;
-import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.thenCaughtException;
 import static com.googlecode.catchexception.apis.CatchExceptionAssertJ.when;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
+
+import com.googlecode.catchexception.CatchException;
 
 /**
  * Tests {@link com.googlecode.catchexception.apis.CatchExceptionAssertJ}.
@@ -43,7 +46,7 @@ public class CatchExceptionAssertJTest {
         when(myList).get(1);
 
         // then we expect an IndexOutOfBoundsException
-        then(caughtException()) //
+        then(CatchException.caughtException()) //
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasMessageStartingWith("Index: 1") //
@@ -51,7 +54,7 @@ public class CatchExceptionAssertJTest {
                 .hasMessageContaining("Size") //
                 .hasNoCause();
 
-        thenCaughtException() //
+        assertThat(caughtException()) //
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasMessageStartingWith("Index: 1") //

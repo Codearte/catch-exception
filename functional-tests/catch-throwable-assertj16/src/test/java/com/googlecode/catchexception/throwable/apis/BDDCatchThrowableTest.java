@@ -13,28 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.throwable.test.apis;
+package com.googlecode.catchexception.throwable.apis;
 
-import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.caughtThrowable;
-import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.then;
-import static com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ.when;
-import static org.junit.Assert.assertEquals;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.caughtThrowable;
+import static com.googlecode.catchexception.throwable.apis.BDDCatchThrowable.when;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
-import com.googlecode.catchexception.throwable.apis.CatchThrowableAssertJ;
-
 /**
- * Tests {@link CatchThrowableAssertJ}.
+ * Tests {@link BDDCatchThrowable}.
  *
  * @author rwoo
- *
  */
 @SuppressWarnings("javadoc")
-public class CatchThrowableAssertJ17Test {
+public class BDDCatchThrowableTest {
 
     @SuppressWarnings("rawtypes")
     @Test
@@ -49,23 +45,6 @@ public class CatchThrowableAssertJ17Test {
         then(caughtThrowable()) //
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
-                .hasMessageStartingWith("Index: 1") //
-                .hasMessageEndingWith("Size: 0") //
-                .hasMessageContaining("Size") //
                 .hasNoCause();
-
-        // test: caughtThrowable() has other unexpected message
-        try {
-            then(caughtThrowable()) //
-                    .isInstanceOf(IndexOutOfBoundsException.class) //
-                    .hasMessage("Hi!");
-
-        } catch (AssertionError e) {
-            assertEquals("\nExpecting message:" //
-                    + "\n <\"Hi!\">" //
-                    + "\nbut was:" //
-                    + "\n <\"Index: 1, Size: 0\">", e.getMessage());
-        }
     }
-
 }
