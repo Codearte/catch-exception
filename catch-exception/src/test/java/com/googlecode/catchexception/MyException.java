@@ -19,6 +19,10 @@ public class MyException extends RuntimeException {
 
     private final int errorCode;
 
+    public MyException() {
+        this.errorCode = 0;
+    }
+
     public MyException(int errorCode) {
         this.errorCode = errorCode;
     }
