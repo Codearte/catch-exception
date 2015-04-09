@@ -74,12 +74,7 @@ public class CatchThrowable {
      */
     public static void verifyThrowable(ThrowingCallable actor, Class<? extends Throwable> clazz) {
         validateArguments(actor, clazz);
-        try {
-            catchThrowable(actor, clazz, true);
-        } catch (ThrowableNotThrownAssertionError e) {
-            throw e;
-        } catch (Throwable throwable) {
-        }
+        catchThrowable(actor, clazz, true);
     }
 
     /**
@@ -98,10 +93,7 @@ public class CatchThrowable {
      */
     public static void catchThrowable(ThrowingCallable actor) {
         validateArguments(actor, Throwable.class);
-        try {
-            catchThrowable(actor, Throwable.class, false);
-        } catch (Throwable throwable) {
-        }
+        catchThrowable(actor, Throwable.class, false);
     }
 
     /**
@@ -122,17 +114,16 @@ public class CatchThrowable {
      * @param actor   The instance that shall be proxied. Must not be <code>null</code>.
      * @param clazz The type of the throwable that shall be caught. Must not be <code>null</code>.
      */
-    public static void catchThrowable(ThrowingCallable actor,
-                                      Class<? extends Throwable> clazz) throws Throwable {
+    public static void catchThrowable(ThrowingCallable actor, Class<? extends Throwable> clazz) {
         validateArguments(actor, clazz);
         catchThrowable(actor, clazz, false);
     }
 
     private static void catchThrowable(ThrowingCallable actor,
-                                       Class<? extends Throwable> clazz, boolean assertException) throws Throwable {
+                                       Class<? extends Throwable> clazz, boolean assertException) {
         resetCaughtThrowable();
-        Throwable e = ThrowableCaptor.captureThrowable(actor);
-        if (e == null) {
+        Throwable throwable = ThrowableCaptor.captureThrowable(actor);
+        if (throwable == null) {
             if (!assertException) {
                 return;
             } else {
@@ -140,13 +131,13 @@ public class CatchThrowable {
             }
         }
         // is the thrown exception of the expected type?
-        if (clazz.isAssignableFrom(e.getClass())) {
-            ThrowableHolder.set(e);
+        if (clazz.isAssignableFrom(throwable.getClass())) {
+            ThrowableHolder.set(throwable);
         } else {
             if (assertException) {
-                throw new ThrowableNotThrownAssertionError(clazz, e);
+                throw new ThrowableNotThrownAssertionError(clazz, throwable);
             } else {
-                throw e;
+                ExceptionUtil.sneakyThrow(throwable);
             }
         }
     }

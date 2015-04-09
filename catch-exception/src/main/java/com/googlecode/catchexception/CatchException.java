@@ -228,7 +228,7 @@ public class CatchException {
      * @param actor The instance that shall be proxied. Must not be
      *              <code>null</code>.
      */
-    public static void verifyException(ThrowingCallable actor) throws Exception {
+    public static void verifyException(ThrowingCallable actor) {
         verifyException(actor, Exception.class);
     }
 
@@ -253,12 +253,7 @@ public class CatchException {
      */
     public static void verifyException(ThrowingCallable actor, Class<? extends Exception> clazz) {
         validateArguments(actor, clazz);
-        try {
-            catchException(actor, clazz, true);
-        } catch (ExceptionNotThrownAssertionError e) {
-            throw e;
-        } catch (Exception e) {
-        }
+        catchException(actor, clazz, true);
     }
 
     /**
@@ -281,10 +276,7 @@ public class CatchException {
      */
     public static void catchException(com.googlecode.catchexception.ThrowingCallable actor) {
         validateArguments(actor, Exception.class);
-        try {
-            catchException(actor, Exception.class, false);
-        } catch (Exception e) {
-        }
+        catchException(actor, Exception.class, false);
     }
 
     /**
@@ -311,16 +303,16 @@ public class CatchException {
      * @param clazz The type of the exception that shall be caught. Must not be
      *              <code>null</code>.
      */
-    public static void catchException(ThrowingCallable actor, Class<? extends Exception> clazz) throws Exception {
+    public static void catchException(ThrowingCallable actor, Class<? extends Exception> clazz) {
         validateArguments(actor, clazz);
         catchException(actor, clazz, false);
     }
 
     private static void catchException(ThrowingCallable actor, Class<? extends Exception> clazz,
-                                       boolean assertException) throws Exception {
+                                       boolean assertException) {
         resetCaughtException();
-        Exception e = ExceptionCaptor.captureThrowable(actor);
-        if (e == null) {
+        Exception exception = ExceptionCaptor.captureThrowable(actor);
+        if (exception == null) {
             if (!assertException) {
                 return;
             } else {
@@ -328,13 +320,13 @@ public class CatchException {
             }
         }
         // is the thrown exception of the expected type?
-        if (clazz.isAssignableFrom(e.getClass())) {
-            ExceptionHolder.set(e);
+        if (clazz.isAssignableFrom(exception.getClass())) {
+            ExceptionHolder.set(exception);
         } else {
             if (assertException) {
-                throw new ExceptionNotThrownAssertionError(clazz, e);
+                throw new ExceptionNotThrownAssertionError(clazz, exception);
             } else {
-                throw e;
+                ExceptionUtil.sneakyThrow(exception);
             }
         }
     }
