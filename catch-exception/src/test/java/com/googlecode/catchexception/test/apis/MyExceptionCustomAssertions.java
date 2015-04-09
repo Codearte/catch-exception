@@ -24,4 +24,8 @@ public class MyExceptionCustomAssertions extends BDDCatchException {
         return new MyExceptionCustomAssert(actual);
     }
 
+    public static MyException caughtException() {
+        return caughtException(MyException.class);
+    }
+
 }

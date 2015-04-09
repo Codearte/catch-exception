@@ -17,7 +17,6 @@ package com.googlecode.catchexception.throwable.apis;
 
 import com.googlecode.catchexception.throwable.CatchThrowable;
 import com.googlecode.catchexception.throwable.ThrowingCallable;
-import com.googlecode.catchexception.throwable.internal.ThrowableHolder;
 
 /**
  * Supports <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>-like approach to catch and verify
@@ -59,7 +58,6 @@ public class BDDCatchThrowable {
         CatchThrowable.catchThrowable(actor);
     }
 
-
     /**
      * Returns the throwable caught during the last call on the proxied object in the current thread.
      *
@@ -69,10 +67,12 @@ public class BDDCatchThrowable {
      * {@link ClassLoader loaded}.
      */
     public static Throwable caughtThrowable() {
-        return ThrowableHolder.get();
+        return CatchThrowable.caughtThrowable();
     }
 
-
+    public static <T extends Throwable> T caughtThrowable(Class<T> caughtThrowableType) {
+        return CatchThrowable.caughtThrowable();
+    }
     /**
      * Throws an assertion if no throwable is thrown or if an throwable of an unexpected type is thrown.
      * <p>

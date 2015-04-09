@@ -18,7 +18,6 @@ package com.googlecode.catchexception.throwable.test.apis;
 import static com.googlecode.catchexception.throwable.test.apis.MyThrowableCustomAssertions.caughtThrowable;
 import static com.googlecode.catchexception.throwable.test.apis.MyThrowableCustomAssertions.then;
 import static com.googlecode.catchexception.throwable.test.apis.MyThrowableCustomAssertions.when;
-import static org.assertj.core.api.BDDAssertions.then;
 
 import org.junit.Test;
 
@@ -35,14 +34,12 @@ public class BDDCustomCatchThrowableTest {
     @Test
     public void testCustomException() throws Exception {
 
-        when(() -> {
-            throw new MyThrowable(500);
-        });
+        when(this::throwMyThrowable);
 
-        then((MyThrowable) caughtThrowable()).hasErrorCode(500);
-
-        // and verify that BDDAssertions works too
-        then(new RuntimeException("dd")).hasMessage("dd");
+        then(caughtThrowable()).hasErrorCode(500);
     }
 
+    private void throwMyThrowable() {
+        throw new MyThrowable(500);
+    }
 }

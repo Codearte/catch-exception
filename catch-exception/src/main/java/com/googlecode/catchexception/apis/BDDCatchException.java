@@ -15,11 +15,8 @@
  */
 package com.googlecode.catchexception.apis;
 
-import java.util.function.Supplier;
-
 import com.googlecode.catchexception.CatchException;
 import com.googlecode.catchexception.ThrowingCallable;
-import com.googlecode.catchexception.internal.ExceptionHolder;
 
 /**
  * Supports <a
@@ -73,11 +70,11 @@ public class BDDCatchException {
      * {@link #when(ThrowingCallable)} . Returns null when no exception was caught.
      */
     public static Exception caughtException() {
-        return ExceptionHolder.get();
+        return CatchException.caughtException();
     }
 
     public static <E extends Exception> E caughtException(Class<E> caughtExceptionType) {
-        return ExceptionHolder.get();
+        return CatchException.caughtException();
     }
 
     /**

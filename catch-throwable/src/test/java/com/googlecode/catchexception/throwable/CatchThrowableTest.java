@@ -30,8 +30,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.googlecode.catchexception.throwable.internal.ThrowableHolder;
-
 /**
  * Tests {@link CatchThrowable}.
  *

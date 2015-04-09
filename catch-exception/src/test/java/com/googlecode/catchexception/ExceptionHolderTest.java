@@ -13,20 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.catchexception.throwable.test.apis;
+package com.googlecode.catchexception;
 
-import com.googlecode.catchexception.throwable.CatchThrowable;
-import com.googlecode.catchexception.throwable.MyThrowable;
-import com.googlecode.catchexception.throwable.apis.BDDCatchThrowable;
+import static org.junit.Assert.assertNull;
 
-public class MyThrowableCustomAssertions extends BDDCatchThrowable {
+import org.junit.Test;
 
-    public static MyThrowableCustomAssert then(MyThrowable actual) {
-        return new MyThrowableCustomAssert(actual);
+import com.googlecode.catchexception.ExceptionHolder;
+
+/**
+ * Tests {@link ExceptionHolder}
+ * 
+ * @author rwoo
+ * 
+ */
+@SuppressWarnings("javadoc")
+public class ExceptionHolderTest {
+
+    @Test
+    public void testCaughtExceptionIsNull() throws Exception {
+
+        ExceptionHolder.set(null);
+        assertNull(ExceptionHolder.get());
     }
-
-    public static MyThrowable caughtThrowable() {
-        return caughtThrowable(MyThrowable.class);
-    }
-
 }

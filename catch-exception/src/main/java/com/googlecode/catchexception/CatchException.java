@@ -17,7 +17,6 @@ package com.googlecode.catchexception;
 
 import com.googlecode.catchexception.apis.BDDCatchException;
 import com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers;
-import com.googlecode.catchexception.internal.ExceptionHolder;
 
 /**
  * The methods of this class catch and verify exceptions in <em>a single line of

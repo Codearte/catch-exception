@@ -15,8 +15,6 @@
  */
 package com.googlecode.catchexception.throwable;
 
-import com.googlecode.catchexception.throwable.internal.ThrowableHolder;
-
 /**
  * @author rwoo
  * @since 1.2.0
