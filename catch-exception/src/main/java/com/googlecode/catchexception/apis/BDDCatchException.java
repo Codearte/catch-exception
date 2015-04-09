@@ -65,7 +65,8 @@ public class BDDCatchException {
     }
 
     /**
-     * Returns the exception caught during the last call in the current thread.
+     * Returns the exception caught during the last call in the current thread. This is useful for
+     * returning business specific exception to specific assertions.
      *
      * @return Returns the exception caught during the last call in the current
      * thread - if the call was made through a proxy that has been created via
@@ -75,7 +76,7 @@ public class BDDCatchException {
         return ExceptionHolder.get();
     }
 
-    public static <E extends Exception> E caughtException(Class<E> catchedExceptionType) {
+    public static <E extends Exception> E caughtException(Class<E> caughtExceptionType) {
         return ExceptionHolder.get();
     }
 
