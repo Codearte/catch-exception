@@ -8,6 +8,10 @@ project(modelVersion: '4.0.0') {
     name 'catch-exception-project'
     description 'Catch and verify exceptions - parent module'
     url 'https://github.com/Codearte/catch-exception/'
+
+    def javaVersion = 1.8
+    def assertJVersion = '3.0.0'
+
     licenses {
         license {
             name 'Apache 2'
@@ -37,14 +41,14 @@ project(modelVersion: '4.0.0') {
         snapshotRepository(id: 'sonatype-nexus-snapshots', url: 'http://oss.sonatype.org/content/repositories/snapshots')
     }
     properties {
-        'project.inceptionYear' 2011
+        'project.inceptionYear' '2011'
         'project.build.sourceEncoding' 'UTF-8'
-        'maven.compiler.source' '1.8'
-        'maven.compiler.target' '1.8'
+        'maven.compiler.source' javaVersion
+        'maven.compiler.target' javaVersion
     }
     dependencyManagement {
         dependencies {
-            dependency(groupId: 'org.assertj', artifactId: 'assertj-core', version: '3.0.0', optional: true)
+            dependency(groupId: 'org.assertj', artifactId: 'assertj-core', version: assertJVersion, optional: true)
             dependency(groupId: 'junit', artifactId: 'junit', version: 4.12, optional: true)
         }
     }
@@ -126,9 +130,6 @@ project(modelVersion: '4.0.0') {
                     header 'src/etc/header.txt'
                     includes {
                         include '**/src/**'
-                    }
-                    excludes {
-                        exclude 'src/main/javadoc/doc-files/google-code-prettify/**'
                     }
                     aggregate 'true'
                     properties {
