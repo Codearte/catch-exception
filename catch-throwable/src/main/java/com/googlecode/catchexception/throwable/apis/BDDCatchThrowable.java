@@ -71,7 +71,7 @@ public class BDDCatchThrowable {
     }
 
     public static <T extends Throwable> T caughtThrowable(Class<T> caughtThrowableType) {
-        return CatchThrowable.caughtThrowable();
+        return CatchThrowable.caughtThrowable(caughtThrowableType);
     }
     /**
      * Throws an assertion if no throwable is thrown or if an throwable of an unexpected type is thrown.

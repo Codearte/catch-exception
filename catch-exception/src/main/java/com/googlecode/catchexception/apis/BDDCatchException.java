@@ -74,7 +74,7 @@ public class BDDCatchException {
     }
 
     public static <E extends Exception> E caughtException(Class<E> caughtExceptionType) {
-        return CatchException.caughtException();
+        return CatchException.caughtException(caughtExceptionType);
     }
 
     /**

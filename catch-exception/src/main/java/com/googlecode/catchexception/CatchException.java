@@ -210,6 +210,10 @@ public class CatchException {
         return ExceptionHolder.get();
     }
 
+    public static <E extends Exception> E caughtException(Class<E> caughtExceptionType) {
+        return ExceptionHolder.get();
+    }
+
     /**
      * Use it to verify that an exception is thrown and to get access to the
      * thrown exception (for further verifications).
