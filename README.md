@@ -40,7 +40,7 @@ verifyException(myList, IndexOutOfBoundsException.class).get(1);
 More information about the usage you find in the [Javadoc documentation](http://codearte.github.io/catch-exception/apidocs/overview-summary.html).
 
 # BDD-like
-If you prefer a BDD-like approach, you can use [BDDCatchException](http://codearte.github.io/catch-exception/apidocs/com/googlecode/catchexception/apis/CatchExceptionBdd.html) for another code style:
+If you prefer a BDD-like approach, you can use [BDDCatchException](http://codearte.github.io/catch-exception/apidocs/com/googlecode/catchexception/apis/BDDCatchException.html) for another code style:
 
 ```java
 import static com.googlecode.catchexception.apis.BDDCatchException.*;
