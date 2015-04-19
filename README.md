@@ -3,7 +3,7 @@
 
 ----
 
-# catch-exception 1.4.1
+# catch-exception 1.4.4
 
 Catch and verify exceptions in a single line of code
 
