@@ -18,7 +18,6 @@ package com.googlecode.catchexception.apis;
 import org.assertj.core.api.AbstractThrowableAssert;
 
 import com.googlecode.catchexception.CatchException;
-import com.googlecode.catchexception.internal.ExceptionHolder;
 
 /**
  * Supports <a

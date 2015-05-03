@@ -18,7 +18,6 @@ package com.googlecode.catchexception.throwable.apis;
 import org.assertj.core.api.AbstractThrowableAssert;
 
 import com.googlecode.catchexception.throwable.CatchThrowable;
-import com.googlecode.catchexception.throwable.internal.ThrowableHolder;
 
 /**
  * Supports <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>-like approach to catch and verify
