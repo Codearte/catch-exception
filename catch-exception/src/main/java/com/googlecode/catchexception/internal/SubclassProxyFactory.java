@@ -41,6 +41,7 @@ public class SubclassProxyFactory implements ProxyFactory {
      * com.googlecode.catchexception.internal.ProxyFactory#createProxy(java.
      * lang.Object, java.lang.Class, boolean)
      */
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T createProxy(Class<?> targetClass, MethodInterceptor interceptor) {
 

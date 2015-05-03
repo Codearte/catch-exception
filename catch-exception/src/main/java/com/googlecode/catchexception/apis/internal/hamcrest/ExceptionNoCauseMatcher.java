@@ -36,6 +36,7 @@ public class ExceptionNoCauseMatcher<T extends Exception> extends
      * 
      * @see org.hamcrest.Matcher#matches(java.lang.Object)
      */
+    @Override
     public boolean matches(Object obj) {
         if (!(obj instanceof Exception))
             return false;
@@ -50,6 +51,7 @@ public class ExceptionNoCauseMatcher<T extends Exception> extends
      * 
      * @see org.hamcrest.SelfDescribing#describeTo(org.hamcrest.Description)
      */
+    @Override
     public void describeTo(Description description) {
         description.appendText("has no cause");
     }

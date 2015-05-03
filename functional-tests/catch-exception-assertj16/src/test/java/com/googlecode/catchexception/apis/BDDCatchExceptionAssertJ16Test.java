@@ -34,6 +34,7 @@ import org.junit.Test;
 @SuppressWarnings("javadoc")
 public class BDDCatchExceptionAssertJ16Test extends BDDCatchExceptionTest {
 
+    @Override
     @SuppressWarnings("rawtypes")
     @Test
     public void testThen() {

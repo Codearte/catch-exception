@@ -33,6 +33,7 @@ import static org.junit.Assert.assertEquals;
 @SuppressWarnings("javadoc")
 public class BDDCatchThrowableAssertJ16Test extends BDDCatchThrowableTest {
 
+    @Override
     @SuppressWarnings("rawtypes")
     @Test
     public void testThen() {
