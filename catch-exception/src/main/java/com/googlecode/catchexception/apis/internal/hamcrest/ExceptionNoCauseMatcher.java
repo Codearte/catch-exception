@@ -38,8 +38,9 @@ public class ExceptionNoCauseMatcher<T extends Exception> extends
      */
     @Override
     public boolean matches(Object obj) {
-        if (!(obj instanceof Exception))
+        if (!(obj instanceof Exception)) {
             return false;
+        }
 
         Exception exception = (Exception) obj;
 
