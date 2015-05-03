@@ -60,6 +60,7 @@
                   <shadedPattern>io.codearte.catchexception.shade.mockito</shadedPattern>
                 </relocation>
               </relocations>
+              <createSourcesJar>true</createSourcesJar>
             </configuration>
           </execution>
         </executions>
