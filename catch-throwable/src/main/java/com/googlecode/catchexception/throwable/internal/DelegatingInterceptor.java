@@ -49,6 +49,7 @@ public class DelegatingInterceptor implements MethodInterceptor {
      * java.lang.reflect.Method, java.lang.Object[],
      * org.mockito.cglib.proxy.MethodProxy)
      */
+    @Override
     public Object intercept(Object obj, Method method, Object[] args,
             MethodProxy proxy) throws Throwable {
 

@@ -39,6 +39,7 @@ public class InterfaceOnlyProxyFactory implements ProxyFactory {
      * com.googlecode.catchexception.internal.ProxyFactory#createProxy(java.
      * lang.Class, org.mockito.cglib.proxy.MethodInterceptor)
      */
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T createProxy(Class<?> targetClass, MethodInterceptor interceptor) {
 

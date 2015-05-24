@@ -21,24 +21,17 @@
       <groupId>eu.codearte.catch-exception</groupId>
       <artifactId>mockito-shade</artifactId>
       <version>${project.version}</version>
+      <exclusions>
+          <exclusion>
+              <artifactId>mockito-core</artifactId>
+              <groupId>org.mockito</groupId>
+          </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.objenesis</groupId>
       <artifactId>objenesis</artifactId>
       <version>1.2</version>
-    </dependency>
-
-    <!-- required runtime scope dependencies +++++++++++++++++++++++++++++++ -->
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <exclusions>
-        <exclusion>
-          <artifactId>hamcrest-core</artifactId>
-          <groupId>org.hamcrest</groupId>
-        </exclusion>
-      </exclusions>
-      <scope>test</scope>
     </dependency>
 
     <!-- optional runtime scope dependencies +++++++++++++++++++++++++++++++ -->

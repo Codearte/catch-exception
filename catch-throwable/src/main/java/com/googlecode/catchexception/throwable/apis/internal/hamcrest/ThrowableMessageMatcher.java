@@ -62,6 +62,7 @@ public class ThrowableMessageMatcher<T extends Throwable> extends
      * 
      * @see org.hamcrest.Matcher#matches(java.lang.Object)
      */
+    @Override
     public boolean matches(Object obj) {
         if (!(obj instanceof Throwable))
             return false;
@@ -78,6 +79,7 @@ public class ThrowableMessageMatcher<T extends Throwable> extends
      * 
      * @see org.hamcrest.SelfDescribing#describeTo(org.hamcrest.Description)
      */
+    @Override
     public void describeTo(Description description) {
         description.appendText("has a message that ").appendDescriptionOf(
                 expectedMessageMatcher);

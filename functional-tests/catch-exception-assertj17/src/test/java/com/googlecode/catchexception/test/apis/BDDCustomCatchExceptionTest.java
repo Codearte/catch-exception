@@ -22,9 +22,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import org.junit.Test;
 
-import com.googlecode.catchexception.CatchException;
 import com.googlecode.catchexception.PublicSomethingImpl;
-import com.googlecode.catchexception.apis.BDDCatchException;
 
 /**
  * Tests custom exception assertions.
