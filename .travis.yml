@@ -5,9 +5,7 @@ language: java
 jdk:
   - oraclejdk8
 
-before_install: mvn --version
-
-script: mvn package
+script: ./mvnw package
 
 after_success:
-  - mvn clean test jacoco:report coveralls:report
+  - ./mvnw clean test jacoco:report coveralls:report
