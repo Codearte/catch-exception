@@ -9,15 +9,6 @@
   <url>https://github.com/Codearte/catch-exception/</url>
   <name>catch-exception</name>
 
-  <!-- Disabled to workaround problem with old maven-gpg-plugin forced in release:prepare -->
-  <!--
-    <parent>
-      <groupId>org.sonatype.oss</groupId>
-      <artifactId>oss-parent</artifactId>
-      <version>9</version>
-    </parent>
-  -->
-
   <prerequisites>
     <maven>3.0.5</maven>
   </prerequisites>
@@ -35,7 +26,7 @@
 
     <powermock.version>1.6.1</powermock.version>
 
-    <spring.version>4.1.6.RELEASE</spring.version>
+    <spring.version>4.2.1.RELEASE</spring.version>
 
     <!-- used by maven-license-plugin -->
     <project.inceptionYear>2011</project.inceptionYear>
@@ -351,7 +342,7 @@ else {
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>1.4</version>
+          <version>1.4.1</version>
         </plugin>
 
         <plugin>
