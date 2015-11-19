@@ -12,7 +12,7 @@ project(modelVersion: '4.0.0') {
     build {
         plugins {
             plugin(groupId: 'io.takari.maven.plugins', artifactId: 'takari-lifecycle-plugin')
-            plugin(groupId: 'org.pitest', artifactId: 'pitest-maven', version: '1.1.5') {
+            plugin(groupId: 'org.pitest', artifactId: 'pitest-maven', version: '1.1.7') {
                 configuration {
                     mutationThreshold '90'
                     coverageThreshold '85'
