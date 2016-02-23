@@ -7,7 +7,7 @@ project(modelVersion: '4.0.0') {
     artifactId 'catch-exception'
     packaging 'takari-jar'
 
-    description 'Catch and verify exceptions'
+    description 'Catch throwables (not only exceptions)'
 
     build {
         plugins {
