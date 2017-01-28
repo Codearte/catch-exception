@@ -109,7 +109,7 @@ If you want to handle expected exceptions, the [documentation](http://codearte.g
 But some reasons that are specific to JUnit4 are outlined only here.
 
 ## Collecting errors
-If you want to combine the JUnit4's rules [ExpectedException](http://kentbeck.github.com/junit/javadoc/latest/org/junit/rules/ExpectedException.html) and [ErrorCollector](http://kentbeck.github.com/junit/javadoc/latest/org/junit/rules/ErrorCollector.html) you will find out: this won't work.
+If you want to combine the JUnit4's rules [ExpectedException](http://junit.org/junit4/javadoc/latest/org/junit/rules/ExpectedException.html) and [ErrorCollector](http://junit.org/junit4/javadoc/javadoc/latest/org/junit/rules/ErrorCollector.html) you will find out: this won't work.
 
 Catch-exception instead can be easily combined with the error collecting rule:
 
@@ -132,7 +132,7 @@ public void testErrorCollectorWithExpectedException() {
 }
 ```
 ## Theories respectively parameterized tests
-Sometimes you want to test for an [optional exception in a parameterized test](http://stackoverflow.com/questions/7275859/testing-for-optional-exception-in-parameterized-junit-4-test?rq=1). JUnit4's [ExpectedException](http://kentbeck.github.com/junit/javadoc/latest/org/junit/rules/ExpectedException.html) rule does not help in this case. This is another use case where catch-exception comes in quite handy.
+Sometimes you want to test for an [optional exception in a parameterized test](http://stackoverflow.com/questions/7275859/testing-for-optional-exception-in-parameterized-junit-4-test?rq=1). JUnit4's [ExpectedException](http://junit.org/junit4/javadoc/latest/org/junit/rules/ExpectedException.html) rule does not help in this case. This is another use case where catch-exception comes in quite handy.
 
 # Download
 Go to the [Installation page](https://github.com/Codearte/catch-exception/wiki/Installation) to get the latest release. This page provides also the Maven coordinates, prerequisites, and information about dependencies to other libraries.
