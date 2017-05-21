@@ -9,10 +9,6 @@
   <url>https://github.com/Codearte/catch-exception/</url>
   <name>catch-exception</name>
 
-  <prerequisites>
-    <maven>3.2.5</maven>
-  </prerequisites>
-
   <properties>
     <!-- Maven defaults to java5, ensure we default to java 6 -->
     <maven.compiler.source>1.6</maven.compiler.source>
