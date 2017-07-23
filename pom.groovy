@@ -10,7 +10,7 @@ project(modelVersion: '4.0.0') {
   url 'https://github.com/Codearte/catch-exception/'
 
   def javaVersion = '1.8'
-  def assertJVersion = '3.3.0'
+  def assertJVersion = '3.8.0'
 
   licenses {
     license {
@@ -25,7 +25,7 @@ project(modelVersion: '4.0.0') {
     developer(id: 'mariuszs', name: 'Mariusz Smykula', email: 'mariuszs@gmail.com')
   }
   prerequisites {
-    maven '3.3.9'
+    maven '3.5.0'
   }
   modules {
     module 'catch-exception'
@@ -56,15 +56,15 @@ project(modelVersion: '4.0.0') {
   build {
     pluginManagement {
       plugins {
-        plugin(groupId: 'io.takari.maven.plugins', artifactId: 'takari-lifecycle-plugin', version: '1.11.11', extensions: true) {
+        plugin(groupId: 'io.takari.maven.plugins', artifactId: 'takari-lifecycle-plugin', version: '1.13.0', extensions: true) {
           configuration {
             sourceJar 'true'
             testJar 'true'
           }
         }
-        plugin(artifactId: 'maven-clean-plugin', version: '2.6.1')
-        plugin(artifactId: 'maven-javadoc-plugin', version: '2.10.3')
-        plugin(artifactId: 'maven-site-plugin', version: '3.4')
+        plugin(artifactId: 'maven-clean-plugin', version: '3.0.0')
+        plugin(artifactId: 'maven-javadoc-plugin', version: '2.10.4')
+        plugin(artifactId: 'maven-site-plugin', version: '3.6')
         plugin(artifactId: 'maven-release-plugin', version: '2.5.3') {
           configuration {
             mavenExecutorId 'forked-path'
@@ -83,9 +83,9 @@ project(modelVersion: '4.0.0') {
             }
           }
         }
-        plugin(artifactId: 'maven-surefire-plugin', version: '2.18.1')
-        plugin(groupId: 'org.eluder.coveralls', artifactId: 'coveralls-maven-plugin', version: '3.1.0')
-        plugin(groupId: 'org.jacoco', artifactId: 'jacoco-maven-plugin', version: '0.7.5.201505241946')
+        plugin(artifactId: 'maven-surefire-plugin', version: '2.20.0')
+        plugin(groupId: 'org.eluder.coveralls', artifactId: 'coveralls-maven-plugin', version: '4.3.0')
+        plugin(groupId: 'org.jacoco', artifactId: 'jacoco-maven-plugin', version: '0.7.9')
       }
     }
     plugins {
@@ -118,7 +118,7 @@ project(modelVersion: '4.0.0') {
           docfilessubdirs 'true'
         }
       }
-      plugin(groupId: 'com.mycila', artifactId: 'license-maven-plugin', version: '2.11') {
+      plugin(groupId: 'com.mycila', artifactId: 'license-maven-plugin', version: '3.0') {
         executions {
           execution {
             goals {
