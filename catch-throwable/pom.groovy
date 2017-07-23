@@ -1,7 +1,7 @@
 project(modelVersion: '4.0.0') {
 
     parent(groupId: 'eu.codearte.catch-exception', artifactId: 'catch-exception-parent', version: '2.0.0-SNAPSHOT') {
-        relativePath '..'
+        relativePath '../pom.groovy'
     }
 
     artifactId 'catch-throwable'
