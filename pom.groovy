@@ -83,7 +83,7 @@ project(modelVersion: '4.0.0') {
             }
           }
         }
-        plugin(artifactId: 'maven-surefire-plugin', version: '2.20.0')
+        plugin(artifactId: 'maven-surefire-plugin', version: '2.20')
         plugin(groupId: 'org.eluder.coveralls', artifactId: 'coveralls-maven-plugin', version: '4.3.0')
         plugin(groupId: 'org.jacoco', artifactId: 'jacoco-maven-plugin', version: '0.7.9')
       }
