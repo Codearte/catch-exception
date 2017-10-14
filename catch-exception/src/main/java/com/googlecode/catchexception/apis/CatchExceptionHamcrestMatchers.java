@@ -26,7 +26,7 @@ import com.googlecode.catchexception.apis.internal.hamcrest.ExceptionNoCauseMatc
  * {@link Exception exception} properties.
  * <p>
  * EXAMPLE:
- * <code><pre class="prettyprint lang-java">// given an empty list
+ * <code>// given an empty list
 List myList = new ArrayList();
 
 // when we try to get the first element of the list
@@ -39,7 +39,7 @@ assertThat(caughtException(),
     hasMessage("Index: 1, Size: 0"),
     hasNoCause()
   )
-);</pre></code>
+);</code>
  * <p>
  * To combine the standard Hamcrest matchers, your custom matchers, these
  * matchers, and other matcher collections (as {@link JUnitMatchers}) in a
@@ -58,7 +58,7 @@ public class CatchExceptionHamcrestMatchers {
 
     /**
      * EXAMPLE:
-     * <code><pre class="prettyprint lang-java">assertThat(caughtException(), hasMessage("Index: 9, Size: 9"));</pre></code>
+     * <code>assertThat(caughtException(), hasMessage("Index: 9, Size: 9"));</code>
      * 
      * @param <T>
      *            the exception subclass
@@ -74,9 +74,9 @@ public class CatchExceptionHamcrestMatchers {
 
     /**
      * EXAMPLES:
-     * <code><pre class="prettyprint lang-java">assertThat(caughtException(), hasMessageThat(is("Index: 9, Size: 9")));
+     * <code>assertThat(caughtException(), hasMessageThat(is("Index: 9, Size: 9")));
 assertThat(caughtException(), hasMessageThat(containsString("Index: 9"))); // using JUnitMatchers
-assertThat(caughtException(), hasMessageThat(containsPattern("Index: \\d+"))); // using Mockito's Find</pre></code>
+assertThat(caughtException(), hasMessageThat(containsPattern("Index: \\d+"))); // using Mockito's Find</code>
      * 
      * @param <T>
      *            the exception subclass
@@ -92,7 +92,7 @@ assertThat(caughtException(), hasMessageThat(containsPattern("Index: \\d+"))); /
 
     /**
      * EXAMPLE:
-     * <code><pre class="prettyprint lang-java">assertThat(caughtException(), hasNoCause());</pre></code>
+     * <code>assertThat(caughtException(), hasNoCause());</code>
      * 
      * @param <T>
      *            the exception subclass

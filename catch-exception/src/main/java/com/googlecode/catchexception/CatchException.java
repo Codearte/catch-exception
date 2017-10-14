@@ -21,75 +21,85 @@ import com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers;
 /**
  * The methods of this class catch and verify exceptions in <em>a single line of
  * code</em> and make them available for further analysis.
- * <p/>
+ *
  * This Javadoc content is also available on the <a
  * href="http://code.google.com/p/catch-exception/" >catch-exception</a> web
  * page.
- * <p/>
- * <h1>Documentation</h1>
- * <p/>
- * <b> <a href="#1">1. How to use catch-exception?</a><br/>
- * <a href="#2">2. What is this stuff actually good for?</a> <br/>
- * <a href="#3">3. How does it work internally?</a><br/>
- * <a href="#4">4. When is the caught exception reset?</a><br/>
- * <a href="#5">5. My code throws a ClassCastException. Why?</a> <br/>
- * <a href="#6">6. The exception is not caught. Why?</a> <br/>
- * <a href="#7">7. Do I have to care about memory leaks?</a> <br/>
+ *
+ * <h3>Documentation</h3>
+ *
+ * <b> <a href="#1">1. How to use catch-exception?</a>
+
+ * <a href="#2">2. What is this stuff actually good for?</a>
+
+ * <a href="#3">3. How does it work internally?</a>
+
+ * <a href="#4">4. When is the caught exception reset?</a>
+
+ * <a href="#5">5. My code throws a ClassCastException. Why?</a>
+
+ * <a href="#6">6. The exception is not caught. Why?</a>
+
+ * <a href="#7">7. Do I have to care about memory leaks?</a>
+
  * <a href="#8">8. The caught exception is not available in another thread.
- * Why?</a><br/>
- * <a href="#9">9. How do I catch an exception thrown by a static method?</a> <br/>
- * <a href="#11">11. Can I catch errors instead of exceptions?</a> <br/>
- * <p/>
- * <p/>
- * <p/>
+ * Why?</a>
+
+ * <a href="#9">9. How do I catch an exception thrown by a static method?</a>
+
+ * <a href="#11">11. Can I catch errors instead of exceptions?</a>
+
+ *
+ *
+ *
  * </b>
- * <p/>
- * <h3 id="1">1. How to use catch-exception?</h3>
- * <p/>
+ *
+ * <h4>1. How to use catch-exception?</h4>
+ *
  * The most basic usage is:
- * <code><pre class="prettyprint lang-java">import static com.googlecode.catchexception.CatchException.*;
- * <p/>
+ * <code>import static com.googlecode.catchexception.CatchException.*;
+ *
  * // call customerService.prepareBilling(Prize.Zero)
  * // and catch the exception if any is thrown
  * catchException(customerService).prepareBilling(Prize.Zero);
- * <p/>
+ *
  * // assert that an IllegalArgumentException was thrown
- * assert caughtException() instanceof IllegalArgumentException;</pre></code>
- * <p/>
+ * assert caughtException() instanceof IllegalArgumentException;</code>
+ *
  * You can combine the two lines of code in a single one if you like:
- * <code><pre class="prettyprint lang-java">// call customerService.prepareBilling(Prize.Zero)
+ * <code>// call customerService.prepareBilling(Prize.Zero)
  * // and throw an ExceptionNotThrownAssertionError if
  * // the expected exception is not thrown
- * verifyException(customerService, IllegalArgumentException.class).prepareBilling(Prize.Zero);</pre></code>
+ * verifyException(customerService, IllegalArgumentException.class).prepareBilling(Prize.Zero);</code>
  * There is a minor difference between both variants. In the first variant you
  * must start the JVM with option <code>-ea</code> to enable the assertion. The
  * second variant does not use JDK assertions and ,therefore, always verifies
  * the caught exception.
- * <p/>
+ *
  * A third variant allows you to select the type of exceptions you want to catch
  * (no verification involved):
- * <code><pre class="prettyprint lang-java">// catch IllegalArgumentExceptions but no other exceptions
- * catchException(customerService, IllegalArgumentException.class).prepareBilling(Prize.Zero);</pre></code>
- * <p/>
+ * <code>// catch IllegalArgumentExceptions but no other exceptions
+ * catchException(customerService, IllegalArgumentException.class).prepareBilling(Prize.Zero);</code>
+ *
  * The fourth and last variant verifies that some exception is thrown, i.e. the
  * type of the exception does not matter:
- * <code><pre class="prettyprint lang-java">verifyException(customerService).prepareBilling(Prize.Zero);</pre></code>
- * <p/>
+ * <code>verifyException(customerService).prepareBilling(Prize.Zero);</code>
+ *
  * In all variants you can use <code>caughtException()</code> afterwards to
  * inspect the caught exception.
- * <p/>
+ *
  * Finally, there some alternative ways to catch and verify exceptions:
  * <ul>
  * <li>{@link BDDCatchException} - a BDD-like approach,
  * <li> {@link CatchExceptionHamcrestMatchers} - Hamcrest assertions
  * </ul>
- * <h3 id="2">2. What is this stuff actually good for?</h3>
- * <p/>
+ * <h3>2. What is this stuff actually good for?</h3>
+ *
  * This class targets concise and robust code in tests. Dadid Saff, a commiter
  * to JUnit, has <a
  * href="http://shareandenjoy.saff.net/2006/12/assertthrownexception_20.html"
  * >discussed</a> this approach in 2007. Let me summarize the arguments here.
- * <p/>
+ *
  * There are two advantages of the approach proposed here in comparison to the
  * use of try/catch blocks.
  * <ul>
@@ -98,7 +108,7 @@ import com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers;
  * type <code>fail()</code> behind the method call that is expected to throw an
  * exception.
  * </ul>
- * <p/>
+ *
  * There are also some advantages of this approach in comparison to test
  * runner-specific mechanisms that catch and verify exceptions.
  * <ul>
@@ -108,36 +118,36 @@ import com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers;
  * <li>The test can specify by which method call the exception must be thrown.
  * <li>The test does not depend on a specific test runner (JUnit4, TestNG).
  * </ul>
- * <p/>
- * <h3 id="3">3. How does it work internally?</h3>
- * <p/>
+ *
+ * <h3>3. How does it work internally?</h3>
+ *
  * The method <code>catchException(obj)</code> wraps the given object with a
  * proxy that catches the exception, then (optionally) verifies the exception,
  * and finally attaches the exception to the current <a
  * name="threadlocal">thread</a> for further analysis. The <a
  * href="#proxies">known limitations</a> for proxies apply.
- * <p/>
+ *
  * Is both memory consumption and runtime a concern for you? Then use try/catch
  * blocks instead of this class. Because in this case the creation of proxies is
  * an unnecessary overhead. If only either memory consumption or runtime is an
  * issue for you, feel free to configure the cache of the underlying proxy
  * factories as appropriate.
- * <h3 id="4">4. When is the caught exception reset?</h3>
- * <p/>
+ * <h3>4. When is the caught exception reset?</h3>
+ *
  * The Method {@link #caughtException()} returns the exception thrown by the
  * last method call on a proxied object in the current thread, i.e. it is reset
  * by calling a method on the proxied object. If the called method has not
  * thrown an exception, <code>caughtException()</code> returns null.
- * <p/>
+ *
  * To reset the caught exception manually, call {@link #resetCaughtException()}.
  * At the moment there is no way to reset exceptions that have been caught in
  * other threads.
- * <h3 id="5"><a name="proxies" />5. My code throws a ClassCastException. Why?</h3>
- * <p/>
+ * <h3>5. My code throws a ClassCastException. Why?</h3>
+ *
  * Example:
- * <code><pre class="prettyprint lang-java">StringBuilder sb = new StringBuilder();
- * catchException(sb).charAt(-2); // throws ClassCastException</pre></code>
- * <p/>
+ * <code>StringBuilder sb = new StringBuilder();
+ * catchException(sb).charAt(-2); // throws ClassCastException</code>
+ *
  * Probably you have tested a final class. Proxy factories usually try to
  * subclass the type of the proxied object. This is not possible if the original
  * class is final. But there is a way out. If the tested method belongs to an
@@ -146,47 +156,47 @@ import com.googlecode.catchexception.apis.CatchExceptionHamcrestMatchers;
  * interface type. This works because the created proxy is not longer required
  * to have the same type as the original class but it must only have the same
  * interface.
- * <code><pre class="prettyprint lang-java">// first variant
+ * <code>// first variant
  * StringBuilder sb = new StringBuilder();
  * catchException((CharSequence) sb).charAt(-2); // works fine
- * <p/>
+ *
  * // second variant
  * CharSequence sb = new StringBuilder();
- * catchException(sb).charAt(-2); // works fine</pre></code> If the tested
+ * catchException(sb).charAt(-2); // works fine</code> If the tested
  * method does no belong to an interface fall back to the try/catch-blocks or
  * use <a
  * href="http://code.google.com/p/catch-exception/wiki/Dependencies">Powermock
  * </a>.
- * <code><pre class="prettyprint lang-java">// example for
+ * <code>// example for
  * PowerMock with JUnit4
  * &#064;RunWith(PowerMockRunner.class)
  * &#064;PrepareForTest({ MyFinalType.class })
  * public class MyTest {
- * </pre></code>
- * <h3 id="6">6. Do I have to care about memory leaks?</h3>
- * <p/>
+ * </code>
+ * <h3>6. Do I have to care about memory leaks?</h3>
+ *
  * This library uses a {@link ThreadLocal}. ThreadLocals are known to cause
  * memory leaks if they refer to a class the garbage collector would like to
  * collect. If you use this library only for testing, then memory leaks do not
  * worry you. If you use this library for other purposes than testing, you
  * should care.
- * <p/>
- * <h3 id="7">7. The caught exception is not available in another thread. Why?</h3>
- * <p/>
+ *
+ * <h3>7. The caught exception is not available in another thread. Why?</h3>
+ *
  * The caught exception is saved <a href="#threadlocal">at the thread</a> the
  * exception is thrown in. This is the reason the exception is not visible
  * within any other thread.
- * <h3 id="8">8. Is there a way to get rid of the throws clause in my test
+ * <h3>8. Is there a way to get rid of the throws clause in my test
  * method?</h3>
- * <p/>
+ *
  * Example:
- * <code><pre class="prettyprint lang-java">public void testSomething() throws Exception {
+ * <code>public void testSomething() throws Exception {
  * ...
- * catchException(obj).do(); // do() throws a checked exception</pre></code> No,
+ * catchException(obj).do(); // do() throws a checked exception</code> No,
  * although the exception is always caught you cannot omit the throws clause in
  * your test method.
- * <h3 id="11">11. Can I catch errors instead of exceptions?</h3>
- * <p/>
+ * <h3>11. Can I catch errors instead of exceptions?</h3>
+ *
  * Yes, have a look at
  * {@code com.googlecode.catchexception.throwable.CatchThrowable} (in module
  * catch-throwable).
@@ -217,16 +227,16 @@ public class CatchException {
     /**
      * Use it to verify that an exception is thrown and to get access to the
      * thrown exception (for further verifications).
-     * <p/>
+     *
      * The following example verifies that obj.doX() throws a Exception:
-     * <code><pre class="prettyprint lang-java">verifyException(obj).doX(); // catch and verify
+     * <code>verifyException(obj).doX(); // catch and verify
      * assert "foobar".equals(caughtException().getMessage()); // further analysis
-     * </pre></code>
-     * <p/>
+     * </code>
+     *
      * If <code>doX()</code> does not throw a <code>Exception</code>, then a
      * {@link ExceptionNotThrownAssertionError} is thrown. Otherwise the thrown
      * exception can be retrieved via {@link #caughtException()}.
-     * <p/>
+     *
      *
      * @param actor The instance that shall be proxied. Must not be
      *              <code>null</code>.
@@ -238,16 +248,16 @@ public class CatchException {
     /**
      * Use it to verify that an exception of specific type is thrown and to get
      * access to the thrown exception (for further verifications).
-     * <p/>
+     *
      * The following example verifies that obj.doX() throws a MyException:
-     * <code><pre class="prettyprint lang-java">verifyException(obj, MyException.class).doX(); // catch and verify
+     * <code>verifyException(obj, MyException.class).doX(); // catch and verify
      * assert "foobar".equals(caughtException().getMessage()); // further analysis
-     * </pre></code>
-     * <p/>
+     * </code>
+     *
      * If <code>doX()</code> does not throw a <code>MyException</code>, then a
      * {@link ExceptionNotThrownAssertionError} is thrown. Otherwise the thrown
      * exception can be retrieved via {@link #caughtException()}.
-     * <p/>
+     *
      *
      * @param actor The instance that shall be proxied. Must not be
      *              <code>null</code>.
@@ -262,17 +272,17 @@ public class CatchException {
     /**
      * Use it to catch an exception and to get access to the thrown exception
      * (for further verifications).
-     * <p/>
+     *
      * In the following example you catch exceptions that are thrown by
      * obj.doX():
-     * <code><pre class="prettyprint lang-java">catchException(obj).doX(); // catch
+     * <code>catchException(obj).doX(); // catch
      * if (caughtException() != null) {
      * assert "foobar".equals(caughtException().getMessage()); // further analysis
-     * }</pre></code>
+     * }</code>
      * If <code>doX()</code> throws a exception, then {@link #caughtException()}
      * will return the caught exception. If <code>doX()</code> does not throw a
      * exception, then {@link #caughtException()} will return <code>null</code>.
-     * <p/>
+     *
      *
      * @param actor The instance that shall be proxied. Must not be
      *              <code>null</code>.
@@ -285,13 +295,13 @@ public class CatchException {
     /**
      * Use it to catch an exception of a specific type and to get access to the
      * thrown exception (for further verifications).
-     * <p/>
+     *
      * In the following example you catch exceptions of type MyException that
      * are thrown by obj.doX():
-     * <code><pre class="prettyprint lang-java">catchException(obj, MyException.class).doX(); // catch
+     * <code>catchException(obj, MyException.class).doX(); // catch
      * if (caughtException() != null) {
      * assert "foobar".equals(caughtException().getMessage()); // further analysis
-     * }</pre></code>
+     * }</code>
      * If <code>doX()</code> throws a <code>MyException</code>, then
      * {@link #caughtException()} will return the caught exception. If
      * <code>doX()</code> does not throw a <code>MyException</code>, then
@@ -299,7 +309,7 @@ public class CatchException {
      * <code>doX()</code> throws an exception of another type, i.e. not a
      * subclass but another class, then this exception is not thrown and
      * {@link #caughtException()} will return <code>null</code>.
-     * <p/>
+     *
      *
      * @param actor The instance that shall be proxied. Must not be
      *              <code>null</code>.
@@ -342,7 +352,7 @@ public class CatchException {
     /**
      * Sets the {@link #caughtException() caught exception} to null. This does
      * not affect exceptions saved at threads other than the current one.
-     * <p/>
+     *
      * Actually you probably never need to call this method because each method
      * call on a proxied object in the current thread resets the caught
      * exception. But if you want to improve test isolation or if you want to

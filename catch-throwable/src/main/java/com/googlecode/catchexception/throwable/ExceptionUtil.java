@@ -24,9 +24,11 @@ class ExceptionUtil {
 
     /**
      * Allows to throw an unchecked exception without declaring it in a throws clause.
+     *
+     * @param t throwable to throw
      */
     public static void sneakyThrow(Throwable t) {
-        ExceptionUtil.<RuntimeException>doSneakyThrow(t);
+        ExceptionUtil.doSneakyThrow(t);
     }
 
     @SuppressWarnings("unchecked")

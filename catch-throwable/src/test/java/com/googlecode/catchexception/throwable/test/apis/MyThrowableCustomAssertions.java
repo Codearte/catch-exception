@@ -15,7 +15,6 @@
  */
 package com.googlecode.catchexception.throwable.test.apis;
 
-import com.googlecode.catchexception.throwable.CatchThrowable;
 import com.googlecode.catchexception.throwable.MyThrowable;
 import com.googlecode.catchexception.throwable.apis.BDDCatchThrowable;
 

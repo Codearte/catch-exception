@@ -24,7 +24,7 @@ import com.googlecode.catchexception.throwable.apis.internal.hamcrest.ThrowableN
 /**
  * Provides some Hamcrest {@link Matcher matchers} to match some {@link Throwable throwable} properties.
  * <p>
- * EXAMPLE: <code><pre class="prettyprint lang-java">// given an empty list
+ * EXAMPLE: <code>// given an empty list
 List myList = new ArrayList();
 
 // when we try to get the first element of the list
@@ -37,7 +37,7 @@ assertThat(caughtThrowable(),
     hasMessage("Index: 1, Size: 0"),
     hasNoCause()
   )
-);</pre></code>
+);</code>
  * <p>
  * To combine the standard Hamcrest matchers, your custom matchers, these matchers, and other matcher collections (as
  * {@link JUnitMatchers}) in a single class follow the instructions outlined in <a
@@ -53,7 +53,7 @@ public class CatchThrowableHamcrestMatchers {
 
     /**
      * EXAMPLE:
-     * <code><pre class="prettyprint lang-java">assertThat(caughtThrowable(), hasMessage("Index: 9, Size: 9"));</pre></code>
+     * <code>assertThat(caughtThrowable(), hasMessage("Index: 9, Size: 9"));</code>
      * 
      * @param <T>
      *            the throwable subclass
@@ -67,9 +67,9 @@ public class CatchThrowableHamcrestMatchers {
 
     /**
      * EXAMPLES:
-     * <code><pre class="prettyprint lang-java">assertThat(caughtThrowable(), hasMessageThat(is("Index: 9, Size: 9")));
+     * <code>assertThat(caughtThrowable(), hasMessageThat(is("Index: 9, Size: 9")));
 assertThat(caughtThrowable(), hasMessageThat(containsString("Index: 9"))); // using JUnitMatchers
-assertThat(caughtThrowable(), hasMessageThat(containsPattern("Index: \\d+"))); // using Mockito's Find</pre></code>
+assertThat(caughtThrowable(), hasMessageThat(containsPattern("Index: \\d+"))); // using Mockito's Find</code>
      * 
      * @param <T>
      *            the throwable subclass
@@ -82,7 +82,7 @@ assertThat(caughtThrowable(), hasMessageThat(containsPattern("Index: \\d+"))); /
     }
 
     /**
-     * EXAMPLE: <code><pre class="prettyprint lang-java">assertThat(caughtThrowable(), hasNoCause());</pre></code>
+     * EXAMPLE: <code>assertThat(caughtThrowable(), hasNoCause());</code>
      * 
      * @param <T>
      *            the throwable subclass

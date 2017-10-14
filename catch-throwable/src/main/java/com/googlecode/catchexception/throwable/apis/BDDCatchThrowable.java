@@ -22,7 +22,7 @@ import com.googlecode.catchexception.throwable.ThrowingCallable;
  * Supports <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>-like approach to catch and verify
  * throwables (<i>given/when/then</i>).
  * <p>
- * <code><pre class="prettyprint lang-java">import static com.googlecode.catchexception.throwable.apis
+ * <code>import static com.googlecode.catchexception.throwable.apis
  * .BDDCatchThrowable.*;
 
  // given an empty list
@@ -39,7 +39,7 @@ import com.googlecode.catchexception.throwable.ThrowingCallable;
 
  // then we expect an IndexOutOfBoundsThrowable (alternatively)
  thenThrown(IndexOutOfBoundsThrowable.class);
- </pre></code>
+ </code>
  *
  * @author rwoo
  * @author mariuszs
@@ -77,7 +77,7 @@ public class BDDCatchThrowable {
      * Throws an assertion if no throwable is thrown or if an throwable of an unexpected type is thrown.
      * <p>
      * EXAMPLE:
-     * <code><pre class="prettyprint lang-java">// given a list with nine members
+     * <code>// given a list with nine members
      List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
      // when we try to get the 500th member of the fellowship
@@ -85,7 +85,7 @@ public class BDDCatchThrowable {
 
      // then we expect an IndexOutOfBoundsThrowable
      thenThrown(IndexOutOfBoundsThrowable.class);
-     </pre></code>
+     </code>
      *
      * @param actualThrowableClazz
      *            the expected type of the caught throwable.

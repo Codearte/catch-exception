@@ -22,9 +22,9 @@ import com.googlecode.catchexception.ThrowingCallable;
  * Supports <a
  * href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>-like
  * approach to catch and verify exceptions (<i>given/when/then</i>).
- * <p/>
+ *
  * EXAMPLE:
- * <pre>
+ *
  * {@code
  *
  * import static org.assertj.core.api.BDDAssertions.then;
@@ -44,7 +44,7 @@ import com.googlecode.catchexception.ThrowingCallable;
  * // then we expect an IndexOutOfBoundsException (alternatively)
  * thenThrown(IndexOutOfBoundsException.class);
  * }
- * </pre>
+ *
  *
  * @author rwoo
  * @author mariuszs
@@ -52,55 +52,55 @@ import com.googlecode.catchexception.ThrowingCallable;
  */
 public class BDDCatchException {
 
-    /**
-     * @param actor The instance that shall be proxied. Must not be
-     *              <code>null</code>.
-     * @see com.googlecode.catchexception.CatchException#catchException(ThrowingCallable)
-     */
-    public static void when(ThrowingCallable actor) {
-        CatchException.catchException(actor);
-    }
+	/**
+	 * @param actor The instance that shall be proxied. Must not be
+	 *              <code>null</code>.
+	 * @see com.googlecode.catchexception.CatchException#catchException(ThrowingCallable)
+	 */
+	public static void when(ThrowingCallable actor) {
+		CatchException.catchException(actor);
+	}
 
-    /**
-     * Returns the exception caught during the last call in the current thread. This is useful for
-     * returning business specific exception to specific assertions.
-     *
-     * @return Returns the exception caught during the last call in the current
-     * thread - if the call was made through a proxy that has been created via
-     * {@link #when(ThrowingCallable)} . Returns null when no exception was caught.
-     */
-    public static Exception caughtException() {
-        return CatchException.caughtException();
-    }
+	/**
+	 * Returns the exception caught during the last call in the current thread. This is useful for
+	 * returning business specific exception to specific assertions.
+	 *
+	 * @return Returns the exception caught during the last call in the current
+	 * thread - if the call was made through a proxy that has been created via
+	 * {@link #when(ThrowingCallable)} . Returns null when no exception was caught.
+	 */
+	public static Exception caughtException() {
+		return CatchException.caughtException();
+	}
 
-    public static <E extends Exception> E caughtException(Class<E> caughtExceptionType) {
-        return CatchException.caughtException(caughtExceptionType);
-    }
+	public static <E extends Exception> E caughtException(Class<E> caughtExceptionType) {
+		return CatchException.caughtException(caughtExceptionType);
+	}
 
-    /**
-     * Throws an assertion if no exception is thrown or if an exception of an
-     * unexpected type is thrown.
-     * <p/>
-     * EXAMPLE:
-     * <pre>
-     * {@code
-     *
-     * // given a list with nine members
-     * List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
-     *
-     * // when we try to get the 500th member of the fellowship
-     * when(myList).get(500);
-     *
-     * // then we expect an IndexOutOfBoundsException
-     * thenThrown(IndexOutOfBoundsException.class);
-     * }
-     * </pre>
-     *
-     * @param actualExceptionClazz the expected type of the caught exception.
-     */
-    @SuppressWarnings("rawtypes")
-    public static void thenThrown(Class actualExceptionClazz) {
-        CatchExceptionUtils.thenThrown(actualExceptionClazz);
-    }
+	/**
+	 * Throws an assertion if no exception is thrown or if an exception of an
+	 * unexpected type is thrown.
+	 *
+	 * EXAMPLE:
+	 *
+	 * {@code
+	 *
+	 * // given a list with nine members
+	 * List myList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+	 *
+	 * // when we try to get the 500th member of the fellowship
+	 * when(myList).get(500);
+	 *
+	 * // then we expect an IndexOutOfBoundsException
+	 * thenThrown(IndexOutOfBoundsException.class);
+	 * }
+	 *
+	 *
+	 * @param actualExceptionClazz the expected type of the caught exception.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static void thenThrown(Class actualExceptionClazz) {
+		CatchExceptionUtils.thenThrown(actualExceptionClazz);
+	}
 
 }
