@@ -24,9 +24,6 @@ project(modelVersion: '4.0.0') {
     developer(id: 'rwoo', name: 'Rod Woo', email: 'rwoo@gmx.de')
     developer(id: 'mariuszs', name: 'Mariusz Smykula', email: 'mariuszs@gmail.com')
   }
-  prerequisites {
-    maven '3.5.0'
-  }
   modules {
     module 'catch-exception'
     module 'catch-throwable'
@@ -56,7 +53,7 @@ project(modelVersion: '4.0.0') {
   build {
     pluginManagement {
       plugins {
-        plugin(groupId: 'io.takari.maven.plugins', artifactId: 'takari-lifecycle-plugin', version: '1.13.0', extensions: true) {
+        plugin(groupId: 'io.takari.maven.plugins', artifactId: 'takari-lifecycle-plugin', version: '1.13.2', extensions: true) {
           configuration {
             sourceJar 'true'
             testJar 'true'
@@ -71,7 +68,7 @@ project(modelVersion: '4.0.0') {
             pushChanges 'false'
             localCheckout 'true'
             autoVersionSubmodules 'true'
-            tagNameFormat 'catch-exception-@{project.version}'
+            tagNameFormat 'v@{project.version}'
           }
         }
         plugin(artifactId: 'maven-gpg-plugin', version: 1.6) {
@@ -83,7 +80,7 @@ project(modelVersion: '4.0.0') {
             }
           }
         }
-        plugin(artifactId: 'maven-surefire-plugin', version: '2.20')
+        plugin(artifactId: 'maven-surefire-plugin', version: '2.20.1')
         plugin(groupId: 'org.eluder.coveralls', artifactId: 'coveralls-maven-plugin', version: '4.3.0')
         plugin(groupId: 'org.jacoco', artifactId: 'jacoco-maven-plugin', version: '0.7.9')
       }
