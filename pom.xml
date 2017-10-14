@@ -103,7 +103,7 @@
             <pushChanges>false</pushChanges>
             <localCheckout>true</localCheckout>
             <autoVersionSubmodules>true</autoVersionSubmodules>
-            <tagNameFormat>catch-exception-@{project.version}</tagNameFormat>
+            <tagNameFormat>v@{project.version}</tagNameFormat>
           </configuration>
         </plugin>
         <plugin>
