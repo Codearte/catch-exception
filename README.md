@@ -132,3 +132,11 @@ Thanks to Szczepan Faber who made some suggestions about a BDD-like syntax for c
 Questions, suggestions and Issues are welcome and can be reported via [Issues page](https://github.com/Codearte/catch-exception/issues) of this project.
 
 Please give me feedback of any kind. It is highly appreciated.
+
+
+# Development
+
+To work with this project in IDE, genereate `pom.xml` using command below:
+
+    ./mvnw io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.groovy -Doutput=pom.xml
+
