@@ -76,7 +76,7 @@
         <plugin>
           <groupId>io.takari.maven.plugins</groupId>
           <artifactId>takari-lifecycle-plugin</artifactId>
-          <version>1.13.2</version>
+          <version>1.13.3</version>
           <extensions>true</extensions>
           <configuration>
             <sourceJar>true</sourceJar>
