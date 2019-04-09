@@ -8,7 +8,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>catch-throwable</artifactId>
-  <packaging>takari-jar</packaging>
   <description>Catch throwables (not only exceptions)</description>
   <dependencies>
     <dependency>
