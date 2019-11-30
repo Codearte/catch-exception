@@ -35,7 +35,7 @@
       <plugin>
         <groupId>org.pitest</groupId>
         <artifactId>pitest-maven</artifactId>
-        <version>1.4.7</version>
+        <version>1.4.10</version>
         <configuration>
           <mutationThreshold>90</mutationThreshold>
           <coverageThreshold>85</coverageThreshold>
