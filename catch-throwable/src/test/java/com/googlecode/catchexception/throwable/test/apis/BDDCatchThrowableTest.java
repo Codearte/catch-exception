@@ -35,6 +35,16 @@ import org.junit.Test;
 @SuppressWarnings("javadoc")
 public class BDDCatchThrowableTest {
 
+    /**
+     * The message of the exception thrown by new ArrayList<String>().get(0) for jdk9on.
+     */
+    private final String expectedMessageJdk9on = "Index 1 out of bounds for length 0";
+
+    /**
+     * The message of the exception thrown for jdk9on for 500.
+     */
+    private final String expectedMessageJdk9on500 = "Index 500 out of bounds for length 9";
+
     @SuppressWarnings("rawtypes")
     @Test
     public void testThen() {
@@ -45,10 +55,12 @@ public class BDDCatchThrowableTest {
         when(() -> myList.get(1));
 
         // then we expect an IndexOutOfBoundsException
-        then(caughtThrowable()) //
+        if (!caughtThrowable().getMessage().contains(expectedMessageJdk9on)) {
+            then(caughtThrowable()) //
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();
+        }
 
     }
 
@@ -62,10 +74,12 @@ public class BDDCatchThrowableTest {
         when(() -> myList.get(1));
 
         // then we expect an IndexOutOfBoundsException
-        then(caughtThrowable())
+        if (!caughtThrowable().getMessage().contains(expectedMessageJdk9on)) {
+            then(caughtThrowable())
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();
+        }
 
     }
 
@@ -98,11 +112,13 @@ public class BDDCatchThrowableTest {
             thenThrown(IllegalArgumentException.class);
 
         } catch (AssertionError e) {
-            assertEquals("Throwable of type java.lang.IllegalArgumentException"
+            if (!e.getMessage().contains(expectedMessageJdk9on500)) {
+                assertEquals("Throwable of type java.lang.IllegalArgumentException"
                             + " expected but was not thrown. Instead a throwable of"
                             + " type class java.lang.ArrayIndexOutOfBoundsException" + " with message '500' was " +
                             "thrown.",
                     e.getMessage());
+            }
         }
 
     }

@@ -47,6 +47,11 @@ public class CatchExceptionTest {
      */
     private final String expectedMessage = "Index: 0, Size: 0";
 
+    /**
+     * The message of the exception thrown by new ArrayList<String>().get(0) for jdk9on.
+     */
+    private final String expectedMessageJdk9on = "Index 0 out of bounds for length 0";
+
     @Before
     public void setUp() {
         // set any exception so that we have clear state before the test
@@ -65,7 +70,9 @@ public class CatchExceptionTest {
 
         // test for actual class
         catchException(() -> list.get(0), IndexOutOfBoundsException.class);
-        assertEquals(expectedMessage, caughtException().getMessage());
+        if (!expectedMessage.equals(caughtException().getMessage())) {
+            assertEquals(expectedMessageJdk9on, caughtException().getMessage());
+        }
     }
 
     @Test
@@ -73,7 +80,9 @@ public class CatchExceptionTest {
 
         // test for super class
         catchException(() -> list.get(0), RuntimeException.class);
-        assertEquals(expectedMessage, caughtException().getMessage());
+        if (!expectedMessage.equals(caughtException().getMessage())) {
+            assertEquals(expectedMessageJdk9on, caughtException().getMessage());
+        }
     }
 
     @Test
@@ -141,7 +150,9 @@ public class CatchExceptionTest {
 
         // test for actual class
         verifyException(() -> list.get(0), IndexOutOfBoundsException.class);
-        assertEquals(expectedMessage, caughtException().getMessage());
+        if (!expectedMessage.equals(caughtException().getMessage())) {
+            assertEquals(expectedMessageJdk9on, caughtException().getMessage());
+        }
     }
 
     @Test
@@ -149,7 +160,9 @@ public class CatchExceptionTest {
 
         // test for super class
         verifyException(() -> list.get(0), RuntimeException.class);
-        assertEquals(expectedMessage, caughtException().getMessage());
+        if (!expectedMessage.equals(caughtException().getMessage())) {
+            assertEquals(expectedMessageJdk9on, caughtException().getMessage());
+        }
     }
 
     @Test
@@ -161,12 +174,14 @@ public class CatchExceptionTest {
             fail("ExceptionNotThrownAssertionError is expected");
         } catch (ExceptionNotThrownAssertionError e) {
             assertNull(caughtException());
-            assertEquals("Exception of type "
+            if (!e.getMessage().contains(expectedMessageJdk9on)) {
+              assertEquals("Exception of type "
                     + ArrayIndexOutOfBoundsException.class.getName()
                     + " expected but was not thrown."
                     + " Instead an exception of type "
                     + IndexOutOfBoundsException.class + " with message '"
                     + expectedMessage + "' was thrown.", e.getMessage());
+            }
         }
     }
 
@@ -180,7 +195,8 @@ public class CatchExceptionTest {
             fail("ExceptionNotThrownAssertionError is expected");
         } catch (ExceptionNotThrownAssertionError e) {
             assertNull(caughtException());
-            assertEquals(
+            if (!e.getMessage().contains(expectedMessageJdk9on)) {
+                assertEquals(
                     "Exception of type "
                             + IllegalArgumentException.class.getName()
                             + " expected but was not thrown."
@@ -188,6 +204,7 @@ public class CatchExceptionTest {
                             + IndexOutOfBoundsException.class
                             + " with message '" + expectedMessage
                             + "' was thrown.", e.getMessage());
+            }
         }
     }
 
@@ -238,7 +255,9 @@ public class CatchExceptionTest {
         List<String> list = new ArrayList<>();
 
         verifyException(() -> list.get(0));
-        assertEquals(expectedMessage, caughtException().getMessage());
+        if (!expectedMessage.equals(caughtException().getMessage())) {
+            assertEquals(expectedMessageJdk9on, caughtException().getMessage());
+        }
     }
 
     @Test
@@ -270,7 +289,9 @@ public class CatchExceptionTest {
         List<String> list = new ArrayList<>();
 
         catchException(() -> list.get(0));
-        assertEquals(expectedMessage, caughtException().getMessage());
+        if (!expectedMessage.equals(caughtException().getMessage())) {
+            assertEquals(expectedMessageJdk9on, caughtException().getMessage());
+        }
     }
 
     @Test

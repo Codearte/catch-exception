@@ -37,6 +37,16 @@ import com.googlecode.catchexception.CatchException;
 @SuppressWarnings("javadoc")
 public class BDDCatchExceptionTest {
 
+    /**
+     * The message of the exception thrown by new ArrayList<String>().get(0) for jdk9on.
+     */
+    private final String expectedMessageJdk9on = "Index 1 out of bounds for length 0";
+
+    /**
+     * The message of the exception thrown for jdk9on for 500.
+     */
+    private final String expectedMessageJdk9on500 = "Index 500 out of bounds for length 9";
+
     @SuppressWarnings("rawtypes")
     @Test
     public void testThen() {
@@ -47,10 +57,12 @@ public class BDDCatchExceptionTest {
         when(() -> myList.get(1));
 
         // then we expect an IndexOutOfBoundsException
-        then(caughtException())
+        if (!caughtException().getMessage().contains(expectedMessageJdk9on)) {
+            then(caughtException())
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();
+        }
 
         // and BDDAssertions....
         then(new Integer(2)).isEqualTo(2);
@@ -68,10 +80,12 @@ public class BDDCatchExceptionTest {
         when(() -> myList.get(1));
 
         // then we expect an IndexOutOfBoundsException
-        then((Throwable) CatchException.caughtException())
+        if (!caughtException().getMessage().contains(expectedMessageJdk9on)) {
+            then((Throwable) CatchException.caughtException())
                 .isInstanceOf(IndexOutOfBoundsException.class) //
                 .hasMessage("Index: 1, Size: 0") //
                 .hasNoCause();
+        }
 
         // and BDDAssertions....
         then(new Integer(2)).isEqualTo(2);
@@ -108,10 +122,12 @@ public class BDDCatchExceptionTest {
             thenThrown(IllegalArgumentException.class);
 
         } catch (AssertionError e) {
-            assertEquals("Exception of type java.lang.IllegalArgumentException"
+            if (!e.getMessage().contains(expectedMessageJdk9on500)) {
+                assertEquals("Exception of type java.lang.IllegalArgumentException"
                     + " expected but was not thrown. Instead an exception of"
                     + " type class java.lang.ArrayIndexOutOfBoundsException"
                     + " with message '500' was thrown.", e.getMessage());
+            }
         }
     }
 }
