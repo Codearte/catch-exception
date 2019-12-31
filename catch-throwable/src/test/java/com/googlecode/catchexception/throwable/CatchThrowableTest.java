@@ -46,6 +46,11 @@ public class CatchThrowableTest {
      */
     private final String expectedMessage = "Index: 0, Size: 0";
 
+    /**
+     * The message of the exception thrown by new ArrayList<String>().get(0) for jdk9on.
+     */
+    private final String expectedMessageJdk9on = "Index 0 out of bounds for length 0";
+
     @Before
     public void setUp() {
         // set any exception so that we have clear state before the test
@@ -72,7 +77,9 @@ public class CatchThrowableTest {
 
         // test for actual class
         catchThrowable(() -> list.get(0), IndexOutOfBoundsException.class);
-        assertEquals(expectedMessage, caughtThrowable().getMessage());
+        if (!expectedMessage.equals(caughtThrowable().getMessage())) {
+            assertEquals(expectedMessageJdk9on, caughtThrowable().getMessage());
+        }
     }
 
     @Test
@@ -80,7 +87,9 @@ public class CatchThrowableTest {
 
         // test for super class
         catchThrowable(() -> list.get(0), RuntimeException.class);
-        assertEquals(expectedMessage, caughtThrowable().getMessage());
+        if (!expectedMessage.equals(caughtThrowable().getMessage())) {
+            assertEquals(expectedMessageJdk9on, caughtThrowable().getMessage());
+        }
     }
 
     @Test
@@ -147,7 +156,9 @@ public class CatchThrowableTest {
 
         // test for actual class
         verifyThrowable(() -> list.get(0), IndexOutOfBoundsException.class);
-        assertEquals(expectedMessage, caughtThrowable().getMessage());
+        if (!expectedMessage.equals(caughtThrowable().getMessage())) {
+            assertEquals(expectedMessageJdk9on, caughtThrowable().getMessage());
+        }
     }
 
     @Test
@@ -155,7 +166,9 @@ public class CatchThrowableTest {
 
         // test for super class
         verifyThrowable(() -> list.get(0), RuntimeException.class);
-        assertEquals(expectedMessage, caughtThrowable().getMessage());
+        if (!expectedMessage.equals(caughtThrowable().getMessage())) {
+            assertEquals(expectedMessageJdk9on, caughtThrowable().getMessage());
+        }
     }
 
     @Test
@@ -167,10 +180,12 @@ public class CatchThrowableTest {
             fail("ThrowableNotThrownAssertionError is expected");
         } catch (ThrowableNotThrownAssertionError e) {
             assertNull(caughtThrowable());
-            assertEquals("Throwable of type " + ArrayIndexOutOfBoundsException.class.getName()
+            if (!e.getMessage().contains(expectedMessageJdk9on)) {
+                assertEquals("Throwable of type " + ArrayIndexOutOfBoundsException.class.getName()
                             + " expected but was not thrown." + " Instead a throwable of type "
                             + IndexOutOfBoundsException.class + " with message '" + expectedMessage + "' was thrown.",
                     e.getMessage());
+            }
         }
     }
 
@@ -183,10 +198,12 @@ public class CatchThrowableTest {
             fail("ThrowableNotThrownAssertionError is expected");
         } catch (ThrowableNotThrownAssertionError e) {
             assertNull(caughtThrowable());
-            assertEquals("Throwable of type " + IllegalArgumentException.class.getName()
+            if (!e.getMessage().contains(expectedMessageJdk9on)) {
+                assertEquals("Throwable of type " + IllegalArgumentException.class.getName()
                             + " expected but was not thrown." + " Instead a throwable of type "
                             + IndexOutOfBoundsException.class + " with message '" + expectedMessage + "' was thrown.",
                     e.getMessage());
+            }
         }
 
     }
@@ -235,7 +252,9 @@ public class CatchThrowableTest {
         List<String> list = new ArrayList<>();
 
         verifyThrowable(() -> list.get(0));
-        assertEquals(expectedMessage, caughtThrowable().getMessage());
+        if (!expectedMessage.equals(caughtThrowable().getMessage())) {
+            assertEquals(expectedMessageJdk9on, caughtThrowable().getMessage());
+        }
     }
 
     @Test
@@ -266,7 +285,9 @@ public class CatchThrowableTest {
         List<String> list = new ArrayList<>();
 
         catchThrowable(() -> list.get(0));
-        assertEquals(expectedMessage, caughtThrowable().getMessage());
+        if (!expectedMessage.equals(caughtThrowable().getMessage())) {
+            assertEquals(expectedMessageJdk9on, caughtThrowable().getMessage());
+        }
     }
 
     @Test
