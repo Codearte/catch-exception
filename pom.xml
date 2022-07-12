@@ -171,7 +171,7 @@
       <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
-        <version>3.0</version>
+        <version>4.2.rc3</version>
         <executions>
           <execution>
             <goals>
@@ -189,6 +189,7 @@
             <year>${project.inceptionYear}</year>
             <email>rwoo@gmx.de</email>
           </properties>
+          <failIfMissing>false</failIfMissing>
         </configuration>
       </plugin>
       <plugin>
